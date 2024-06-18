@@ -69,3 +69,33 @@ export const addViaje = async (viaje: ViajeModel) => {
     throw new Error('An unexpected error occurred');
   }
 };
+
+
+export const revertirLote = async (lote_viaje_id: number) => {
+  try {
+    const response = await axios.delete(`${API_URL}/revertir-lote`, {
+      data: { lote_viaje_id },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error revirtiendo el lote", error);
+    throw error;
+  }
+};
+
+
+export const uploadFile = (file: File, operacion_id: number) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('operacion_id', operacion_id.toString());
+
+  return axios.post(`${API_URL}/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const asignarZonasRequest = (lote: number) => {
+  return axios.post(`${API_URL}/viajes/asignar-zonas/${lote}`);
+};

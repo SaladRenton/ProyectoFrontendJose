@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress,Button } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress, Button, TextField } from '@mui/material';
 import { ViajeModel, initialViaje } from '../../core/_models'; // Importa la interfaz adaptada
 import { getColumns } from '../../components/table/columns/_columns'; // Ajusta la ruta si es necesario
 import ViajeModal from '../../components/table/modal/_modal';
+import RevertirLoteModal from '../../components/table/modal/_revertirLoteModal'; // Importa el modal de revertir lote
+import AsignarZonasModal from '../../components/table/modal/_asignarZonasModal'; // Importa el nuevo modal
 import FilterModal from '../table/modal/_filterModal';
 import Toolbar from '../toolbar/toolbars/toolbar';
 import {
@@ -11,7 +13,9 @@ import {
   handleProcessRowUpdate,
   handleDeleteRow,
   handleAddViaje,
-  handleEditViaje
+  handleEditViaje,
+  handleFileUpload,
+  asignarZonas
 } from '../../core/_handlers';
 
 const ViajesList: React.FC = () => {
@@ -33,6 +37,17 @@ const ViajesList: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
+
+  const [file, setFile] = useState<File | null>(null);
+  const [operacionId, setOperacionId] = useState<number>(0);
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
+  const [uploadErrors, setUploadErrors] = useState<string[]>([]);
+
+  const [asignarZonasModalOpen, setAsignarZonasModalOpen] = useState<boolean>(false);
+  const [asignarZonasLoading, setAsignarZonasLoading] = useState<boolean>(false);
+  const [asignarZonasErrors, setAsignarZonasErrors] = useState<string[]>([]);
 
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -43,7 +58,7 @@ const ViajesList: React.FC = () => {
   }, [page, pageSize, fetchViajesData]);
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ViajeModel>, oldRow: GridRowModel<ViajeModel>) => {
-    return handleProcessRowUpdate(newRow, oldRow, setError);
+    return handleProcessRowUpdate(newRow, oldRow, setError, setModalErrors);
   };
 
   const handleDeleteRowWrapper = async (id: number) => {
@@ -112,6 +127,70 @@ const ViajesList: React.FC = () => {
     fetchViajesData();
   };
 
+  const handleOpenRevertirLoteModal = () => {
+    setRevertirLoteModalOpen(true);
+  };
+
+  const handleCloseRevertirLoteModal = () => {
+    setRevertirLoteModalOpen(false);
+  };
+
+  const handleSuccessRevertirLote = () => {
+    setRevertirLoteModalOpen(false);
+    fetchViajesData(); // Refresca los datos después de la acción exitosa
+  };
+
+  const handleOpenUploadModal = () => {
+    setUploadModalOpen(true);
+  };
+
+  const handleCloseUploadModal = () => {
+    setUploadModalOpen(false);
+    setFile(null); // Reset file input
+    setOperacionId(0); // Reset operacionId input
+    setUploadErrors([]); // Clear previous errors
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUploadFile = async () => {
+    if (file && operacionId) {
+      setUploadLoading(true);
+      try {
+        await handleFileUpload(file, operacionId, setError, setUploadErrors, setUploadLoading);
+        fetchViajesData(); // Refresca los datos después de una carga exitosa
+        if (uploadErrors.length === 0) {
+          setUploadModalOpen(false); // Cerrar el modal solo si la carga es exitosa
+        }
+      } catch (error) {
+        console.error("Error uploading file", error);
+      }
+      setUploadLoading(false);
+    }
+  };
+
+  const handleOpenAsignarZonasModal = () => {
+    setAsignarZonasModalOpen(true);
+  };
+
+  const handleCloseAsignarZonasModal = () => {
+    setAsignarZonasModalOpen(false);
+    setAsignarZonasErrors([]); // Clear previous errors
+  };
+
+  const handleAsignarZonas = async (lote: number) => {
+    await asignarZonas(lote, setError, setAsignarZonasErrors, setAsignarZonasLoading);
+    if (asignarZonasErrors.length === 0) {
+      setAsignarZonasModalOpen(false); // Close modal only if there are no errors
+      fetchViajesData(); // Refresca los datos después de la acción exitosa
+    }
+  };
+  
+
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
 
   return (
@@ -122,6 +201,13 @@ const ViajesList: React.FC = () => {
           <div className="d-flex flex-column">
             <h5 className="mb-1">Error</h5>
             <span>{error}</span>
+            {modalErrors.length > 0 && (
+              <ul>
+                {modalErrors.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       )}
@@ -130,6 +216,9 @@ const ViajesList: React.FC = () => {
         onRefresh={fetchViajesData}
         onOpenFilterModal={handleOpenFilterModal}
         onClearFilters={handleClearFilters}
+        onOpenRevertirLoteModal={handleOpenRevertirLoteModal}
+        onOpenUploadModal={handleOpenUploadModal} // Añadir handler para abrir el modal de carga
+        onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
       />
       <DataGrid
         rows={rows}
@@ -179,6 +268,54 @@ const ViajesList: React.FC = () => {
         open={filterDialogOpen}
         onClose={() => setFilterDialogOpen(false)}
         onApply={handleApplyFilters}
+      />
+      <RevertirLoteModal
+        open={revertirLoteModalOpen}
+        onClose={handleCloseRevertirLoteModal}
+        onSuccess={handleSuccessRevertirLote}
+      />
+      <Dialog
+        open={uploadModalOpen}
+        onClose={handleCloseUploadModal}
+      >
+        <DialogTitle>{"Cargar Archivo"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Selecciona un archivo y una operación para cargar.
+          </DialogContentText>
+          <input type="file" onChange={handleFileChange} />
+          <TextField
+            margin="dense"
+            label="Operación ID"
+            fullWidth
+            value={operacionId}
+            onChange={(e) => setOperacionId(Number(e.target.value))}
+          />
+          {uploadErrors.length > 0 && (
+            <div className="alert alert-danger d-flex align-items-center p-5 mt-3">
+              <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>
+              <div className="d-flex flex-column">
+                <h5 className="mb-1">Error</h5>
+                <span>{uploadErrors.join(' ')}</span>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseUploadModal} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleUploadFile} color="primary" disabled={uploadLoading || !file || !operacionId}>
+            {uploadLoading ? <CircularProgress size={24} /> : 'Cargar'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <AsignarZonasModal
+        open={asignarZonasModalOpen}
+        onClose={handleCloseAsignarZonasModal}
+        onSubmit={handleAsignarZonas}
+        loading={asignarZonasLoading}
+        errors={asignarZonasErrors}
       />
     </div>
   );
