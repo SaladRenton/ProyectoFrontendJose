@@ -8,7 +8,7 @@ export const getColumns = (
   handleOpenEditModal: (viaje: ViajeModel) => void,
   handleDeleteRow: (id: number) => void
 ): GridColDef[] => [
-  { field: 'id', headerName: 'ID', width: 90, editable: false },
+  { field: 'id', headerName: 'Numero', width: 90, editable: false },
   { 
     field: 'operacion.d_operacion', 
     headerName: 'Operación', 
@@ -29,10 +29,16 @@ export const getColumns = (
   { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean' },
   { field: 'fecha_inicio', headerName: 'Fecha Inicio', width: 150, editable: true, type: 'dateTime' },
   { field: 'fecha_fin', headerName: 'Fecha Fin', width: 150, editable: true, type: 'dateTime' },
-  { field: 'estado_actual_id', headerName: 'Estado Actual ID', width: 150, editable: true },
+  { 
+    field: 'estado_actual.d_estado', 
+    headerName: 'Estado', 
+    width: 150, 
+    editable: false, 
+    valueGetter: (params) => params.row.estado_actual?.d_estado 
+  },
   { field: 'fecha_creacion', headerName: 'Fecha Creación', width: 150, editable: true, type: 'dateTime' },
-  { field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
-  { field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
+  //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
+  //{ field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
   { field: 'email', headerName: 'Email', width: 200, editable: true },
   { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
   { field: 'apellido', headerName: 'Apellido', width: 150, editable: true },
