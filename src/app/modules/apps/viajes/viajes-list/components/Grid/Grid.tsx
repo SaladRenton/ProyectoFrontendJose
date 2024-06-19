@@ -6,8 +6,9 @@ import { getColumns } from '../../components/table/columns/_columns'; // Ajusta 
 import ViajeModal from '../../components/table/modal/_modal';
 import RevertirLoteModal from '../../components/table/modal/_revertirLoteModal'; // Importa el modal de revertir lote
 import AsignarZonasModal from '../../components/table/modal/_asignarZonasModal'; // Importa el nuevo modal
-import FilterModal from '../table/modal/_filterModal';
-import Toolbar from '../toolbar/toolbars/toolbar';
+import EstadosHistoricosModal from '../../../../../modals/components/EstadosHistoricosModal'; // Importa el modal de estados históricos
+import FilterModal from '../../components/table/modal/_filterModal';
+import Toolbar from '../../components/toolbar/toolbars/toolbar';
 import {
   fetchViajes,
   handleProcessRowUpdate,
@@ -17,6 +18,7 @@ import {
   handleFileUpload,
   asignarZonas
 } from '../../core/_handlers';
+import HistoryIcon from '@mui/icons-material/History';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -48,6 +50,9 @@ const ViajesList: React.FC = () => {
   const [asignarZonasModalOpen, setAsignarZonasModalOpen] = useState<boolean>(false);
   const [asignarZonasLoading, setAsignarZonasLoading] = useState<boolean>(false);
   const [asignarZonasErrors, setAsignarZonasErrors] = useState<string[]>([]);
+
+  const [historicosModalOpen, setHistoricosModalOpen] = useState<boolean>(false);
+  const [selectedViajeId, setSelectedViajeId] = useState<number | null>(null);
 
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -190,7 +195,17 @@ const ViajesList: React.FC = () => {
     }
   };
 
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
+  const handleOpenHistoricosModal = (viajeId: number) => {
+    setSelectedViajeId(viajeId);
+    setHistoricosModalOpen(true);
+  };
+
+  const handleCloseHistoricosModal = () => {
+    setHistoricosModalOpen(false);
+    setSelectedViajeId(null);
+  };
+
+  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal);
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -316,6 +331,13 @@ const ViajesList: React.FC = () => {
         loading={asignarZonasLoading}
         errors={asignarZonasErrors}
       />
+      {selectedViajeId !== null && (
+        <EstadosHistoricosModal
+          open={historicosModalOpen}
+          onClose={handleCloseHistoricosModal}
+          viajeId={selectedViajeId}
+        />
+      )}
     </div>
   );
 };
