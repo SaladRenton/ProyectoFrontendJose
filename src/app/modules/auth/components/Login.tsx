@@ -65,7 +65,7 @@ export function Login() {
       {/* begin::Heading */}
       <div className='text-center mb-11'>
         <h1 className='text-gray-900 fw-bolder mb-3'>Sign In</h1>
-        <div className='text-gray-500 fw-semibold fs-6'>Your Social Campaigns</div>
+        <div className='text-gray-500 fw-semibold fs-6'>Geo HUB Fleet</div>
       </div>
       {/* begin::Heading */}
 
@@ -74,7 +74,7 @@ export function Login() {
         {/* begin::Col */}
         <div className='col-md-6'>
           {/* begin::Google link */}
-          <a
+          {/* <a
             href='#'
             className='btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100'
           >
@@ -84,7 +84,7 @@ export function Login() {
               className='h-15px me-3'
             />
             Iniciar sesión con Google
-          </a>
+          </a> */}
           {/* end::Google link */}
         </div>
         {/* end::Col */}
@@ -96,7 +96,7 @@ export function Login() {
 
       {/* begin::Separator */}
       <div className='separator separator-content my-14'>
-        <span className='w-125px text-gray-500 fw-semibold fs-7'>o con tu email</span>
+        <span className='w-125px text-gray-500 fw-semibold fs-7'>Log-in</span>
       </div>
       {/* end::Separator */}
 
@@ -190,13 +190,13 @@ export function Login() {
         </button>
       </div>
       {/* end::Action */}
-
+{/* 
       <div className='text-gray-500 text-center fw-semibold fs-6'>
        No estas registrado?{' '}
         <Link to='/auth/registration' className='link-primary'>
           Registrarse
         </Link>
-      </div>
+      </div> */}
     </form>
   )
 }

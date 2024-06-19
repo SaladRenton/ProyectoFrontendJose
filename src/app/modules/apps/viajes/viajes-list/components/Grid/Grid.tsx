@@ -189,7 +189,6 @@ const ViajesList: React.FC = () => {
       fetchViajesData(); // Refresca los datos después de la acción exitosa
     }
   };
-  
 
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
 

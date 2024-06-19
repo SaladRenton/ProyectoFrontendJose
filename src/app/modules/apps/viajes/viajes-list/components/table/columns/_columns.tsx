@@ -23,6 +23,13 @@ export const getColumns = (
     editable: false, 
     valueGetter: (params) => params.row.zona_reparto?.codigo_zona 
   },
+  { 
+    field: 'persona.razon_social', 
+    headerName: 'Transportista', 
+    width: 150, 
+    editable: false, 
+    valueGetter: (params) => params.row.persona?.razon_social 
+  },
   { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: true },
   { field: 'lote_viaje_id', headerName: 'Lote', width: 150, editable: true },
 
@@ -44,7 +51,7 @@ export const getColumns = (
   { field: 'apellido', headerName: 'Apellido', width: 150, editable: true },
   { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: true },
   { field: 'direccion', headerName: 'Dirección', width: 200, editable: true },
-  { field: 'persona_id', headerName: 'Persona ID', width: 150, editable: true },
+
   { field: 'user_id', headerName: 'User ID', width: 150, editable: true },
   { field: 'calle', headerName: 'Calle', width: 150, editable: true },
   { field: 'numero', headerName: 'Número', width: 150, editable: true },
