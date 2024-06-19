@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress } from '@mui/material';
-import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 
 interface EstadosHistoricosModalProps {
@@ -17,13 +17,9 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
     const [rows, setRows] = useState<GridRowsProp>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-
     const includesConfig = {
         viajes: ['estadoAnterior', 'estadoNuevo'] // Añadir cualquier otro include necesario aquí
     };
-
-
-
 
     useEffect(() => {
         const fetchEstadosHistoricos = async () => {
@@ -33,7 +29,7 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
                     const includeQuery = { include: includesConfig.viajes.join(',') };
                     const response = await axios.get(`${API_URL}/estado-historia`, {
                         params: {
-                            viaje_id: viajeId,
+                            'filter[viaje_id]': viajeId,
                             ...includeQuery
                         }
                     });
@@ -46,12 +42,19 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
             }
         };
 
-        fetchEstadosHistoricos();
-    }, [viajeId]);
+        if (open) {
+            fetchEstadosHistoricos();
+        }
+
+        // Cleanup function to reset the state when the modal is closed
+        return () => {
+            setRows([]);
+            setLoading(false);
+        };
+    }, [viajeId, open]);
 
     const columns: GridColDef[] = [
         { field: 'fecha_cambio_estado', headerName: 'Fecha', width: 150 },
-
         {
             field: 'estado_anterior.d_estado',
             headerName: 'Estado Anterior',
