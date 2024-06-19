@@ -3,6 +3,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, F
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
 import TransportistaCombo from '../../../../../../combos/components/TransportistaCombo';
+import EstadosCombo from '../../../../../../combos/components/EstadosCombo';
 
 interface FilterModalProps {
   open: boolean;
@@ -15,6 +16,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     operacion_id: '',
     zona_reparto_id: '',
     transportista_id: '',
+    estado_id: '',
     nombre: '',
     apellido: '',
     email: '',
@@ -58,6 +60,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       operacion_id: '',
       zona_reparto_id: '',
       transportista_id: '',
+      estado_id: '',
       nombre: '',
       apellido: '',
       email: '',
@@ -85,6 +88,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
         <TransportistaCombo
           value={filters.transportista_id as string}
           onChange={(value) => handleSelectChange('transportista_id', value)}
+        />
+        <EstadosCombo
+          value={filters.estado_id as string}
+          onChange={(value) => handleSelectChange('estado_id', value)}
         />
         <TextField
           margin="dense"
