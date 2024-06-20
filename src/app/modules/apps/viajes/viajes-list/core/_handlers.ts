@@ -1,6 +1,6 @@
 import { GridRowModel } from '@mui/x-data-grid';
 import { ViajeModel,includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest } from './_requests';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest,asignarTransportistasRequest } from './_requests';
 
 export const fetchViajes = async (
   page: number,
@@ -205,6 +205,30 @@ export const asignarZonas = async (
       setAsignarZonasErrors([message, ...errors]);
     } else {
       setAsignarZonasErrors([message]);
+    }
+  }
+  setLoading(false);
+};
+
+export const asignarTransportistas = async (
+  lote: number,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setModalErrors: React.Dispatch<React.SetStateAction<string[]>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    await asignarTransportistasRequest(lote);
+    setError(null);
+    setModalErrors([]);
+  } catch (error: any) {
+    console.error("Error assigning transportistas", error);
+    setError(error.message);
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errors = Object.values(error.response.data.errors).flat();
+      setModalErrors(errors);
+    } else {
+      setModalErrors([error.message]);
     }
   }
   setLoading(false);

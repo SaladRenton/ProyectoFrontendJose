@@ -6,6 +6,7 @@ import { getColumns } from '../../components/table/columns/_columns'; // Ajusta 
 import ViajeModal from '../../components/table/modal/_modal';
 import RevertirLoteModal from '../../components/table/modal/_revertirLoteModal'; // Importa el modal de revertir lote
 import AsignarZonasModal from '../../components/table/modal/_asignarZonasModal'; // Importa el nuevo modal
+import AsignarTransportistasModal from '../table/modal/_asignarTransportistaModal';
 import EstadosHistoricosModal from '../../../../../modals/components/EstadosHistoricosModal'; // Importa el modal de estados históricos
 import PaquetesModal from '../../../../../modals/components/PaquetesModal';
 import FilterModal from '../../components/table/modal/_filterModal';
@@ -17,7 +18,8 @@ import {
   handleAddViaje,
   handleEditViaje,
   handleFileUpload,
-  asignarZonas
+  asignarZonas,
+  asignarTransportistas
 } from '../../core/_handlers';
 import HistoryIcon from '@mui/icons-material/History';
 import PackageIcon from '@mui/icons-material/LocalShipping';
@@ -52,6 +54,10 @@ const ViajesList: React.FC = () => {
   const [asignarZonasModalOpen, setAsignarZonasModalOpen] = useState<boolean>(false);
   const [asignarZonasLoading, setAsignarZonasLoading] = useState<boolean>(false);
   const [asignarZonasErrors, setAsignarZonasErrors] = useState<string[]>([]);
+
+  const [asignarTransportistasModalOpen, setAsignarTransportistasModalOpen] = useState<boolean>(false);
+  const [asignarTransportistasLoading, setAsignarTransportistasLoading] = useState<boolean>(false);
+  const [asignarTransportistasErrors, setAsignarTransportistasErrors] = useState<string[]>([]);
 
   const [historicosModalOpen, setHistoricosModalOpen] = useState<boolean>(false);
   const [selectedViajeId, setSelectedViajeId] = useState<number | null>(null);
@@ -200,6 +206,23 @@ const ViajesList: React.FC = () => {
     }
   };
 
+  const handleOpenAsignarTransportistasModal = () => {
+    setAsignarTransportistasModalOpen(true);
+  };
+
+  const handleCloseAsignarTransportistasModal = () => {
+    setAsignarTransportistasModalOpen(false);
+    setAsignarTransportistasErrors([]); // Clear previous errors
+  };
+
+  const handleAsignarTransportistas = async (lote: number) => {
+    await asignarTransportistas(lote, setError, setAsignarTransportistasErrors, setAsignarTransportistasLoading);
+    if (asignarTransportistasErrors.length === 0) {
+      setAsignarTransportistasModalOpen(false); // Close modal only if there are no errors
+      fetchViajesData(); // Refresca los datos después de la acción exitosa
+    }
+  };
+
   const handleOpenHistoricosModal = (viajeId: number) => {
     setSelectedViajeId(viajeId);
     setHistoricosModalOpen(true);
@@ -263,6 +286,7 @@ const ViajesList: React.FC = () => {
         onOpenRevertirLoteModal={handleOpenRevertirLoteModal}
         onOpenUploadModal={handleOpenUploadModal} // Añadir handler para abrir el modal de carga
         onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
+        onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
       />
       <DataGrid
         rows={rows}
@@ -360,6 +384,13 @@ const ViajesList: React.FC = () => {
         onSubmit={handleAsignarZonas}
         loading={asignarZonasLoading}
         errors={asignarZonasErrors}
+      />
+      <AsignarTransportistasModal
+        open={asignarTransportistasModalOpen}
+        onClose={handleCloseAsignarTransportistasModal}
+        onSubmit={handleAsignarTransportistas}
+        loading={asignarTransportistasLoading}
+        errors={asignarTransportistasErrors}
       />
       {selectedViajeId !== null && (
         <EstadosHistoricosModal

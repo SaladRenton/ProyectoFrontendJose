@@ -2,8 +2,6 @@ import React from 'react';
 import { Button } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import UploadIcon from '@mui/icons-material/UploadFile';
 
 interface ToolbarProps {
   onAdd: () => void;
@@ -12,7 +10,8 @@ interface ToolbarProps {
   onClearFilters: () => void;
   onOpenRevertirLoteModal: () => void;
   onOpenUploadModal: () => void;
-  onOpenAsignarZonasModal: () => void; // Añadir el nuevo handler
+  onOpenAsignarZonasModal: () => void;
+  onOpenAsignarTransportistasModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -22,7 +21,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onClearFilters,
   onOpenRevertirLoteModal,
   onOpenUploadModal,
-  onOpenAsignarZonasModal // Añadir el nuevo handler
+  onOpenAsignarZonasModal,
+  onOpenAsignarTransportistasModal, // Añadir handler para abrir el modal de asignar transportistas
 }) => {
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
@@ -41,11 +41,14 @@ const Toolbar: React.FC<ToolbarProps> = ({
       <Button variant="contained" color="primary" onClick={onOpenRevertirLoteModal}>
         Revertir Lote
       </Button>
-      <Button variant="contained" color="primary" onClick={onOpenUploadModal} startIcon={<UploadIcon />}>
+      <Button variant="contained" color="primary" onClick={onOpenUploadModal}>
         Cargar Archivo
       </Button>
-      <Button variant="contained" color="primary" onClick={onOpenAsignarZonasModal} startIcon={<AssignmentIcon />}>
+      <Button variant="contained" color="primary" onClick={onOpenAsignarZonasModal}>
         Asignar Zonas
+      </Button>
+      <Button variant="contained" color="primary" onClick={onOpenAsignarTransportistasModal}>
+        Asignar Transportistas
       </Button>
     </div>
   );

@@ -99,3 +99,7 @@ export const uploadFile = (file: File, operacion_id: number) => {
 export const asignarZonasRequest = (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-zonas/${lote}`);
 };
+
+export const asignarTransportistasRequest = async (lote: number) => {
+  return axios.post(`${API_URL}/viajes/asignar-transportistas/${lote}`);
+};
