@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress, Button, TextField } from '@mui/material';
+import { DataGrid, GridRowsProp, GridRowModel, GridColDef } from '@mui/x-data-grid';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress, Button, TextField, IconButton } from '@mui/material';
 import { ViajeModel, initialViaje } from '../../core/_models'; // Importa la interfaz adaptada
 import { getColumns } from '../../components/table/columns/_columns'; // Ajusta la ruta si es necesario
 import ViajeModal from '../../components/table/modal/_modal';
 import RevertirLoteModal from '../../components/table/modal/_revertirLoteModal'; // Importa el modal de revertir lote
 import AsignarZonasModal from '../../components/table/modal/_asignarZonasModal'; // Importa el nuevo modal
 import EstadosHistoricosModal from '../../../../../modals/components/EstadosHistoricosModal'; // Importa el modal de estados históricos
+import PaquetesModal from '../../../../../modals/components/PaquetesModal';
 import FilterModal from '../../components/table/modal/_filterModal';
 import Toolbar from '../../components/toolbar/toolbars/toolbar';
 import {
@@ -19,6 +20,7 @@ import {
   asignarZonas
 } from '../../core/_handlers';
 import HistoryIcon from '@mui/icons-material/History';
+import PackageIcon from '@mui/icons-material/LocalShipping';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -53,6 +55,9 @@ const ViajesList: React.FC = () => {
 
   const [historicosModalOpen, setHistoricosModalOpen] = useState<boolean>(false);
   const [selectedViajeId, setSelectedViajeId] = useState<number | null>(null);
+
+  const [paquetesModalOpen, setPaquetesModalOpen] = useState<boolean>(false);
+  const [paquetes, setPaquetes] = useState<any[]>([]);
 
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -205,7 +210,32 @@ const ViajesList: React.FC = () => {
     setSelectedViajeId(null);
   };
 
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal);
+  const handleOpenPaquetesModal = (paquetes: any[]) => {
+    setPaquetes(paquetes);
+    setPaquetesModalOpen(true);
+  };
+
+  const handleClosePaquetesModal = () => {
+    setPaquetesModalOpen(false);
+    setPaquetes([]); // Clear paquetes data on close
+  };
+
+  const columns: GridColDef[] = [
+    ...getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal),
+    {
+      field: 'paquetes',
+      headerName: 'Paquetes',
+      width: 100,
+      renderCell: (params) => (
+        <IconButton
+          color="primary"
+          onClick={() => handleOpenPaquetesModal(params.row.paquetes)}
+        >
+          <PackageIcon />
+        </IconButton>
+      ),
+    },
+  ];
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -338,6 +368,11 @@ const ViajesList: React.FC = () => {
           viajeId={selectedViajeId}
         />
       )}
+      <PaquetesModal
+        open={paquetesModalOpen}
+        onClose={handleClosePaquetesModal}
+        paquetes={paquetes}
+      />
     </div>
   );
 };
