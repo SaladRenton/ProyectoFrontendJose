@@ -4,11 +4,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { ViajeModel } from '../../../core/_models';
 import HistoryIcon from '@mui/icons-material/History';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Link from '@mui/material/Link';
+
 
 export const getColumns = (
   handleOpenEditModal: (viaje: ViajeModel) => void,
   handleDeleteRow: (id: number) => void,
-  handleOpenHistoricosModal: (id: number) => void
+  handleOpenHistoricosModal: (id: number) => void,
+  handleOpenPaquetesModal: (paquetes: any[]) => void,
+  handleOpenDireccionModal: (viaje: ViajeModel) => void
+
 ): GridColDef[] => [
     { field: 'id', headerName: 'Numero', width: 90, editable: false },
     {
@@ -52,21 +60,69 @@ export const getColumns = (
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
     { field: 'apellido', headerName: 'Apellido', width: 150, editable: true },
     { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: true },
-    { field: 'direccion', headerName: 'Dirección', width: 200, editable: true },
+
 
     { field: 'user_id', headerName: 'User ID', width: 150, editable: true },
-    { field: 'calle', headerName: 'Calle', width: 150, editable: true },
-    { field: 'numero', headerName: 'Número', width: 150, editable: true },
-    { field: 'piso_dpto', headerName: 'Piso/Dpto', width: 150, editable: true },
-    { field: 'entre_calle_1', headerName: 'Entre Calle 1', width: 150, editable: true },
-    { field: 'entre_calle_2', headerName: 'Entre Calle 2', width: 150, editable: true },
-    { field: 'codigo_postal', headerName: 'Código Postal', width: 150, editable: true },
-    { field: 'partido', headerName: 'Partido', width: 150, editable: true },
-    { field: 'localidad', headerName: 'Localidad', width: 150, editable: true },
-    { field: 'id_localidad', headerName: 'ID Localidad', width: 150, editable: true },
+    {
+      field: 'direccion',
+      headerName: 'Dirección',
+      width: 100,
+      renderCell: (params) => (
+
+
+
+
+        <IconButton onClick={() => handleOpenDireccionModal(params.row)}>
+          <LocationOnIcon style={{ color: 'orange' }} />
+        </IconButton>
+
+      ),
+    },
     { field: 'telefono', headerName: 'Teléfono', width: 150, editable: true },
-    { field: 'whatsapp', headerName: 'Whatsapp', width: 150, editable: true },
+    {
+      field: 'whatsapp', headerName: 'WhatsApp', width: 150,
+      renderCell: (params) => {
+        const whatsappNumber = params.value;
+        if (whatsappNumber) {
+          return (
+            <Link
+              href={`https://wa.me/${whatsappNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <WhatsAppIcon style={{ color: 'green' }} />
+            </Link>
+          );
+        } else {
+          return null; // No mostrar el icono si el número de WhatsApp es null
+        }
+      },
+    },
     { field: 'cantidad', headerName: 'Cantidad', width: 150, editable: true },
+
+    {
+      field: 'paquetes', headerName: 'Paquetes', width: 150,
+      renderCell: (params) => {
+        const hasPaquetes = params.row.paquetes && params.row.paquetes.length > 0;
+        return (
+          <IconButton onClick={() => handleOpenPaquetesModal(params.row.paquetes)}>
+            <LocalShippingIcon style={{ color: hasPaquetes ? 'blue' : 'gray' }} />
+          </IconButton>
+        );
+      },
+    },
+
+    {
+      field: 'estados', headerName: 'Estados', width: 150,
+
+      renderCell: (params) => (
+
+        <IconButton onClick={() => handleOpenHistoricosModal(params.row.id)}>
+          <HistoryIcon />
+        </IconButton>
+      ),
+
+    },
 
     {
       field: 'actions',
@@ -74,27 +130,15 @@ export const getColumns = (
       width: 150,
       renderCell: (params) => (
         <>
-
-
-          <IconButton
-            color="default"
-            onClick={() => handleOpenHistoricosModal(params.row.id)}
-          >
-            <HistoryIcon />
-          </IconButton>
-
-          <IconButton
-            color="primary"
-            onClick={() => handleOpenEditModal(params.row as ViajeModel)}
-          >
+          <IconButton onClick={() => handleOpenEditModal(params.row)}>
             <EditIcon />
           </IconButton>
-          <IconButton
-            color="secondary"
-            onClick={() => handleDeleteRow(params.id as number)}
-          >
+          <IconButton onClick={() => handleDeleteRow(params.row.id)}>
             <DeleteIcon />
           </IconButton>
+
+
+
         </>
       ),
     },
