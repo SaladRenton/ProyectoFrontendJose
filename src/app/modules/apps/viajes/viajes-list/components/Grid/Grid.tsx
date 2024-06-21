@@ -12,6 +12,7 @@ import DireccionModal from '../../components/table/modal/_direccionModal'; // Im
 import FilterModal from '../../components/table/modal/_filterModal';
 import Toolbar from '../../components/toolbar/toolbars/toolbar';
 import AsignarTransportistasModal from '../table/modal/_asignarTransportistaModal';
+import TransportistaDisponibilidad from '../table/modal/_disponibilidadTransportista';
 import {
   fetchViajes,
   handleProcessRowUpdate,
@@ -67,6 +68,9 @@ const ViajesList: React.FC = () => {
 
   const [direccionModalOpen, setDireccionModalOpen] = useState<boolean>(false);
   const [selectedViaje, setSelectedViaje] = useState<ViajeModel | null>(null);
+
+  const [disponibilidadModalOpen, setDisponibilidadModalOpen] = useState<boolean>(false);
+
 
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -256,6 +260,15 @@ const ViajesList: React.FC = () => {
     setSelectedViaje(null);
   };
 
+
+  const handleOpenDisponibilidadModal = () => {
+    setDisponibilidadModalOpen(true);
+  };
+
+  const handleCloseDisponibilidadModal = () => {
+    setDisponibilidadModalOpen(false);
+  };
+
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal);
 
   return (
@@ -285,6 +298,8 @@ const ViajesList: React.FC = () => {
         onOpenUploadModal={handleOpenUploadModal} // Añadir handler para abrir el modal de carga
         onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
         onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
+        onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
+
       />
       <DataGrid
         rows={rows}
@@ -397,6 +412,11 @@ const ViajesList: React.FC = () => {
           viajeId={selectedViajeId}
         />
       )}
+
+      <TransportistaDisponibilidad
+        open={disponibilidadModalOpen}
+        onClose={handleCloseDisponibilidadModal}
+      />
       {selectedPaquetes.length > 0 && (
         <PaquetesModal
           open={paquetesModalOpen}

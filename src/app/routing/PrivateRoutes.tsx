@@ -16,6 +16,7 @@ const PrivateRoutes = () => {
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
   const TransportistasPage = lazy(() => import('../modules/apps/transportistas/TransportistasPage'))
+  const DisponibilidadPage = lazy(() => import('../modules/apps/disponibilidad/DisponibilidadPage'))
   const ZonasPage = lazy(() => import('../modules/apps/zonas/ZonasPage'))
   const ViajesPage = lazy(() => import('../modules/apps/viajes/ViajesPage'))
 
@@ -88,9 +89,19 @@ const PrivateRoutes = () => {
           }
         />
 
+        <Route
+          path='apps/disponibilidad/*'
+          element={
+            <SuspensedView>
+              <DisponibilidadPage />
+            </SuspensedView>
+          }
+        />
 
-        
-<Route
+
+
+
+        <Route
           path='apps/viajes/*'
           element={
             <SuspensedView>

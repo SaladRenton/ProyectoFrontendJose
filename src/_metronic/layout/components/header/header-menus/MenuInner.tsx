@@ -179,6 +179,9 @@ export function MenuInner() {
 
       <MenuItem title='Transportistas' to='/apps/transportistas/list' />
 
+
+      <MenuItem title='Disponibilidad' to='/apps/disponibilidad/list' />
+
       <MenuItem title='Viajes' to='/apps/viajes/list' />
 
 
