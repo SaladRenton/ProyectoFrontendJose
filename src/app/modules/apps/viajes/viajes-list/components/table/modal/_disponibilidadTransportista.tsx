@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import axios from 'axios';
 import OperacionTransportistaSelector from '../../../../../../selectors/components/OperacionTransportistaSelector';
 import ErrorIcon from '@mui/icons-material/Error';
+import { format, eachDayOfInterval } from 'date-fns';
 
 interface TransportistaDisponibilidadProps {
   open: boolean;
@@ -36,24 +37,77 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
           },
         });
 
-        const fetchedEvents = response.data.map((item: any) => {
+        const dateRange = eachDayOfInterval({
+          start: new Date(fechaInicio),
+          end: new Date(fechaFin),
+        });
+        const disponibilidadMap = new Map<string, any>(); // T
+
+
+        
+
+        // const fetchedEvents = response.data.map((item: any) => {
+        //   const { transportista, disponibilidad } = item;
+        //   return disponibilidad.map((disp: any) => ({
+        //     title: `${disp.disponibilidad}`,
+        //     start: disp.fecha,
+        //     end: disp.fecha,
+        //     allDay: true,
+        //     backgroundColor: transportista.color || '#000000', // Fallback color
+        //     borderColor: transportista.color || '#000000', // Fallback color
+        //     transportistaId: transportista.id,
+        //   }));
+        // }).flat();
+
+
+       
+
+        const fetchedEvents = response.data.flatMap((item: any) => {
           const { transportista, disponibilidad } = item;
-          return disponibilidad.map((disp: any) => ({
+          disponibilidad?.forEach((disp: any) => {
+            const key = `${transportista.id}-${disp.fecha}`;
+            disponibilidadMap.set(key, disp);
+          });
+          return disponibilidad?.map((disp: any) => ({
             title: `${disp.disponibilidad}`,
             start: disp.fecha,
             end: disp.fecha,
             allDay: true,
-            backgroundColor: transportista.color || '#000000', // Fallback color
-            borderColor: transportista.color || '#000000', // Fallback color
+            backgroundColor: transportista.color || '#000000',
+            borderColor: transportista.color || '#000000',
             transportistaId: transportista.id,
-          }));
-        }).flat();
+          })).flat();
+        });
+
+        const initialEvents =  response.data.flatMap((item: any) => {
+          const { transportista, disponibilidad } = item;
+          return dateRange.map((date) => {
+            const formattedDate = format(date, 'yyyy-MM-dd');
+            const key = `${transportista.id}-${formattedDate}`;
+
+
+            if (!disponibilidadMap.has(key)) {
+              return {
+                title: `${transportista.capacidad_maxima}`,
+                start: formattedDate,
+                end: formattedDate,
+                allDay: true,
+                backgroundColor: transportista.color || '#000000', // Fallback color
+                borderColor: transportista.color || '#000000', // Fallback color
+                transportistaId: transportista.id,
+              };
+            }
+            
+          
+          }).filter(Boolean);
+        });
 
         setTransportistas(response.data.map((item: any) => ({
           ...item.transportista,
           error: item.error || null,
         })));
-        setEvents(fetchedEvents);
+     
+        setEvents([...initialEvents, ...fetchedEvents]);
       } catch (error) {
         console.error("Error fetching disponibilidad", error);
       }
@@ -80,6 +134,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
   };
 
   const handleTransportistasChange = (ids: number[]) => {
+    //fetchDisponibilidad();
     setTransportistaIds(ids);
   };
 

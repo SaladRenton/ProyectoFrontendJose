@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, FormControl, InputLabel, Select, MenuItem, CircularProgress, Checkbox, ListItemText } from '@mui/material';
+import { Grid, FormControl, InputLabel, Select, MenuItem, CircularProgress, Checkbox, ListItemText, SelectChangeEvent } from '@mui/material';
 import axios from 'axios';
 import OperacionCombo from '../../combos/components/OperacionCombo';
 
@@ -34,7 +34,7 @@ const OperacionTransportistaSelector: React.FC<OperacionTransportistaSelectorPro
     fetchTransportistas();
   }, [operacionId]);
 
-  const handleTransportistasChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleTransportistasChange = (event: SelectChangeEvent<number[]>) => {
     const selectedIds = event.target.value as number[];
     if (selectedIds.includes(-1)) {
       if (selectedIds.length === transportistas.length + 1) {
@@ -79,10 +79,7 @@ const OperacionTransportistaSelector: React.FC<OperacionTransportistaSelectorPro
                   .join(', ');
               }}
             >
-              <MenuItem value={-1}>
-                <Checkbox checked={selectedTransportistas.length === transportistas.length} />
-                <ListItemText primary="Todos" />
-              </MenuItem>
+             
               {transportistas.map((transportista) => (
                 <MenuItem key={transportista.id} value={transportista.id}>
                   <Checkbox checked={selectedTransportistas.includes(transportista.id)} />
