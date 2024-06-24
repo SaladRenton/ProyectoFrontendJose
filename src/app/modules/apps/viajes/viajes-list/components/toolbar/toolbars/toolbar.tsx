@@ -15,6 +15,8 @@ interface ToolbarProps {
   onOpenAsignarZonasModal: () => void;
   onOpenAsignarTransportistasModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
   onOpenDisponibilidadModal: () => void; // Añadir prop para abrir el modal de disponibilidad
+  onOpenEnviarLoteOmnileadsModal: () => void; // Añadir prop para abrir el modal de enviar lote a Omnileads
+
 
 }
 
@@ -27,7 +29,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onOpenUploadModal,
   onOpenAsignarZonasModal,
   onOpenAsignarTransportistasModal, // Añadir handler para abrir el modal de asignar transportistas
-  onOpenDisponibilidadModal, // Añadir handler para abrir el modal de disponibilidad
+  onOpenDisponibilidadModal, // Añadir handler para abrir el modal de disponibilidad,
+  onOpenEnviarLoteOmnileadsModal, // Añadir handler para abrir el modal de enviar lote a Omnileads
+
 
 }) => {
   return (
@@ -59,7 +63,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
       <Button variant="contained" color="primary" onClick={onOpenDisponibilidadModal} startIcon={<CalendarTodayIcon />}>
         Disponibilidad
       </Button>
-      
+      <Button variant="contained" color="primary" onClick={onOpenEnviarLoteOmnileadsModal}>
+        Enviar Lote a Omnileads
+      </Button>
+
     </div>
   );
 };

@@ -13,6 +13,8 @@ import FilterModal from '../../components/table/modal/_filterModal';
 import Toolbar from '../../components/toolbar/toolbars/toolbar';
 import AsignarTransportistasModal from '../table/modal/_asignarTransportistaModal';
 import TransportistaDisponibilidad from '../table/modal/_disponibilidadTransportista';
+import EnviarLoteOmnileadsModal from '../../components/table/modal/_enviarLoteOmnileadsModal'; // Importa el modal de enviar lote a Omnileads
+
 import {
   fetchViajes,
   handleProcessRowUpdate,
@@ -70,6 +72,9 @@ const ViajesList: React.FC = () => {
   const [selectedViaje, setSelectedViaje] = useState<ViajeModel | null>(null);
 
   const [disponibilidadModalOpen, setDisponibilidadModalOpen] = useState<boolean>(false);
+
+  const [enviarLoteOmnileadsModalOpen, setEnviarLoteOmnileadsModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
+
 
 
   const fetchViajesData = useCallback(() => {
@@ -269,6 +274,14 @@ const ViajesList: React.FC = () => {
     setDisponibilidadModalOpen(false);
   };
 
+  const handleOpenEnviarLoteOmnileadsModal = () => {
+    setEnviarLoteOmnileadsModalOpen(true);
+  };
+
+  const handleCloseEnviarLoteOmnileadsModal = () => {
+    setEnviarLoteOmnileadsModalOpen(false);
+  };
+
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal);
 
   return (
@@ -299,6 +312,7 @@ const ViajesList: React.FC = () => {
         onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
         onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
         onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
+        onOpenEnviarLoteOmnileadsModal={handleOpenEnviarLoteOmnileadsModal} // Añadir handler para abrir el modal de enviar lote a Omnileads
 
       />
       <DataGrid
@@ -431,6 +445,11 @@ const ViajesList: React.FC = () => {
           viaje={selectedViaje}
         />
       )}
+
+      <EnviarLoteOmnileadsModal
+        open={enviarLoteOmnileadsModalOpen}
+        onClose={handleCloseEnviarLoteOmnileadsModal}
+      />
     </div>
   );
 };

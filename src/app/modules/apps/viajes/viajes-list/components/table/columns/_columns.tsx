@@ -8,6 +8,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Link from '@mui/material/Link';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 export const getColumns = (
@@ -46,6 +48,20 @@ export const getColumns = (
     { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean' },
     { field: 'fecha_inicio', headerName: 'Fecha Inicio', width: 150, editable: true, type: 'dateTime' },
     { field: 'fecha_fin', headerName: 'Fecha Fin', width: 150, editable: true, type: 'dateTime' },
+    {
+      field: 'contacto_en_omnileads',
+      headerName: 'Contacto en Omnileads',
+      width: 150,
+      renderCell: (params) => (
+        params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
+      ),
+    },
+    {
+      field: 'error_contacto_omnileads',
+      headerName: 'Error Contacto Omnileads',
+      width: 200,
+      editable: false,
+    },
     {
       field: 'estado_actual.d_estado',
       headerName: 'Estado',
