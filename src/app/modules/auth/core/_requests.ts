@@ -41,10 +41,7 @@ export function requestPassword(email: string) {
 }
 
 export function getUserByToken(token: string) {
-  console.log(token);
-  return axios.post<UserModel>(GET_USER_BY_ACCESSTOKEN_URL, {
-    access_token: token,
-  });
+  return axios.get<UserModel>(GET_USER_BY_ACCESSTOKEN_URL);
 }
 
 export function getTransportistas(page: number, pageSize: number) {
