@@ -14,6 +14,7 @@ import Toolbar from '../../components/toolbar/toolbars/toolbar';
 import AsignarTransportistasModal from '../table/modal/_asignarTransportistaModal';
 import TransportistaDisponibilidad from '../table/modal/_disponibilidadTransportista';
 import EnviarLoteOmnileadsModal from '../../components/table/modal/_enviarLoteOmnileadsModal'; // Importa el modal de enviar lote a Omnileads
+import OperacionCombo from '../../../../../combos/components/OperacionCombo';
 
 import {
   fetchViajes,
@@ -379,12 +380,19 @@ const ViajesList: React.FC = () => {
             Selecciona un archivo y una operación para cargar.
           </DialogContentText>
           <input type="file" onChange={handleFileChange} />
-          <TextField
+          {/* <TextField
             margin="dense"
             label="Operación ID"
             fullWidth
             value={operacionId}
             onChange={(e) => setOperacionId(Number(e.target.value))}
+
+          /> */}
+
+
+          <OperacionCombo
+            value={filters.operacion_id as string}
+            onChange={(value) => setOperacionId(value)}
           />
           {uploadErrors.length > 0 && (
             <div className="alert alert-danger d-flex align-items-center p-5 mt-3">

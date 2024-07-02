@@ -42,8 +42,11 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.persona?.razon_social
     },
+    { field: 'documento', headerName: 'Documento', width: 100, editable: false },
+
     { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: true },
     { field: 'lote_viaje_id', headerName: 'Lote', width: 150, editable: true },
+    { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false },
 
     { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean' },
     { field: 'fecha_inicio', headerName: 'Fecha Inicio', width: 150, editable: true, type: 'dateTime' },

@@ -13,6 +13,7 @@ interface FilterModalProps {
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
   const [filters, setFilters] = useState<Record<string, string | boolean>>({
+    id: '',
     operacion_id: '',
     zona_reparto_id: '',
     transportista_id: '',
@@ -57,6 +58,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
 
   const handleClearFilters = () => {
     setFilters({
+      id: '',
       operacion_id: '',
       zona_reparto_id: '',
       transportista_id: '',
@@ -76,6 +78,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Filtrar Viajes</DialogTitle>
       <DialogContent>
+        <TextField
+          margin="dense"
+          label="ID Viaje"
+          fullWidth
+          name="id"
+          value={filters.id as string}
+          onChange={handleInputChange}
+        />
         <OperacionCombo
           value={filters.operacion_id as string}
           onChange={(value) => handleSelectChange('operacion_id', value)}
