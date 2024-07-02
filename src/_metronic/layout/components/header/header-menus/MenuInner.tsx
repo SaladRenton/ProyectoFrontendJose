@@ -186,6 +186,8 @@ export function MenuInner() {
       <MenuItem title='Disponibilidad' to='/apps/disponibilidad/list' />
 
       <MenuItem title='Viajes' to='/apps/viajes/list' />
+      
+      <MenuItem title='Paquetes' to='/apps/paquetes/list' />
 
 
       <MenuInnerWithSub

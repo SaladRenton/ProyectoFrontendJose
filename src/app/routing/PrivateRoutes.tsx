@@ -20,6 +20,7 @@ const PrivateRoutes = () => {
   const DisponibilidadPage = lazy(() => import('../modules/apps/disponibilidad/DisponibilidadPage'))
   const ZonasPage = lazy(() => import('../modules/apps/zonas/ZonasPage'))
   const ViajesPage = lazy(() => import('../modules/apps/viajes/ViajesPage'))
+  const PaquetesPage = lazy(() => import('../modules/apps/paquetes/PaquetesPage'))
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
 
   return (
@@ -121,6 +122,15 @@ const PrivateRoutes = () => {
           }
         />
 
+        <Route
+          path='apps/paquetes/*'
+          element={
+            <SuspensedView>
+              <PaquetesPage />
+            </SuspensedView>
+          }
+        />
+
 
         <Route
           path='pages/operacion/:id'
@@ -129,7 +139,7 @@ const PrivateRoutes = () => {
               <OperacionPageDetail />
             </SuspensedView>
           }
-        />  
+        />
 
 
         <Route
