@@ -17,6 +17,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     operacion_id: '',
     sinTransportista: false,
     sinViaje: false,
+    entregado: false,
     lote_equipos_id: '',
     lote_externo: '',
   });
@@ -75,7 +76,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
 
         <Grid container spacing={2}>
 
-        <Grid item xs={6}>
+          <Grid item xs={6}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -87,8 +88,20 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               }
               label="Paquetes sin viaje asignado"
             />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.entregado as boolean}
+                  onChange={handleCheckboxChange}
+                  name="entregado"
+                  color="primary"
+                />
+              }
+              label="Paquetes entregados"
+            />
           </Grid>
-          
+
           <Grid item xs={6}>
             <FormControlLabel
               control={

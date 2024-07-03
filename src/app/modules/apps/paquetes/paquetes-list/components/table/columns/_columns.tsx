@@ -3,6 +3,8 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { PaqueteModel } from '../../../core/_models'; // Importa la interfaz adaptada
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 export const getColumns = (
@@ -29,6 +31,14 @@ export const getColumns = (
     { field: 'codigo_barra', headerName: 'Cod. Barra', width: 120, editable: true },
     { field: 'numero_serie', headerName: 'Num. Serie', width: 120, editable: true },
     { field: 'mac', headerName: 'Mac', width: 120, editable: true },
+    {
+      field: 'entregado',
+      headerName: 'Entregado',
+      width: 150,
+      renderCell: (params) => (
+        params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
+      ),
+    },
    
     {
       field: 'actions',

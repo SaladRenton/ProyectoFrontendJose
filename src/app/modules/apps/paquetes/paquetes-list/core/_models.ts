@@ -12,6 +12,7 @@ export interface PaqueteModel {
   mac: string | null;
   persona_id: number | null;
   cantidad: number;
+  entregado?: boolean;
   operacion_id: number;
   lote_externo: string;
   lote_equipos_id: number;

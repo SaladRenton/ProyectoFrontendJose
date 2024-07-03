@@ -8,9 +8,11 @@ interface ToolbarProps {
   onRefresh: () => void;
   onOpenFilterModal: () => void;
   onClearFilters: () => void;
+  onOpenRevertirLoteModal: () => void;
+  onOpenUploadModal: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters, onOpenRevertirLoteModal ,onOpenUploadModal }) => {
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
       <Button variant="contained" color="primary" onClick={onAdd}>
@@ -24,6 +26,12 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, 
       </Button>
       <Button variant="contained" color="secondary" onClick={onClearFilters} startIcon={<BrushIcon />}>
         Limpiar Filtros
+      </Button>
+      <Button variant="contained" color="primary" onClick={onOpenRevertirLoteModal}>
+        Revertir Lote
+      </Button>
+      <Button onClick={onOpenUploadModal} variant="contained" color="primary">
+        Subir Paquetes
       </Button>
     </div>
   );

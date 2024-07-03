@@ -7,6 +7,8 @@ import PaqueteModal from '../table/modal/_modal';
 import FilterModal from '../table/modal/_filterModal';
 import Toolbar from '../toolbar/toolbars/toolbar';
 import { Button } from '@mui/material';
+import RevertirLotePaqueteModal from '../table/modal/_revertirLoteModal';
+import UploadPaqueteModal from '../table/modal/_uploadPaqueteModal';
 import {
   fetchPaquetes,
   handleProcessRowUpdate,
@@ -34,6 +36,8 @@ const PaquetesList: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   const fetchPaquetesData = useCallback(() => {
     fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -106,6 +110,27 @@ const PaquetesList: React.FC = () => {
     fetchPaquetesData();
   };
 
+  const handleOpenRevertirLoteModal = () => {
+    setRevertirLoteModalOpen(true);
+  };
+
+  const handleCloseRevertirLoteModal = () => {
+    setRevertirLoteModalOpen(false);
+  };
+
+  const handleSuccessRevertirLote = () => {
+    setRevertirLoteModalOpen(false);
+    fetchPaquetesData(); // Refresca los datos después de la acción exitosa
+  };
+
+  const handleOpenUploadModal = () => {
+    setUploadModalOpen(true);
+  };
+
+  const handleCloseUploadModal = () => {
+    setUploadModalOpen(false);
+  };
+
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
 
   return (
@@ -124,6 +149,8 @@ const PaquetesList: React.FC = () => {
         onRefresh={fetchPaquetesData}
         onOpenFilterModal={handleOpenFilterModal}
         onClearFilters={handleClearFilters}
+        onOpenRevertirLoteModal={handleOpenRevertirLoteModal}
+        onOpenUploadModal={handleOpenUploadModal}
       />
       <DataGrid
         rows={rows}
@@ -174,6 +201,13 @@ const PaquetesList: React.FC = () => {
         onClose={() => setFilterDialogOpen(false)}
         onApply={handleApplyFilters}
       />
+      <RevertirLotePaqueteModal
+        open={revertirLoteModalOpen}
+        onClose={handleCloseRevertirLoteModal}
+        onSuccess={handleSuccessRevertirLote}
+      />
+
+      <UploadPaqueteModal open={uploadModalOpen} onClose={handleCloseUploadModal} />
     </div>
   );
 };
