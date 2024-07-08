@@ -15,6 +15,7 @@ import AsignarTransportistasModal from '../table/modal/_asignarTransportistaModa
 import TransportistaDisponibilidad from '../table/modal/_disponibilidadTransportista';
 import EnviarLoteOmnileadsModal from '../../components/table/modal/_enviarLoteOmnileadsModal'; // Importa el modal de enviar lote a Omnileads
 import OperacionCombo from '../../../../../combos/components/OperacionCombo';
+import DownloadCSVModal from '../table/modal/_descargarCsvLoteModal'; // Importa el nuevo modal de descargar CSV
 
 import {
   fetchViajes,
@@ -76,6 +77,7 @@ const ViajesList: React.FC = () => {
 
   const [enviarLoteOmnileadsModalOpen, setEnviarLoteOmnileadsModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
 
+  const [downloadCSVModalOpen, setDownloadCSVModalOpen] = useState<boolean>(false);
 
 
   const fetchViajesData = useCallback(() => {
@@ -283,6 +285,13 @@ const ViajesList: React.FC = () => {
     setEnviarLoteOmnileadsModalOpen(false);
   };
 
+  const handleOpenDownloadCSVModal = () => {
+    setDownloadCSVModalOpen(true);
+  };
+
+  const handleCloseDownloadCSVModal = () => {
+    setDownloadCSVModalOpen(false);
+  };
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal);
 
   return (
@@ -314,7 +323,7 @@ const ViajesList: React.FC = () => {
         onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
         onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
         onOpenEnviarLoteOmnileadsModal={handleOpenEnviarLoteOmnileadsModal} // Añadir handler para abrir el modal de enviar lote a Omnileads
-
+        onOpenDownloadCSVModal={handleOpenDownloadCSVModal} // Añadir handler para abrir el modal de descargar CSV
       />
       <DataGrid
         rows={rows}
@@ -454,10 +463,17 @@ const ViajesList: React.FC = () => {
         />
       )}
 
+      <DownloadCSVModal
+        open={downloadCSVModalOpen}
+        onClose={handleCloseDownloadCSVModal}
+      />
+
       <EnviarLoteOmnileadsModal
         open={enviarLoteOmnileadsModalOpen}
         onClose={handleCloseEnviarLoteOmnileadsModal}
       />
+
+
     </div>
   );
 };

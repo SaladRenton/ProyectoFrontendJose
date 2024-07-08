@@ -104,3 +104,23 @@ export const asignarZonasRequest = (lote: number) => {
 export const asignarTransportistasRequest = async (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-transportistas/${lote}`);
 };
+
+export const downloadCSV = async (operacionId: number) => {
+  try {
+    const response = await axios.get(`${API_URL}/viajes/export-csv`, {
+      params: { 'filter[lote_viaje_id]': operacionId },
+      responseType: 'blob', // Important to handle binary data
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `operacion_${operacionId}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Error downloading CSV:', error);
+    throw error.response?.data || new Error('Error downloading CSV.');
+  }
+};

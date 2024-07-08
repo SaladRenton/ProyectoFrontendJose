@@ -1,7 +1,14 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; // Icono para el calendario
+import { IconButton } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import UndoIcon from '@mui/icons-material/Undo';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 
 interface ToolbarProps {
   onAdd: () => void;
@@ -12,27 +19,49 @@ interface ToolbarProps {
   onOpenUploadModal: () => void;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters, onOpenRevertirLoteModal ,onOpenUploadModal }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters, onOpenRevertirLoteModal, onOpenUploadModal }) => {
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
-      <Button variant="contained" color="primary" onClick={onAdd}>
-        Agregar Nuevo
-      </Button>
-      <Button variant="contained" color="primary" onClick={onRefresh}>
-        Refrescar
-      </Button>
-      <Button variant="contained" color="primary" onClick={onOpenFilterModal} startIcon={<FilterListIcon />}>
-        Filtrar
-      </Button>
-      <Button variant="contained" color="secondary" onClick={onClearFilters} startIcon={<BrushIcon />}>
-        Limpiar Filtros
-      </Button>
-      <Button variant="contained" color="primary" onClick={onOpenRevertirLoteModal}>
-        Revertir Lote
-      </Button>
-      <Button onClick={onOpenUploadModal} variant="contained" color="primary">
-        Subir Paquetes
-      </Button>
+   
+
+      <Tooltip title="Agregar nuevo">
+        <IconButton color="primary" onClick={onAdd}>
+          <AddCircleIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Refrescars">
+        <IconButton color="primary" onClick={onRefresh}>
+          <RefreshIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Filtrar">
+        <IconButton color="primary" onClick={onOpenFilterModal}>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+
+
+      <Tooltip title="Limpiar Filtros">
+        <IconButton color="primary" onClick={onClearFilters}>
+          <BrushIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Revertir Lote">
+        <IconButton color="primary" onClick={onOpenRevertirLoteModal}>
+          <UndoIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Subir Archivo XLSX">
+        <IconButton color="primary" onClick={onOpenUploadModal}>
+          <UploadFileIcon />
+        </IconButton>
+      </Tooltip>
+     
+    
     </div>
   );
 };
