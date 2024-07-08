@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, CircularProgress, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchOperacionPersona, deleteOperacionPersona } from '../../apps/operaciones/operaciones-list/core/_requests';
+import { esES  } from '@mui/x-data-grid/locales';
 
 interface OperacionPersonaGridProps {
   operacionId: number;
@@ -94,6 +95,8 @@ const OperacionPersonaGrid: React.FC<OperacionPersonaGridProps> = ({ operacionId
           paginationMode="server"
           onPageChange={(newPage) => setPage(newPage)}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
         />
       )}
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>

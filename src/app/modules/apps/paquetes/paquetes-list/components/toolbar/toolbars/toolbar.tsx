@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Tooltip } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; // Icono para el calendario
+
 import { IconButton } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import UploadFileIcon from '@mui/icons-material/UploadFile';

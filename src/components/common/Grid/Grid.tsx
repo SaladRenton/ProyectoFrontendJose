@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { getTransportistas, updateTransportista, deleteTransportista, addTransportista } from '../../../app/modules/auth/core/_requests';
 import { TransportistaModel } from '../../../app/modules/auth/core/_models'; // Importa la interfaz adaptada
+import { esES  } from '@mui/x-data-grid/locales';
 
 const TransportistasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<TransportistaModel>>([]);
@@ -243,6 +244,8 @@ const TransportistasList: React.FC = () => {
         loading={loading}
         processRowUpdate={handleProcessRowUpdate}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
       />
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{editMode ? 'Editar Transportista' : 'Agregar Nuevo Transportista'}</DialogTitle>

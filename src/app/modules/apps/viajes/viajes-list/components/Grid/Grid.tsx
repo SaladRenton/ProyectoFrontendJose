@@ -27,7 +27,7 @@ import {
   asignarZonas,
   asignarTransportistas
 } from '../../core/_handlers';
-
+import { esES  } from '@mui/x-data-grid/locales';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -338,6 +338,8 @@ const ViajesList: React.FC = () => {
         loading={loading}
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
       />
       <ViajeModal
         open={open}

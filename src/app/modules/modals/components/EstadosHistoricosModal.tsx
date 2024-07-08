@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress } from '@mui/material';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
+import { esES  } from '@mui/x-data-grid/locales';
 
 interface EstadosHistoricosModalProps {
     open: boolean;
@@ -79,7 +80,10 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
                     <CircularProgress />
                 ) : (
                     <div style={{ height: 400, width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]} />
+                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]}        
+                        
+                        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+                        />
                     </div>
                 )}
             </DialogContent>

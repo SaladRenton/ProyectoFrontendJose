@@ -13,6 +13,8 @@ import {
   handleDeleteRow,
   handleEditZona
 } from '../../core/_handlers';
+import { esES  } from '@mui/x-data-grid/locales';
+
 
 const ZonasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ZonaModel>>([]);
@@ -128,6 +130,7 @@ const ZonasList: React.FC = () => {
 
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
 
+
   return (
     <div style={{ height: 700, width: '100%' }}>
       {error && (
@@ -158,6 +161,7 @@ const ZonasList: React.FC = () => {
         loading={loading}
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
       />
       <ZonaModal
         open={open}

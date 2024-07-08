@@ -16,6 +16,7 @@ import {
   handleAddPaquete,
   handleEditPaquete
 } from '../../core/_handlers';
+import { esES  } from '@mui/x-data-grid/locales';
 
 const PaquetesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<PaqueteModel>>([]);
@@ -165,6 +166,8 @@ const PaquetesList: React.FC = () => {
         loading={loading}
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
       />
       <PaqueteModal
         open={open}

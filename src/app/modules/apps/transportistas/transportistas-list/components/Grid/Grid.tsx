@@ -14,6 +14,7 @@ import {
   handleAddTransportista,
   handleEditTransportista
 } from '../../core/_handlers';
+import { esES  } from '@mui/x-data-grid/locales';
 
 const TransportistasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<TransportistaModel>>([]);
@@ -138,6 +139,8 @@ const TransportistasList: React.FC = () => {
         loading={loading}
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
       />
       <TransportistaModal
         open={open}

@@ -65,5 +65,18 @@
   "ECOMMERCE.CUSTOMERS.UPDATE_STATUS.TITLE": "Status has been updated for selected customers",
   "ECOMMERCE.CUSTOMERS.UPDATE_STATUS.MESSAGE": "Selected customers status have successfully been updated",
   "ECOMMERCE.CUSTOMERS.EDIT.UPDATE_MESSAGE": "Customer has been updated",
-  "ECOMMERCE.CUSTOMERS.EDIT.ADD_MESSAGE": "Customer has been created"
+  "ECOMMERCE.CUSTOMERS.EDIT.ADD_MESSAGE": "Customer has been created",
+  "DATAGRID": {
+    "NO_ROWS_LABEL": "No hay filas",
+    "COLUMN_MENU_LABEL": "Menú",
+    "COLUMN_MENU_SHOW_COLUMNS": "Mostrar columnas",
+    "COLUMN_MENU_FILTER": "Filtrar",
+    "COLUMN_MENU_HIDE_COLUMN": "Ocultar",
+    "COLUMN_MENU_UNSORT": "Desordenar",
+    "COLUMN_MENU_SORT_ASC": "Ordenar ASC",
+    "COLUMN_MENU_SORT_DESC": "Ordenar DESC",
+    "TOOLBAR_EXPORT": "Exportar",
+    "TOOLBAR_EXPORT_CSV": "Descargar como CSV",
+    "TOOLBAR_EXPORT_PRINT": "Imprimir"
+  }
 }

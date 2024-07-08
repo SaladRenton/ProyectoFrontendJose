@@ -10,6 +10,7 @@ import {
   fetchOperaciones,
   handleDeleteRow
 } from '../../core/_handlers';
+import { esES  } from '@mui/x-data-grid/locales';
 
 const OperacionList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<OperacionesModel>>([]);
@@ -95,6 +96,8 @@ const OperacionList: React.FC = () => {
         onPageChange={(newPage) => setPage(newPage)}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         loading={loading}
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
      //   processRowUpdate={handleProcessRowUpdateWrapper}
        // experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
       />
