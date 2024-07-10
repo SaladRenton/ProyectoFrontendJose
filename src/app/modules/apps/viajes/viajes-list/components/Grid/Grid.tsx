@@ -27,7 +27,8 @@ import {
   asignarZonas,
   asignarTransportistas
 } from '../../core/_handlers';
-import { esES  } from '@mui/x-data-grid/locales';
+import { esES } from '@mui/x-data-grid/locales';
+import ContactosHistoricosModal from '../../../../../modals/components/ContactosHistoricosModal';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -72,6 +73,9 @@ const ViajesList: React.FC = () => {
 
   const [direccionModalOpen, setDireccionModalOpen] = useState<boolean>(false);
   const [selectedViaje, setSelectedViaje] = useState<ViajeModel | null>(null);
+
+
+  const [contactoModalOpen, setContactoModalOpen] = useState<boolean>(false);
 
   const [disponibilidadModalOpen, setDisponibilidadModalOpen] = useState<boolean>(false);
 
@@ -269,6 +273,16 @@ const ViajesList: React.FC = () => {
   };
 
 
+  const handleOpenContactosModal = (viajeId: number) => {
+    setSelectedViajeId(viajeId);
+    setContactoModalOpen(true);
+  };
+
+  const handleCloseContactoModal = () => {
+    setContactoModalOpen(false);
+    setSelectedViaje(null);
+  };
+
   const handleOpenDisponibilidadModal = () => {
     setDisponibilidadModalOpen(true);
   };
@@ -292,7 +306,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDownloadCSVModal = () => {
     setDownloadCSVModalOpen(false);
   };
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal);
+  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal);
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -445,6 +459,15 @@ const ViajesList: React.FC = () => {
           viajeId={selectedViajeId}
         />
       )}
+
+      {selectedViajeId !== null && (
+        <ContactosHistoricosModal
+          open={contactoModalOpen}
+          onClose={handleCloseContactoModal}
+          viajeId={selectedViajeId}
+        />
+      )}
+
 
       <TransportistaDisponibilidad
         open={disponibilidadModalOpen}

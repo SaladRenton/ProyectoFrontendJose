@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid } from '@mui/material';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
+import ContactAttemptsTypeCombo from '../../../../../../combos/components/ContactAttemptsTypeCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
 import TransportistaCombo from '../../../../../../combos/components/TransportistaCombo';
 import EstadosCombo from '../../../../../../combos/components/EstadosCombo';
@@ -15,6 +16,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
   const [filters, setFilters] = useState<Record<string, string | boolean>>({
     id: '',
     operacion_id: '',
+    contact_attempt_id: '',
     zona_reparto_id: '',
     transportista_id: '',
     estado_id: '',
@@ -60,6 +62,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     setFilters({
       id: '',
       operacion_id: '',
+      contact_attempt_id: '',
       zona_reparto_id: '',
       transportista_id: '',
       estado_id: '',
@@ -89,6 +92,11 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
         <OperacionCombo
           value={filters.operacion_id as string}
           onChange={(value) => handleSelectChange('operacion_id', value)}
+        />
+
+        <ContactAttemptsTypeCombo
+          value={filters.contact_attempt_id as string}
+          onChange={(value) => handleSelectChange('contact_attempt_id', value)}
         />
         <OperacionZonaRepartoCombo
           operacionId={filters.operacion_id as string}

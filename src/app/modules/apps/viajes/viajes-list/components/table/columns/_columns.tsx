@@ -17,7 +17,9 @@ export const getColumns = (
   handleDeleteRow: (id: number) => void,
   handleOpenHistoricosModal: (id: number) => void,
   handleOpenPaquetesModal: (paquetes: any[]) => void,
-  handleOpenDireccionModal: (viaje: ViajeModel) => void
+  handleOpenDireccionModal: (viaje: ViajeModel) => void,
+  handleOpenContactosModal: (id: number) => void,
+
 
 ): GridColDef[] => [
     { field: 'id', headerName: 'Numero', width: 90, editable: false },
@@ -137,6 +139,18 @@ export const getColumns = (
       renderCell: (params) => (
 
         <IconButton onClick={() => handleOpenHistoricosModal(params.row.id)}>
+          <HistoryIcon />
+        </IconButton>
+      ),
+
+    },
+
+    {
+      field: 'contactos', headerName: 'Contactos', width: 150,
+
+      renderCell: (params) => (
+
+        <IconButton onClick={() => handleOpenContactosModal(params.row.id)}>
           <HistoryIcon />
         </IconButton>
       ),
