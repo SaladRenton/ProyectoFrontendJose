@@ -17,12 +17,14 @@ const FooterWrapper = () => {
             config.app.footer.container === 'fixed' ? 'container-xxl' : 'container-fluid',
             config.app.footer.containerClass
           )}
+          
         >
           <Footer />
         </div>
       ) : (
         <Footer />
       )}
+      
     </div>
   )
 }

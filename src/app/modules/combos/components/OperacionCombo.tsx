@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import { SelectChangeEvent } from '@mui/material/Select';
+
 
 interface OperacionComboProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string | number | boolean;
+  onChange: (value: string | number | boolean)  => void;
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
@@ -42,7 +44,8 @@ const OperacionCombo: React.FC<OperacionComboProps> = ({ value, onChange }) => {
     fetchOperaciones();
   }, []);
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectChange = (event: SelectChangeEvent<string | boolean | number>) => {
+
     const selectedValue = event.target.value as string;
     onChange(selectedValue);
   };

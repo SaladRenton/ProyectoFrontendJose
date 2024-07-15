@@ -1,11 +1,11 @@
-import { GridRowModel } from '@mui/x-data-grid';
+import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
 import { getTransportistas, updateTransportista, deleteTransportista, addTransportista } from './_requests';
 import { TransportistaModel } from './_models';
 
 export const fetchTransportistas = async (
   page: number,
   pageSize: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<TransportistaModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<TransportistaModel>>>,
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -48,7 +48,7 @@ export const handleProcessRowUpdate = async (
 
 export const handleDeleteRow = async (
   id: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<TransportistaModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<TransportistaModel>>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
@@ -84,7 +84,7 @@ export const handleAddTransportista = async (
     const message = error.message || 'Add failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);
@@ -115,7 +115,7 @@ export const handleEditTransportista = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);

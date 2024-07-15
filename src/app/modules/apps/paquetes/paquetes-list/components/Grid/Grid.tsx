@@ -19,7 +19,10 @@ import {
 import { esES  } from '@mui/x-data-grid/locales';
 
 const PaquetesList: React.FC = () => {
+
+
   const [rows, setRows] = useState<GridRowsProp<PaqueteModel>>([]);
+
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [rowCount, setRowCount] = useState<number>(0);
@@ -36,7 +39,7 @@ const PaquetesList: React.FC = () => {
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
@@ -102,7 +105,7 @@ const PaquetesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
+  const handleApplyFilters = (filters: Record<string, string | boolean | number>) => {
     setFilters(filters);
   };
 

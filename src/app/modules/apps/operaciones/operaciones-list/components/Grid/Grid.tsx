@@ -13,7 +13,9 @@ import {
 import { esES  } from '@mui/x-data-grid/locales';
 
 const OperacionList: React.FC = () => {
+  
   const [rows, setRows] = useState<GridRowsProp<OperacionesModel>>([]);
+  
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [rowCount, setRowCount] = useState<number>(0);
@@ -48,7 +50,7 @@ const OperacionList: React.FC = () => {
   const confirmDeleteRow = async () => {
     if (deleteItemId !== null) {
       setDeleteLoading(true);
-      await handleDeleteRow(deleteItemId, setRows, setError);
+     // await handleDeleteRow(deleteItemId, setRows, setError);
       setDeleteLoading(false);
       setDeleteDialogOpen(false);
       setDeleteItemId(null);

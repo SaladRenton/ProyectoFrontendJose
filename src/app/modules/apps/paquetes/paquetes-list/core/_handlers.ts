@@ -1,20 +1,20 @@
-import { GridRowModel } from '@mui/x-data-grid';
+import { GridRowModel ,GridRowsProp} from '@mui/x-data-grid';
 import { getPaquetes, updatePaquete, deletePaquete, addPaquete } from './_requests';
 import { PaqueteModel } from './_models';
 
 export const fetchPaquetes = async (
   page: number,
   pageSize: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<PaqueteModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<PaqueteModel>>>,
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  filters: Record<string, string> // Añadido parámetro de filtros
+  filters: Record<string, string | boolean | number> // Añadido parámetro de filtros
 ) => {
   setLoading(true);
   try {
     const filterParams = Object.keys(filters).reduce((acc, key) => {
-      acc[`filter[${key}]`] = filters[key];
+      acc[`filter[${key}]`] = String(filters[key]);
       return acc;
     }, {} as Record<string, string>);
 
@@ -48,7 +48,7 @@ export const handleProcessRowUpdate = async (
 
 export const handleDeleteRow = async (
   id: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<PaqueteModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<PaqueteModel>>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
@@ -84,7 +84,7 @@ export const handleAddPaquete = async (
     const message = error.message || 'Add failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);
@@ -115,7 +115,7 @@ export const handleEditPaquete = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);

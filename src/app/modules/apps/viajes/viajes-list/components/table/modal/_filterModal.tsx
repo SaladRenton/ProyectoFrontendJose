@@ -9,11 +9,11 @@ import EstadosCombo from '../../../../../../combos/components/EstadosCombo';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean>) => void;
+  onApply: (filters: Record<string, string | boolean | number>) => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean>>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({
     id: '',
     operacion_id: '',
     contact_attempt_id: '',
@@ -38,7 +38,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     }));
   };
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = (name: string, value: string | boolean | number) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value
@@ -90,7 +90,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
           onChange={handleInputChange}
         />
         <OperacionCombo
-          value={filters.operacion_id as string}
+          value={filters.operacion_id}
           onChange={(value) => handleSelectChange('operacion_id', value)}
         />
 

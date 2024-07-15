@@ -23,7 +23,7 @@ const EnviarLoteOmnileadsModal: React.FC<EnviarLoteOmnileadsModalProps> = ({ ope
     try {
       const response = await axios.post(`${API_URL}/viajes/procesar-lote`, { idLote });
       setMessage(response.data.message);
-    } catch (err) {
+    } catch (err:any) {
       if (err.response && err.response.data && err.response.data.errors) {
         setError(err.response.data.errors.idLote[0]);
       } else {

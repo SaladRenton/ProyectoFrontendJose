@@ -10,6 +10,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Link from '@mui/material/Link';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { format } from 'date-fns';
+
 
 
 export const getColumns = (
@@ -51,8 +53,24 @@ export const getColumns = (
     { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false },
 
     { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean' },
-    { field: 'fecha_inicio', headerName: 'Fecha Inicio', width: 150, editable: true, type: 'dateTime' },
-    { field: 'fecha_fin', headerName: 'Fecha Fin', width: 150, editable: true, type: 'dateTime' },
+    {
+      field: 'fecha_inicio',
+      headerName: 'Fecha Inicio',
+      width: 150,
+      editable: false,
+      renderCell: (params) => {
+        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+      },
+    },
+    {
+      field: 'fecha_fin',
+      headerName: 'Fecha Fin',
+      width: 150,
+      editable: true,
+      renderCell: (params) => {
+        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+      },
+    },
     {
       field: 'contacto_en_omnileads',
       headerName: 'Contacto en Omnileads',
@@ -74,7 +92,15 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.estado_actual?.d_estado
     },
-    { field: 'fecha_creacion', headerName: 'Fecha Creación', width: 150, editable: true, type: 'dateTime' },
+    {
+      field: 'fecha_creacion',
+      headerName: 'Fecha Creacion',
+      width: 150,
+      editable: false,
+      renderCell: (params) => {
+        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+      },
+    },
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
     //{ field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
     { field: 'email', headerName: 'Email', width: 200, editable: true },

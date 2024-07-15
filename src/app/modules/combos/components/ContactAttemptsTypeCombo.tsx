@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface ContactAttemptsTypeComboProps {
   value: string;
@@ -8,6 +9,8 @@ interface ContactAttemptsTypeComboProps {
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
+
+
 
 const ContactAttemptsTypeCombo: React.FC<ContactAttemptsTypeComboProps> = ({ value, onChange }) => {
   const [types, setTypes] = useState<any[]>([]);
@@ -36,7 +39,8 @@ const ContactAttemptsTypeCombo: React.FC<ContactAttemptsTypeComboProps> = ({ val
     fetchTypes();
   }, []);
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const selectedValue = event.target.value as string;
     onChange(selectedValue);
   };

@@ -48,11 +48,11 @@ const ViajesList: React.FC = () => {
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | null>(null);
-  const [operacionId, setOperacionId] = useState<number>(0);
+  const [operacionId, setOperacionId] = useState<number | boolean | string>(0);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
   const [uploadErrors, setUploadErrors] = useState<string[]>([]);
@@ -153,7 +153,7 @@ const ViajesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
+  const handleApplyFilters = (filters: Record<string, string | boolean | number>) => {
     setFilters(filters);
   };
 
@@ -416,7 +416,7 @@ const ViajesList: React.FC = () => {
 
 
           <OperacionCombo
-            value={filters.operacion_id as string}
+            value={filters.operacion_id }
             onChange={(value) => setOperacionId(value)}
           />
           {uploadErrors.length > 0 && (

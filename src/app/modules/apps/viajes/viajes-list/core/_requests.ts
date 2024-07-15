@@ -1,5 +1,5 @@
-import axios from "axios";
-import {  ViajeModel } from "./_models";
+import axios, { AxiosError } from "axios";
+import { ViajeModel } from "./_models";
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
@@ -7,12 +7,12 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 
 
 
-export const getViajes = (page: number, pageSize: number, filters: Record<string, string>,includes: string[]) => {
+export const getViajes = (page: number, pageSize: number, filters: Record<string, string>, includes: string[]) => {
 
   const includeQuery = includes.length > 0 ? { include: includes.join(',') } : {};
   return axios.get(`${API_URL}/viajes`, {
     params: {
-      page:page +1,
+      page: page + 1,
       sort: '-created_at',
       per_page: pageSize,
       ...filters,
@@ -85,7 +85,7 @@ export const revertirLote = async (lote_viaje_id: number) => {
 };
 
 
-export const uploadFile = (file: File, operacion_id: number) => {
+export const uploadFile = (file: File, operacion_id: number | boolean | string) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('operacion_id', operacion_id.toString());
@@ -105,11 +105,21 @@ export const asignarTransportistasRequest = async (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-transportistas/${lote}`);
 };
 
+// Función para verificar si el error es de tipo AxiosError
+function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError).isAxiosError !== undefined;
+}
+
+function isAxiosErrorWithMessage(error: unknown): error is AxiosError<{ message: string }> {
+  return axios.isAxiosError(error) && error.response?.data && typeof error.response.data.message === 'string';
+}
+
+
 export const downloadCSV = async (operacionId: number) => {
   try {
     const response = await axios.get(`${API_URL}/viajes/export-csv`, {
       params: { 'filter[lote_viaje_id]': operacionId },
-      responseType: 'blob', // Important to handle binary data
+      //responseType: 'blob', // Important to handle binary data
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -120,7 +130,16 @@ export const downloadCSV = async (operacionId: number) => {
     link.click();
     document.body.removeChild(link);
   } catch (error) {
-    console.error('Error downloading CSV:', error);
-    throw error.response?.data || new Error('Error downloading CSV.');
+
+    if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
+      if (isAxiosErrorWithMessage(error)) {
+        const errorMessage = error.response?.data.message;
+        throw new Error(errorMessage);
+      }
+
+    } else {
+
+      throw new Error('Error descargando el CSV');
+    }
   }
 };

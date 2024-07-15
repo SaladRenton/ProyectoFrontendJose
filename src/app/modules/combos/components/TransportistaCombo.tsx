@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import { SelectChangeEvent } from '@mui/material/Select';
+
 
 interface TransportistaComboProps {
   value: string;
@@ -40,7 +42,7 @@ const TransportistaCombo: React.FC<TransportistaComboProps> = ({ value, onChange
     }
   }, []);
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const selectedValue = event.target.value as string;
     onChange(selectedValue);
   };

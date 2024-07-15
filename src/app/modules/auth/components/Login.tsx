@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {useFormik} from 'formik'
 import {getUserByToken, login} from '../core/_requests'
-import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 import {useAuth} from '../core/Auth'
 
 const loginSchema = Yup.object().shape({
@@ -21,8 +20,8 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'admin@demo.com',
-  password: 'demodemo',
+  email: '',
+  password: '',
 }
 
 /*
@@ -48,7 +47,7 @@ export function Login() {
       } catch (error) {
         console.error(error)
         saveAuth(undefined)
-        setStatus('The login details are incorrect')
+        setStatus('Acceso incorrecto')
         setSubmitting(false)
         setLoading(false)
       }
@@ -64,7 +63,7 @@ export function Login() {
     >
       {/* begin::Heading */}
       <div className='text-center mb-11'>
-        <h1 className='text-gray-900 fw-bolder mb-3'>Sign In</h1>
+        <h1 className='text-gray-900 fw-bolder mb-3'>Iniciar sesión</h1>
         <div className='text-gray-500 fw-semibold fs-6'>Geo HUB Fleet</div>
       </div>
       {/* begin::Heading */}
@@ -165,9 +164,9 @@ export function Login() {
         <div />
 
         {/* begin::Link */}
-        <Link to='/auth/forgot-password' className='link-primary'>
+        {/* <Link to='/auth/forgot-password' className='link-primary'>
           Olvidaste la contraseña ?
-        </Link>
+        </Link> */}
         {/* end::Link */}
       </div>
       {/* end::Wrapper */}

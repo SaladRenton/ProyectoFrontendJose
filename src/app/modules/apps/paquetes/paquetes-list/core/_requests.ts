@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { PaqueteModel } from "./_models";
+
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
@@ -20,6 +21,16 @@ export const getPaquetes = (page: number, pageSize: number, filters: Record<stri
 
 // Otras funciones (updateTransportista, deleteTransportista, addTransportista) permanecen igual
 
+// Función para verificar si el error es de tipo AxiosError
+function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError).isAxiosError !== undefined;
+}
+
+function isAxiosErrorWithMessage(error: unknown): error is AxiosError<{ message: string }> {
+  return axios.isAxiosError(error) && error.response?.data && typeof error.response.data.message === 'string';
+}
+
+
 export const revertirLotePaquete = async (lote_paquete_id: number) => {
   try {
     const response = await axios.delete(`${API_URL}/revertir-lote-paquete`, {
@@ -27,15 +38,19 @@ export const revertirLotePaquete = async (lote_paquete_id: number) => {
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-   
-      throw error.response.data;
-    }
 
-    throw new Error('An unexpected error occurred');
+    if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
+      if (isAxiosErrorWithMessage(error)) {
+        const errorMessage = error.response?.data.message;
+        throw new Error(errorMessage);
+      }
+
+    } else {
+
+      throw new Error('Error no manejado al revertir el lote');
+    }
   }
 };
-
 
 
 

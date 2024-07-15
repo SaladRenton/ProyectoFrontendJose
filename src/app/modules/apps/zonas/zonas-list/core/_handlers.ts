@@ -1,11 +1,13 @@
-import { GridRowModel } from '@mui/x-data-grid';
+import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
 import { getZonas, updateZona, deleteZona } from './_requests';
 import { ZonaModel } from './_models';
 
 export const fetchZonas = async (
   page: number,
   pageSize: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<ZonaModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ZonaModel>>>,
+
+
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -48,7 +50,7 @@ export const handleProcessRowUpdate = async (
 
 export const handleDeleteRow = async (
   id: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<ZonaModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ZonaModel>>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
@@ -86,7 +88,7 @@ export const handleEditZona = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);
       setModalErrors(errors);
     } else {
       setModalErrors([message]);

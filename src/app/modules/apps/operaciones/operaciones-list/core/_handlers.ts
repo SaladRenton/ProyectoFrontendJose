@@ -1,17 +1,17 @@
-import { GridRowModel } from '@mui/x-data-grid';
+import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
 import { getOperaciones } from './_requests';
 import { OperacionesModel } from './_models';
 
 export const fetchOperaciones = async (
   page: number,
   pageSize: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<OperacionesModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<OperacionesModel>>>,
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   filters: Record<string, string> // Añadido parámetro de filtros
 ) => {
-  setLoading(true);
+  setLoading(true); 
   try {
     const filterParams = Object.keys(filters).reduce((acc, key) => {
       acc[`filter[${key}]`] = filters[key];
@@ -37,7 +37,7 @@ export const handleDeleteRow = async (
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
-    await deleteOperacion(id);
+    //await deleteOperacion(id);
     setRows((prevRows) => prevRows.filter((row) => row.id !== id));
     setError(null); // Limpiar cualquier error previo si la eliminación es exitosa
   } catch (error: any) {

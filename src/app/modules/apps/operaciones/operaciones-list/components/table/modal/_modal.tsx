@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, CircularProgress } from '@mui/material';
-import { TransportistaModel } from '../../../core/_models';
+import { TransportistaModel } from '../../../../../../auth';
 
 interface TransportistaModalProps {
   open: boolean;

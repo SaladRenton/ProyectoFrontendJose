@@ -84,7 +84,7 @@ export const handleAddTransportista = async (
     const message = error.message || 'Add failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);
@@ -115,7 +115,7 @@ export const handleEditTransportista = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([message]);

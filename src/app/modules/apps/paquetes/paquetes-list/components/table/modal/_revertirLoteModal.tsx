@@ -29,7 +29,7 @@ const RevertirLotePaqueteModal: React.FC<RevertirLotePaqueteModalProps> = ({ ope
       await revertirLotePaquete(Number(loteViajeId));
       onSuccess(); // Refresca los datos después de la acción exitosa
       onClose(); // Cierra el modal
-    } catch (error) {
+    } catch (error :any) {
 
       setError(error.message);
     }

@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress } from '@mui/material';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
-import { esES  } from '@mui/x-data-grid/locales';
+import { esES } from '@mui/x-data-grid/locales';
+import { format } from 'date-fns';
+
 
 interface ContactosHistoricosModalProps {
     open: boolean;
@@ -55,7 +57,15 @@ const ContactosHistoricosModal: React.FC<ContactosHistoricosModalProps> = ({ ope
     }, [viajeId, open]);
 
     const columns: GridColDef[] = [
-        { field: 'fecha_contacto', headerName: 'Fecha', width: 150 },
+
+        {
+            field: 'fecha_contacto',
+            headerName: 'Fecha Contacto',
+            width: 150,
+            renderCell: (params) => {
+                return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+            },
+        },
         { field: 'agent_name', headerName: 'Agente', width: 150 },
         { field: 'telefono', headerName: 'Telefono', width: 150 },
         { field: 'CallID', headerName: 'call_id', width: 150 },
@@ -83,9 +93,9 @@ const ContactosHistoricosModal: React.FC<ContactosHistoricosModalProps> = ({ ope
                     <CircularProgress />
                 ) : (
                     <div style={{ height: 400, width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]}        
-                        
-                        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]}
+
+                            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                         />
                     </div>
                 )}

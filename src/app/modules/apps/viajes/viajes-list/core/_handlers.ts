@@ -1,22 +1,22 @@
-import { GridRowModel } from '@mui/x-data-grid';
+import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
 import { ViajeModel,includesConfig } from './_models';
 import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest,asignarTransportistasRequest } from './_requests';
 
 export const fetchViajes = async (
   page: number,
   pageSize: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<ViajeModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ViajeModel>>>,
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  filters: Record<string, string>,
+  filters: Record<string, string | boolean | number>,
   includes: string[] = []
 ) => {
   setLoading(true);
   try {
 
     const filterParams = Object.keys(filters).reduce((acc, key) => {
-      acc[`filter[${key}]`] = filters[key];
+      acc[`filter[${key}]`] = filters[key].toString();
       return acc;
     }, {} as Record<string, string>);
 
@@ -31,6 +31,10 @@ export const fetchViajes = async (
   }
   setLoading(false);
 };
+
+interface ErrorResponse {
+  errors: Record<string, string[]>;
+}
 
 export const handleProcessRowUpdate = async (
   newRow: GridRowModel<ViajeModel>,
@@ -48,9 +52,11 @@ export const handleProcessRowUpdate = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(([field, descriptions]) => {
-        return `${field}: ${descriptions.join(' ')}`;
-      });
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
       setModalErrors([message, ...errors]);
     } else {
       setModalErrors([message]);
@@ -61,7 +67,8 @@ export const handleProcessRowUpdate = async (
 
 export const handleDeleteRow = async (
   id: number,
-  setRows: React.Dispatch<React.SetStateAction<GridRowModel<ViajeModel>[]>>,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ViajeModel>>>,
+  
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
@@ -75,6 +82,9 @@ export const handleDeleteRow = async (
   }
 };
 
+interface ErrorResponse {
+  errors: Record<string, string[]>;
+}
 export const handleAddViaje = async (
   currentViaje: ViajeModel,
   fetchViajesData: () => void,
@@ -98,9 +108,11 @@ export const handleAddViaje = async (
     const message = error.message || 'Add failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(([field, descriptions]) => {
-        return `${field}: ${descriptions.join(' ')}`;
-      });
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
       setModalErrors([message, ...errors]);
     } else {
       setModalErrors([message]);
@@ -132,9 +144,13 @@ export const handleEditViaje = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(([field, descriptions]) => {
-        return `${field}: ${descriptions.join(' ')}`;
-      });
+      
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
+    
       setModalErrors([message, ...errors]);
     } else {
       setModalErrors([message]);
@@ -155,7 +171,7 @@ export const revertirLote = async (lote_viaje_id: number) => {
 
 export const handleFileUpload = async (
   file: File,
-  operacion_id: number,
+  operacion_id: number | boolean | string,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setUploadErrors: React.Dispatch<React.SetStateAction<string[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -170,9 +186,11 @@ export const handleFileUpload = async (
     const message = error.message || 'Upload failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(([field, descriptions]) => {
-        return `${field}: ${descriptions.join(' ')}`;
-      });
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
       setUploadErrors([message, ...errors]);
     } else {
       setUploadErrors([message]);
@@ -199,9 +217,11 @@ export const asignarZonas = async (
     const message = error.message || 'Asignar Zonas failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(([field, descriptions]) => {
-        return `${field}: ${descriptions.join(' ')}`;
-      });
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
       setAsignarZonasErrors([message, ...errors]);
     } else {
       setAsignarZonasErrors([message]);
@@ -225,7 +245,7 @@ export const asignarTransportistas = async (
     console.error("Error assigning transportistas", error);
     setError(error.message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat();
+      const errors = Object.values(error.response.data.errors).flat().map(String);      
       setModalErrors(errors);
     } else {
       setModalErrors([error.message]);

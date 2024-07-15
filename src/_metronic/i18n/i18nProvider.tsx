@@ -1,6 +1,6 @@
-import {FC} from 'react'
-import {useLang} from './Metronici18n'
-import {IntlProvider} from 'react-intl'
+import { FC } from 'react'
+import { useLang } from './Metronici18n'
+import { IntlProvider } from 'react-intl'
 import '@formatjs/intl-relativetimeformat/polyfill'
 import '@formatjs/intl-relativetimeformat/locale-data/en'
 import '@formatjs/intl-relativetimeformat/locale-data/de'
@@ -15,7 +15,7 @@ import esMessages from './messages/es.json'
 import frMessages from './messages/fr.json'
 import jaMessages from './messages/ja.json'
 import zhMessages from './messages/zh.json'
-import {WithChildren} from '../helpers'
+import { WithChildren } from '../helpers'
 
 const allMessages = {
   de: deMessages,
@@ -26,9 +26,24 @@ const allMessages = {
   zh: zhMessages,
 }
 
-const I18nProvider: FC<WithChildren> = ({children}) => {
+function flattenMessages(nestedMessages: any, prefix = ''): Record<string, string> {
+  return Object.keys(nestedMessages).reduce((messages: Record<string, string>, key) => {
+    const value = nestedMessages[key];
+    const prefixedKey = prefix ? `${prefix}.${key}` : key;
+
+    if (typeof value === 'string') {
+      messages[prefixedKey] = value;
+    } else {
+      Object.assign(messages, flattenMessages(value, prefixedKey));
+    }
+
+    return messages;
+  }, {});
+}
+
+const I18nProvider: FC<WithChildren> = ({ children }) => {
   const locale = useLang()
-  const messages = allMessages[locale]
+  const messages = flattenMessages(allMessages[locale]);
 
   return (
     <IntlProvider locale={locale} messages={messages}>
@@ -37,4 +52,4 @@ const I18nProvider: FC<WithChildren> = ({children}) => {
   )
 }
 
-export {I18nProvider}
+export { I18nProvider }

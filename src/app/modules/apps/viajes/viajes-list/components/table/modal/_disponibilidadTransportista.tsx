@@ -175,7 +175,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
             </Grid>
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {console.log(transportistas)}
+       
          
             {transportistas.length > 0 && transportistas.map((transportista) => (
               <Tooltip key={transportista.id} title={transportista.error || ''} arrow>

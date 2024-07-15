@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress } from '@mui/material';
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
-import { esES  } from '@mui/x-data-grid/locales';
+import { esES } from '@mui/x-data-grid/locales';
+import { format } from 'date-fns';
 
 interface EstadosHistoricosModalProps {
     open: boolean;
@@ -55,7 +56,16 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
     }, [viajeId, open]);
 
     const columns: GridColDef[] = [
-        { field: 'fecha_cambio_estado', headerName: 'Fecha', width: 150 },
+
+
+        {
+            field: 'fecha_cambio_estado',
+            headerName: 'Fecha',
+            width: 150,
+            renderCell: (params) => {
+                return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+            },
+        },
         {
             field: 'estado_anterior.d_estado',
             headerName: 'Estado Anterior',
@@ -80,9 +90,9 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
                     <CircularProgress />
                 ) : (
                     <div style={{ height: 400, width: '100%' }}>
-                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]}        
-                        
-                        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+                        <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20]}
+
+                            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                         />
                     </div>
                 )}

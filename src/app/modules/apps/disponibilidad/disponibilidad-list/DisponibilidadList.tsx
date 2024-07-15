@@ -6,12 +6,10 @@ import TransportistaDisponibilidad from '../../viajes/viajes-list/components/tab
 
 
 const handleCloseDisponibilidadModal = () => {
-    
+
 };
 
-const disponibilidadModalOpen = () => {
-    
-};
+
 
 
 
@@ -20,17 +18,17 @@ const DisponibilidadListWrapper = () => (
 
 
 
-      <>
-        <ToolbarWrapper />
-        <Content>
-        <TransportistaDisponibilidad
-        open={disponibilidadModalOpen}
+  <>
+    <ToolbarWrapper />
+    <Content>
+      <TransportistaDisponibilidad
+        open={true}
         onClose={handleCloseDisponibilidadModal}
       />
-        </Content>
-      </>
+    </Content>
+  </>
 
 
 )
 
-export {DisponibilidadListWrapper}
+export { DisponibilidadListWrapper }
