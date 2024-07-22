@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip,Stack  } from '@mui/material';
+import { Button, Tooltip,Stack,Switch, FormControlLabel  } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; // Icono para el calendario
@@ -27,6 +27,8 @@ interface ToolbarProps {
   onOpenDisponibilidadModal: () => void; // Añadir prop para abrir el modal de disponibilidad
   onOpenEnviarLoteOmnileadsModal: () => void; // Añadir prop para abrir el modal de enviar lote a Omnileads
   onOpenDownloadCSVModal: () => void; // Añadir prop para abrir el modal de enviar lote a Omnileads
+  isSwitchOn: boolean;
+  onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
 
 }
@@ -43,6 +45,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onOpenDisponibilidadModal, // Añadir handler para abrir el modal de disponibilidad,
   onOpenEnviarLoteOmnileadsModal, // Añadir handler para abrir el modal de enviar lote a Omnileads
   onOpenDownloadCSVModal, // Añadir handler para abrir el modal de enviar lote a Omnileads
+  isSwitchOn,
+  onSwitchChange,
 
 
 }) => {
@@ -114,7 +118,17 @@ const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
 
 
-
+      <FormControlLabel
+        control={
+          <Switch
+            checked={isSwitchOn}
+            onChange={onSwitchChange}
+            name="verColores"
+            color="primary"
+          />
+        }
+        label="Ver estados con colores"
+      />
 
 
       

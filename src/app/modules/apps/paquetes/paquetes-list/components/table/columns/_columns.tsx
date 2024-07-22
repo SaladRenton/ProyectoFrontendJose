@@ -31,6 +31,8 @@ export const getColumns = (
     { field: 'codigo_barra', headerName: 'Cod. Barra', width: 120, editable: true },
     { field: 'numero_serie', headerName: 'Num. Serie', width: 120, editable: true },
     { field: 'mac', headerName: 'Mac', width: 120, editable: true },
+    { field: 'caja', headerName: 'Caja', width: 120, editable: true },
+    { field: 'pallet', headerName: 'Pallet', width: 120, editable: true },
     {
       field: 'entregado',
       headerName: 'Entregado',

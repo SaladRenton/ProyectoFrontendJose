@@ -16,6 +16,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
   const [filters, setFilters] = useState<Record<string, string | boolean | number>>({
     id: '',
     operacion_id: '',
+    fecha_inicio: '',
+    fecha_fin: '',
     contact_attempt_id: '',
     zona_reparto_id: '',
     transportista_id: '',
@@ -62,6 +64,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     setFilters({
       id: '',
       operacion_id: '',
+      fecha_inicio: '',
+      fecha_fin: '',
       contact_attempt_id: '',
       zona_reparto_id: '',
       transportista_id: '',
@@ -81,70 +85,59 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Filtrar Viajes</DialogTitle>
       <DialogContent>
-        <TextField
-          margin="dense"
-          label="ID Viaje"
-          fullWidth
-          name="id"
-          value={filters.id as string}
-          onChange={handleInputChange}
-        />
-        <OperacionCombo
-          value={filters.operacion_id}
-          onChange={(value) => handleSelectChange('operacion_id', value)}
-        />
-
-        <ContactAttemptsTypeCombo
-          value={filters.contact_attempt_id as string}
-          onChange={(value) => handleSelectChange('contact_attempt_id', value)}
-        />
-        <OperacionZonaRepartoCombo
-          operacionId={filters.operacion_id as string}
-          value={filters.zona_reparto_id as string}
-          onChange={(value) => handleSelectChange('zona_reparto_id', value)}
-        />
-        <TransportistaCombo
-          value={filters.transportista_id as string}
-          onChange={(value) => handleSelectChange('transportista_id', value)}
-        />
-        <EstadosCombo
-          value={filters.estado_id as string}
-          onChange={(value) => handleSelectChange('estado_id', value)}
-        />
-        <TextField
-          margin="dense"
-          label="Nombre"
-          fullWidth
-          name="nombre"
-          value={filters.nombre as string}
-          onChange={handleInputChange}
-        />
-        <TextField
-          margin="dense"
-          label="Apellido"
-          fullWidth
-          name="apellido"
-          value={filters.apellido as string}
-          onChange={handleInputChange}
-        />
-        <TextField
-          margin="dense"
-          label="Email"
-          fullWidth
-          name="email"
-          value={filters.email as string}
-          onChange={handleInputChange}
-        />
-        <TextField
-          margin="dense"
-          label="Ubicación (latitud,longitud)"
-          fullWidth
-          name="location"
-          value={filters.location as string}
-          onChange={handleInputChange}
-        />
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              margin="dense"
+              label="ID Viaje"
+              fullWidth
+              name="id"
+              value={filters.id as string}
+              onChange={handleInputChange}
+            />
+            <OperacionCombo
+              value={filters.operacion_id}
+              onChange={(value) => handleSelectChange('operacion_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Fecha Inicio"
+              type="date"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              name="fecha_inicio"
+              value={filters.fecha_inicio as string}
+              onChange={handleInputChange}
+            />
+            <ContactAttemptsTypeCombo
+              value={filters.contact_attempt_id as string}
+              onChange={(value) => handleSelectChange('contact_attempt_id', value)}
+            />
+            <OperacionZonaRepartoCombo
+              operacionId={filters.operacion_id as string}
+              value={filters.zona_reparto_id as string}
+              onChange={(value) => handleSelectChange('zona_reparto_id', value)}
+            />
+            <TransportistaCombo
+              value={filters.transportista_id as string}
+              onChange={(value) => handleSelectChange('transportista_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Nombre"
+              fullWidth
+              name="nombre"
+              value={filters.nombre as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Email"
+              fullWidth
+              name="email"
+              value={filters.email as string}
+              onChange={handleInputChange}
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -157,7 +150,53 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               label="Viajes sin zona"
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              margin="dense"
+              label="Fecha Fin"
+              type="date"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              name="fecha_fin"
+              value={filters.fecha_fin as string}
+              onChange={handleInputChange}
+            />
+            <EstadosCombo
+              value={filters.estado_id as string}
+              onChange={(value) => handleSelectChange('estado_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Apellido"
+              fullWidth
+              name="apellido"
+              value={filters.apellido as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Ubicación (latitud,longitud)"
+              fullWidth
+              name="location"
+              value={filters.location as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Lote Viaje ID"
+              fullWidth
+              name="lote_viaje_id"
+              value={filters.lote_viaje_id as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="ID Identificación Externo"
+              fullWidth
+              name="id_identificacion_externo"
+              value={filters.id_identificacion_externo as string}
+              onChange={handleInputChange}
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -171,22 +210,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             />
           </Grid>
         </Grid>
-        <TextField
-          margin="dense"
-          label="Lote Viaje ID"
-          fullWidth
-          name="lote_viaje_id"
-          value={filters.lote_viaje_id as string}
-          onChange={handleInputChange}
-        />
-        <TextField
-          margin="dense"
-          label="ID Identificación Externo"
-          fullWidth
-          name="id_identificacion_externo"
-          value={filters.id_identificacion_externo as string}
-          onChange={handleInputChange}
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClearFilters} color="secondary">

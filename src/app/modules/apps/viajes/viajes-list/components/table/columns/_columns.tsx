@@ -24,7 +24,20 @@ export const getColumns = (
 
 
 ): GridColDef[] => [
-    { field: 'id', headerName: 'Numero', width: 90, editable: false },
+    {
+      field: 'id', headerName: 'Numero', width: 90, editable: false,
+      cellClassName: () => 'font-large'
+      // getCellClassName: () => 'font-large', // Asigna una clase CSS a esta columna
+
+    },
+    {
+      field: 'lote_viaje_id',
+      headerName: 'Lote',
+      width: 150,
+      editable: false,
+      cellClassName:()=>'font-lote'
+
+    },
     {
       field: 'operacion.d_operacion',
       headerName: 'Operación',
@@ -32,6 +45,8 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.operacion?.d_operacion
     },
+    
+
     {
       field: 'zona_reparto.codigo_zona',
       headerName: 'Zona',
@@ -49,17 +64,16 @@ export const getColumns = (
     { field: 'documento', headerName: 'Documento', width: 100, editable: false },
 
     { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: true },
-    { field: 'lote_viaje_id', headerName: 'Lote', width: 150, editable: true },
     { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false },
 
-    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean' },
+    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean', hide: true },
     {
       field: 'fecha_inicio',
       headerName: 'Fecha Inicio',
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
     },
     {
@@ -68,13 +82,14 @@ export const getColumns = (
       width: 150,
       editable: true,
       renderCell: (params) => {
-        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
     },
     {
       field: 'contacto_en_omnileads',
       headerName: 'Contacto en Omnileads',
       width: 150,
+      hide: true,
       renderCell: (params) => (
         params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
       ),
@@ -83,6 +98,7 @@ export const getColumns = (
       field: 'error_contacto_omnileads',
       headerName: 'Error Contacto Omnileads',
       width: 200,
+      hide: true,
       editable: false,
     },
     {
@@ -98,7 +114,7 @@ export const getColumns = (
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return params.value? format(new Date(params.value), 'dd/MM/yyyy'):null;
+        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
     },
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp, GridRowModel, GridRowClassNameParams } from '@mui/x-data-grid';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress, Button, TextField } from '@mui/material';
 import { ViajeModel, initialViaje } from '../../core/_models'; // Importa la interfaz adaptada
 import { getColumns } from '../../components/table/columns/_columns'; // Ajusta la ruta si es necesario
@@ -16,6 +16,8 @@ import TransportistaDisponibilidad from '../table/modal/_disponibilidadTransport
 import EnviarLoteOmnileadsModal from '../../components/table/modal/_enviarLoteOmnileadsModal'; // Importa el modal de enviar lote a Omnileads
 import OperacionCombo from '../../../../../combos/components/OperacionCombo';
 import DownloadCSVModal from '../table/modal/_descargarCsvLoteModal'; // Importa el nuevo modal de descargar CSV
+import '../table/css/rows.css';
+
 
 import {
   fetchViajes,
@@ -33,7 +35,7 @@ import ContactosHistoricosModal from '../../../../../modals/components/Contactos
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
   const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(50);
   const [rowCount, setRowCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalLoading, setModalLoading] = useState<boolean>(false);
@@ -82,6 +84,7 @@ const ViajesList: React.FC = () => {
   const [enviarLoteOmnileadsModalOpen, setEnviarLoteOmnileadsModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
 
   const [downloadCSVModalOpen, setDownloadCSVModalOpen] = useState<boolean>(false);
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false); // Estado para el switch
 
 
   const fetchViajesData = useCallback(() => {
@@ -308,6 +311,35 @@ const ViajesList: React.FC = () => {
   };
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal);
 
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsSwitchOn(event.target.checked);
+  };
+
+  const getRowClassName = (params: GridRowClassNameParams) => {
+
+
+    if (isSwitchOn) {
+      switch (params.row.estado_actual_id) {
+        case 1:
+          return 'row-open';
+        case 2:
+          return 'row-completed';
+        case 3:
+          return 'row-assigned';
+        default:
+          return '';
+      }
+    }
+    else {
+
+      return '';
+    }
+  };
+
+
+
+
+
   return (
     <div style={{ height: 700, width: '100%' }}>
       {error && (
@@ -338,13 +370,15 @@ const ViajesList: React.FC = () => {
         onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
         onOpenEnviarLoteOmnileadsModal={handleOpenEnviarLoteOmnileadsModal} // Añadir handler para abrir el modal de enviar lote a Omnileads
         onOpenDownloadCSVModal={handleOpenDownloadCSVModal} // Añadir handler para abrir el modal de descargar CSV
+        isSwitchOn={isSwitchOn}
+        onSwitchChange={handleSwitchChange}
       />
       <DataGrid
         rows={rows}
         columns={columns}
         pagination
         pageSize={pageSize}
-        rowsPerPageOptions={[5, 10, 20]}
+        rowsPerPageOptions={[50, 75, 100]}
         rowCount={rowCount}
         paginationMode="server"
         onPageChange={(newPage) => setPage(newPage)}
@@ -353,6 +387,30 @@ const ViajesList: React.FC = () => {
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+        getRowClassName={getRowClassName}
+
+        sx={{
+          m: 2,
+          boxShadow: 1,
+          //border: 2,
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#f5f5f5',
+            fontSize: '0.9rem',
+            // fontWeight: 'bold',
+            color: '#000', // Color negro
+            fontWeight: 900, // Hacer la letra más negra
+
+          },
+          '& .font-large': {
+            fontSize: '1.2rem', // Ajuste del tamaño de letra para la columna viaje_id
+          },
+          '& .font-lote': {
+            fontSize: '1.1rem', // Ajuste del tamaño de letra para la columna viaje_id
+          }
+        }}
+
+
+
 
       />
       <ViajeModal
@@ -416,7 +474,7 @@ const ViajesList: React.FC = () => {
 
 
           <OperacionCombo
-            value={filters.operacion_id }
+            value={filters.operacion_id}
             onChange={(value) => setOperacionId(value)}
           />
           {uploadErrors.length > 0 && (
