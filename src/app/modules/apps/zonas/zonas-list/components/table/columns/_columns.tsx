@@ -11,7 +11,13 @@ export const getColumns = (
   ): GridColDef[] => [
     { field: 'id', headerName: 'ID', width: 90, editable: false },
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
-    { field: 'codigo_zona', headerName: 'Codigo', width: 150, editable: true },
+    { field: 'codigo_zona', headerName: 'Codigo', width: 150, editable: false },
+    { field: 'addresstype', headerName: 'Tipo', width: 150, editable: false },
+    { field: 'display_name', headerName: 'Nombre Largo', width: 300, editable: false },
+    { field: 'town', headerName: 'Ciudad', width: 150, editable: false },
+    { field: 'state_district', headerName: 'Distrito', width: 150, editable: false },
+    { field: 'state', headerName: 'Provincia', width: 150, editable: false },
+    { field: 'postcode', headerName: 'Cod. Postal', width: 150, editable: false },
   
     {
       field: 'actions',

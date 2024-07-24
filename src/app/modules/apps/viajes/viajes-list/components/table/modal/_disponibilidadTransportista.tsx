@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress, TextField, Grid, Chip, Tooltip } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress, TextField, Grid, Chip, Tooltip, IconButton } from '@mui/material';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import axios from 'axios';
 import OperacionTransportistaSelector from '../../../../../../selectors/components/OperacionTransportistaSelector';
 import ErrorIcon from '@mui/icons-material/Error';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { format, eachDayOfInterval } from 'date-fns';
 
 interface TransportistaDisponibilidadProps {
@@ -44,7 +45,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
         const disponibilidadMap = new Map<string, any>(); // T
 
 
-        
+
 
         // const fetchedEvents = response.data.map((item: any) => {
         //   const { transportista, disponibilidad } = item;
@@ -60,7 +61,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
         // }).flat();
 
 
-       
+
 
         const fetchedEvents = response.data.flatMap((item: any) => {
           const { transportista, disponibilidad } = item;
@@ -79,7 +80,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
           })).flat();
         });
 
-        const initialEvents =  response.data.flatMap((item: any) => {
+        const initialEvents = response.data.flatMap((item: any) => {
           const { transportista, disponibilidad } = item;
           return dateRange.map((date) => {
             const formattedDate = format(date, 'yyyy-MM-dd');
@@ -97,8 +98,8 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
                 transportistaId: transportista.id,
               };
             }
-            
-          
+
+
           }).filter(Boolean);
         });
 
@@ -106,7 +107,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
           ...item.transportista,
           error: item.error || null,
         })));
-     
+
         setEvents([...initialEvents, ...fetchedEvents]);
       } catch (error) {
         console.error("Error fetching disponibilidad", error);
@@ -173,10 +174,17 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
                 />
               </Grid>
             </Grid>
+            <Grid container spacing={2} sx={{ padding: 1 }}>
+              <Grid item xs={6}>
+                <Button onClick={fetchDisponibilidad} color="primary" startIcon={<RefreshIcon />} style={{ backgroundColor: '#007bff', color: 'white' }} disabled={loading}>
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Refrescar'}
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-       
-         
+
+
             {transportistas.length > 0 && transportistas.map((transportista) => (
               <Tooltip key={transportista.id} title={transportista.error || ''} arrow>
                 <Chip
@@ -190,6 +198,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
               </Tooltip>
             ))}
           </Grid>
+
         </Grid>
         {loading ? (
           <CircularProgress />
@@ -209,6 +218,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
         )}
       </DialogContent>
       <DialogActions>
+
         <Button onClick={onClose} color="primary">
           Cerrar
         </Button>

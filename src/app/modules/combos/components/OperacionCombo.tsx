@@ -5,8 +5,8 @@ import { SelectChangeEvent } from '@mui/material/Select';
 
 
 interface OperacionComboProps {
-  value: string | number | boolean;
-  onChange: (value: string | number | boolean)  => void;
+  value: string | number | boolean | string[];
+  onChange: (value: string | number | boolean | string[])  => void;
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;

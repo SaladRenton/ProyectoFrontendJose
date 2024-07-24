@@ -37,15 +37,7 @@ const ZonaModal: React.FC<ZonaModalProps> = ({
           onChange={onChange}
           name="nombre"
         />
-        <TextField
-          margin="dense"
-          label="Codigo"
-          fullWidth
-          required
-          value={currentZona.codigo_zona}
-          onChange={onChange}
-          name="codigo_zona"
-        />
+       
         
         {validationError && (
           <div className="alert alert-danger d-flex align-items-center p-5 mt-3">

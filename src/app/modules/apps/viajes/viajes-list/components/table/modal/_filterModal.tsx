@@ -9,17 +9,17 @@ import EstadosCombo from '../../../../../../combos/components/EstadosCombo';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean | number>) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]  >>({
     id: '',
     operacion_id: '',
     fecha_inicio: '',
     fecha_fin: '',
     contact_attempt_id: '',
-    zona_reparto_id: '',
+    zona_reparto_id:[] ,
     transportista_id: '',
     estado_id: '',
     nombre: '',
@@ -40,7 +40,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     }));
   };
 
-  const handleSelectChange = (name: string, value: string | boolean | number) => {
+  const handleSelectChange = (name: string, value: string | boolean | number | string[]) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value
@@ -67,7 +67,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       fecha_inicio: '',
       fecha_fin: '',
       contact_attempt_id: '',
-      zona_reparto_id: '',
+      zona_reparto_id: [],
       transportista_id: '',
       estado_id: '',
       nombre: '',
@@ -115,7 +115,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             />
             <OperacionZonaRepartoCombo
               operacionId={filters.operacion_id as string}
-              value={filters.zona_reparto_id as string}
+              value={filters.zona_reparto_id as string[]}
               onChange={(value) => handleSelectChange('zona_reparto_id', value)}
             />
             <TransportistaCombo

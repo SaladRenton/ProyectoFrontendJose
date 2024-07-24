@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid } from '@mui/material';
-import { filterConfig } from '../../../core/_filterConfig';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 import TransportistaCombo from '../../../../../../combos/components/TransportistaCombo';
-
 
 interface FilterModalProps {
   open: boolean;
@@ -20,6 +18,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     entregado: false,
     lote_equipos_id: '',
     lote_externo: '',
+    caja: '',
+    pallet: '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,30 +53,44 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Filtrar Paquetes</DialogTitle>
       <DialogContent>
-        {filterConfig.filter(config => config.enabled).map(config => (
-          <TextField
-            key={config.field}
-            margin="dense"
-            label={config.headerName}
-            name={config.field}
-            fullWidth
-            value={filters[config.field] || ''}
-            onChange={handleInputChange}
-          />
-        ))}
-
-        <OperacionCombo
-          value={filters.operacion_id}
-          onChange={(value) => handleSelectChange('operacion_id', value)}
-        />
-        <TransportistaCombo
-          value={filters.transportista_id as string}
-          onChange={(value) => handleSelectChange('transportista_id', value)}
-        />
-
         <Grid container spacing={2}>
-
           <Grid item xs={6}>
+            <TextField
+              margin="dense"
+              label="ID Paquete"
+              name="id"
+              fullWidth
+              value={filters.id as string}
+              onChange={handleInputChange}
+            />
+            <OperacionCombo
+              value={filters.operacion_id}
+              onChange={(value) => handleSelectChange('operacion_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Lote Equipos ID"
+              name="lote_equipos_id"
+              fullWidth
+              value={filters.lote_equipos_id as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Lote Externo"
+              name="lote_externo"
+              fullWidth
+              value={filters.lote_externo as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Caja"
+              name="caja"
+              fullWidth
+              value={filters.caja as string}
+              onChange={handleInputChange}
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -88,21 +102,20 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               }
               label="Paquetes sin viaje asignado"
             />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.entregado as boolean}
-                  onChange={handleCheckboxChange}
-                  name="entregado"
-                  color="primary"
-                />
-              }
-              label="Paquetes entregados"
-            />
           </Grid>
-
           <Grid item xs={6}>
+            <TransportistaCombo
+              value={filters.transportista_id as string}
+              onChange={(value) => handleSelectChange('transportista_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Pallet"
+              name="pallet"
+              fullWidth
+              value={filters.pallet as string}
+              onChange={handleInputChange}
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -113,6 +126,17 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
                 />
               }
               label="Paquetes sin transportista"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.entregado as boolean}
+                  onChange={handleCheckboxChange}
+                  name="entregado"
+                  color="primary"
+                />
+              }
+              label="Paquetes entregados"
             />
           </Grid>
         </Grid>
