@@ -9,7 +9,7 @@ export const fetchPaquetes = async (
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  filters: Record<string, string | boolean | number> // Añadido parámetro de filtros
+  filters: Record<string, string | boolean | number | string[]> // Añadido parámetro de filtros
 ) => {
   setLoading(true);
   try {

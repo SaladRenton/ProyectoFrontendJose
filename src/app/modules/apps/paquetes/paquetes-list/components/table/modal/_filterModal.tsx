@@ -6,11 +6,11 @@ import TransportistaCombo from '../../../../../../combos/components/Transportist
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean | number>) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[]> ) => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[] >>({
     id: '',
     operacion_id: '',
     sinTransportista: false,
@@ -34,7 +34,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     onClose();
   };
 
-  const handleSelectChange = (name: string, value: string | boolean | number) => {
+  const handleSelectChange = (name: string, value: string | boolean | number | string[]) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value

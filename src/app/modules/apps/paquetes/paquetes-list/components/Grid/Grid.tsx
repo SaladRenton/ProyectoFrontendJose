@@ -39,7 +39,7 @@ const PaquetesList: React.FC = () => {
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({});
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
@@ -105,7 +105,7 @@ const PaquetesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string | boolean | number>) => {
+  const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
     setFilters(filters);
   };
 

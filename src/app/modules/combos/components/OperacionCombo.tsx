@@ -44,7 +44,7 @@ const OperacionCombo: React.FC<OperacionComboProps> = ({ value, onChange }) => {
     fetchOperaciones();
   }, []);
 
-  const handleSelectChange = (event: SelectChangeEvent<string | boolean | number>) => {
+  const handleSelectChange = (event: SelectChangeEvent<string | boolean | number | string[]>) => {
 
     const selectedValue = event.target.value as string;
     onChange(selectedValue);

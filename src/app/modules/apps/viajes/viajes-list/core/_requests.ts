@@ -85,7 +85,7 @@ export const revertirLote = async (lote_viaje_id: number) => {
 };
 
 
-export const uploadFile = (file: File, operacion_id: number | boolean | string) => {
+export const uploadFile = (file: File, operacion_id: number | boolean | string | string[]) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('operacion_id', operacion_id.toString());

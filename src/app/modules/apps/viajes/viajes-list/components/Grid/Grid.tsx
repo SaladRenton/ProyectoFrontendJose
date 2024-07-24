@@ -50,11 +50,11 @@ const ViajesList: React.FC = () => {
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Record<string, string | boolean | number>>({});
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | null>(null);
-  const [operacionId, setOperacionId] = useState<number | boolean | string>(0);
+  const [operacionId, setOperacionId] = useState<number | boolean | string | string[]>(0);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
   const [uploadErrors, setUploadErrors] = useState<string[]>([]);
@@ -156,7 +156,7 @@ const ViajesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string | boolean | number>) => {
+  const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
     setFilters(filters);
   };
 

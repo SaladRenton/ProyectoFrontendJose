@@ -9,7 +9,7 @@ export const fetchViajes = async (
   setRowCount: React.Dispatch<React.SetStateAction<number>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  filters: Record<string, string | boolean | number>,
+  filters: Record<string, string | boolean | number | string[]>,
   includes: string[] = []
 ) => {
   setLoading(true);
@@ -171,7 +171,7 @@ export const revertirLote = async (lote_viaje_id: number) => {
 
 export const handleFileUpload = async (
   file: File,
-  operacion_id: number | boolean | string,
+  operacion_id: number | boolean | string | string[],
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setUploadErrors: React.Dispatch<React.SetStateAction<string[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
