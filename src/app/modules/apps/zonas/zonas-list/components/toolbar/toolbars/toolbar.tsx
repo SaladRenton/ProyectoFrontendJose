@@ -21,7 +21,7 @@ interface ToolbarProps {
 const Toolbar: React.FC<ToolbarProps> = ({ onRefresh, onOpenFilterModal, onClearFilters, onOpenMapModal }) => {
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
-      <Tooltip title="Refrescars">
+      <Tooltip title="Refrescar">
         <IconButton color="primary" onClick={onRefresh}>
           <RefreshIcon />
         </IconButton>

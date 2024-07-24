@@ -43,6 +43,13 @@ export interface UserSocialNetworksModel {
   instagram: string
 }
 
+
+export interface RoleModel {
+  id: BigInteger,
+  name: string,
+  pagina_inicial: string
+}
+
 export interface UserModel {
   id: number
   username: string
@@ -54,11 +61,11 @@ export interface UserModel {
   occupation?: string
   companyName?: string
   phone?: string
-  roles?: Array<number>
+  role?: RoleModel
   pic?: string
   language?: 'en' | 'de' | 'es' | 'fr' | 'ja' | 'zh' | 'ru'
   timeZone?: string
-  website?: 'https://keenthemes.com'
+  website?: 'https://fleetsa.com.ar'
   emailSettings?: UserEmailSettingsModel
   auth?: AuthModel
   communication?: UserCommunicationModel

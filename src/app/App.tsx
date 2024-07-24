@@ -5,7 +5,7 @@ import {LayoutProvider, LayoutSplashScreen} from '../_metronic/layout/core'
 import {MasterInit} from '../_metronic/layout/MasterInit'
 import {AuthInit} from './modules/auth'
 import {ThemeModeProvider} from '../_metronic/partials'
-
+import { PermissionsProvider } from './context/PermissionsContext'
 
 const App = () => {
   return (
@@ -14,8 +14,10 @@ const App = () => {
         <LayoutProvider>
           <ThemeModeProvider>
             <AuthInit>
-              <Outlet />
-              <MasterInit />
+              <PermissionsProvider> {/* Envolver dentro del PermissionsProvider */}
+                <Outlet />
+                <MasterInit />
+              </PermissionsProvider>
             </AuthInit>
           </ThemeModeProvider>
         </LayoutProvider>
@@ -25,3 +27,4 @@ const App = () => {
 }
 
 export {App}
+

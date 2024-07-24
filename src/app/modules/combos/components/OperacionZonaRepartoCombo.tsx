@@ -74,8 +74,8 @@ const OperacionZonaRepartoCombo: React.FC<OperacionZonaRepartoComboProps> = ({ o
             value={value}
             onChange={handleSelectChange}
             renderValue={(selected) => selected.map(val => {
-              const zona = zonas.find(z => z.id === val);
-              return zona ? zona.zona_reparto.nombre : '';
+              const zona = zonas.find(z => z.zona_reparto_id === val);
+              return zona ? zona.zona_reparto.id + '-' + zona.zona_reparto.nombre + '-' + zona.zona_reparto.addresstype : '';
             }).join(', ')}
           >
             {filteredZonas.map((zona) => (

@@ -115,10 +115,14 @@ function isAxiosErrorWithMessage(error: unknown): error is AxiosError<{ message:
 }
 
 
-export const downloadCSV = async (operacionId: number) => {
+export const downloadCSV = async (loteViajeId: number, operacionId: string, zonaRepartoId: string[]) => {
   try {
     const response = await axios.get(`${API_URL}/viajes/export-csv`, {
-      params: { 'filter[lote_viaje_id]': operacionId },
+      params: {
+        'filter[lote_viaje_id]': loteViajeId,
+        'filter[operacion_id]': operacionId,
+        'filter[zona_reparto_id]': zonaRepartoId.join(','),
+      },
       //responseType: 'blob', // Important to handle binary data
     });
 

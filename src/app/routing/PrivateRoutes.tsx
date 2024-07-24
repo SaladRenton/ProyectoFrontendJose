@@ -7,6 +7,7 @@ import { MenuTestPage } from '../pages/MenuTestPage'
 import { getCSSVariableValue } from '../../_metronic/assets/ts/_utils'
 import { WithChildren } from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
+import { useAuth } from '../modules/auth'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -22,12 +23,12 @@ const PrivateRoutes = () => {
   const ViajesPage = lazy(() => import('../modules/apps/viajes/ViajesPage'))
   const PaquetesPage = lazy(() => import('../modules/apps/paquetes/PaquetesPage'))
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
-
+  const {currentUser, logout} = useAuth()
   return (
     <Routes>
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion  PAGINA INICIAL*/}
-        <Route path='auth/*' element={<Navigate to='/apps/viajes/list' />} />
+        <Route path='auth/*' element={<Navigate to= {currentUser?.role?.pagina_inicial ?  currentUser.role.pagina_inicial: "/apps/viajes/list"}  />} />
         {/* Pages */}
 
         <Route path='dashboard' element={<DashboardWrapper />} />

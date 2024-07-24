@@ -23,7 +23,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, 
           <AddCircleIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Refrescars">
+      <Tooltip title="Refrescar">
         <IconButton color="primary" onClick={onRefresh}>
           <RefreshIcon />
         </IconButton>

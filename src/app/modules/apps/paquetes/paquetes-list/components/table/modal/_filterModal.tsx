@@ -6,13 +6,14 @@ import TransportistaCombo from '../../../../../../combos/components/Transportist
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean | number | string[]> ) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[] >>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
+    transportista_id: '',
     sinTransportista: false,
     sinViaje: false,
     entregado: false,
@@ -47,6 +48,21 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       ...prevFilters,
       [name]: checked
     }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      id: '',
+      operacion_id: '',
+      transportista_id: '',
+      sinTransportista: false,
+      sinViaje: false,
+      entregado: false,
+      lote_equipos_id: '',
+      lote_externo: '',
+      caja: '',
+      pallet: '',
+    });
   };
 
   return (
@@ -142,6 +158,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
         </Grid>
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleClearFilters} color="secondary">
+          Limpiar
+        </Button>
         <Button onClick={onClose} color="primary">
           Cancelar
         </Button>

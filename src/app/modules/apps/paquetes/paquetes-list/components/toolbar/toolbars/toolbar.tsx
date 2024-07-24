@@ -30,7 +30,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, 
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Refrescars">
+      <Tooltip title="Refrescar">
         <IconButton color="primary" onClick={onRefresh}>
           <RefreshIcon />
         </IconButton>

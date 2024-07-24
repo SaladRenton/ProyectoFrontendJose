@@ -56,7 +56,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         Agregar
       </Button> */}
 
-      <Tooltip title="Refrescars">
+      <Tooltip title="Refrescar">
         <IconButton color="primary" onClick={onRefresh}>
           <RefreshIcon />
         </IconButton>
