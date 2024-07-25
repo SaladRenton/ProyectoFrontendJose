@@ -89,7 +89,7 @@ export const getColumns = (
       field: 'contacto_en_omnileads',
       headerName: 'Contacto en Omnileads',
       width: 150,
-      hide: true,
+      hide: false,
       renderCell: (params) => (
         params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
       ),
