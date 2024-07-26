@@ -10,6 +10,13 @@ export function MenuInner() {
   const intl = useIntl();
   return (
     <>
+
+
+      {permissions.includes('usuarios.index') &&
+        <MenuItem title='Usuarios' to='/apps/usuarios/list' />
+      }
+
+
       <MenuItem title={intl.formatMessage({ id: 'MENU.DASHBOARD' })} to='/dashboard' />
       {/* <MenuItem title='Layout Builder' to='/builder' /> */}
 

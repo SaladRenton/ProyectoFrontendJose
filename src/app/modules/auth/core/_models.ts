@@ -45,9 +45,9 @@ export interface UserSocialNetworksModel {
 
 
 export interface RoleModel {
-  id: BigInteger,
-  name: string,
-  pagina_inicial: string
+  id: number,
+  name?: string,
+  pagina_inicial?: string
 }
 
 export interface UserModel {
@@ -61,7 +61,7 @@ export interface UserModel {
   occupation?: string
   companyName?: string
   phone?: string
-  role?: RoleModel
+  roles?: RoleModel[]
   pic?: string
   language?: 'en' | 'de' | 'es' | 'fr' | 'ja' | 'zh' | 'ru'
   timeZone?: string
@@ -71,7 +71,26 @@ export interface UserModel {
   communication?: UserCommunicationModel
   address?: UserAddressModel
   socialNetworks?: UserSocialNetworksModel
+  persona?: TransportistaModel
+  role_id?:number
+  persona_id?:number
 }
+
+
+export interface UserModelWithRol extends UserModel {
+
+}
+
+export const initialUser: UserModelWithRol = {
+  id: 0,
+  username: '',
+  password: '',
+  email: '',
+ 
+
+
+};
+
 
 
 // Tipo para el transportista
