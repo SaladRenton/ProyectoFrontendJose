@@ -3,16 +3,33 @@ import { MenuItem } from './MenuItem'
 import { MenuInnerWithSub } from './MenuInnerWithSub'
 import { MegaMenu } from './MegaMenu'
 import { usePermissions } from '../../../../../app/context/PermissionsContext'
+import { useAuth } from '../../../../../app/modules/auth'
 
 export function MenuInner() {
   const { permissions } = usePermissions();
+  const {auth} = useAuth()
 
   const intl = useIntl();
+
+  
+  const hasPermission = ( permissionName: string): boolean => {
+
+    if(auth)
+      return auth.permissions.some(permission => permission.name === permissionName);
+    else
+      return false
+  };
+
+
+
+
+
   return (
+
     <>
 
 
-      {permissions.includes('usuarios.index') &&
+      {hasPermission('usuarios.index') &&
         <MenuItem title='Usuarios' to='/apps/usuarios/list' />
       }
 
@@ -38,7 +55,7 @@ export function MenuInner() {
         <MenuItem icon='abstract-28' to='/apps/user-management/users' title='User management' />
       </MenuInnerWithSub> */}
 
-      {permissions.includes('zonas-reparto.update') &&
+      {hasPermission('zonas-reparto.update') &&
 
         <MenuInnerWithSub title='Geo' to='/apps' menuPlacement='bottom-start' menuTrigger='click'>
 
@@ -60,27 +77,27 @@ export function MenuInner() {
         </MenuInnerWithSub>
       }
 
-      {permissions.includes('transportistas.store') &&
+      {hasPermission('transportistas.store') &&
         <MenuItem title='Transportistas' to='/apps/transportistas/list' />
       }
 
 
-      {permissions.includes('operaciones.store') &&
+      {hasPermission('operaciones.store') &&
         <MenuItem title='Operaciones' to='/apps/operaciones/list' />
       }
 
 
-      {permissions.includes('disponibilidad-transportistas.obtenerDisponibilidadDiaria') &&
+      {hasPermission('disponibilidad-transportistas.obtenerDisponibilidadDiaria') &&
         <MenuItem title='Disponibilidad' to='/apps/disponibilidad/list' />
       }
 
 
 
-      {permissions.includes('viajes.store') &&
+      {hasPermission('viajes.store') &&
         <MenuItem title='Viajes' to='/apps/viajes/list' />
       }
 
-      {permissions.includes('paquetes.store') &&
+      {hasPermission('paquetes.store') &&
         <MenuItem title='Paquetes' to='/apps/paquetes/list' />
 
       }

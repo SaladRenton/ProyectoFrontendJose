@@ -110,14 +110,16 @@ const UsuariosList: React.FC = () => {
     }));
   };
 
-  const handleTransportistaChange = (transportistaId: number) => {
-    if (transportistaId > 0) {
+  const handleTransportistaChange = (transportistaId: number | string) => {
+    const id = typeof transportistaId === 'string' ? parseInt(transportistaId, 10) : transportistaId;
+
+    if (!isNaN(id) && id > 0) {
       setCurrentUsuario((prev) => ({
         ...prev,
-        persona_id: transportistaId,
+        persona_id: id,
         persona: {
 
-          id: transportistaId,
+          id: id,
           razon_social: '',
           email: '',
           localidad: '',
@@ -174,7 +176,7 @@ const UsuariosList: React.FC = () => {
         editMode={editMode}
         currentUsuario={currentUsuario}
         modalLoading={modalLoading}
-        validationError={validationError}
+       // validationError={validationError}
         modalErrors={modalErrors}
         onClose={() => setOpen(false)}
         onChange={(e) => setCurrentUsuario({ ...currentUsuario, [e.target.name]: e.target.value })}

@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 
-
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 interface PermissionsContextProps {
@@ -26,20 +25,26 @@ interface PermissionsProviderProps {
 
 export const PermissionsProvider: React.FC<PermissionsProviderProps> = ({ children }) => {
   const [permissions, setPermissions] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPermissions = async () => {
       try {
-        
         const response = await axios.get(`${API_URL}/user-permissions`);
         setPermissions(response.data.map((permission: { name: string }) => permission.name));
       } catch (error) {
         console.error('Failed to fetch permissions:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPermissions();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Aquí puedes poner un spinner u otro indicador de carga
+  }
 
   return (
     <PermissionsContext.Provider value={{ permissions, setPermissions }}>

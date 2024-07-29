@@ -35,7 +35,7 @@ const UserModal: React.FC<UsuarioModalProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (currentUsuario.roles && currentUsuario.roles[0].id === 5) {
+    if (currentUsuario.roles && currentUsuario.roles[0] && currentUsuario.roles[0].id === 5) {
       setIsRoleFive(true);
     } else {
       setIsRoleFive(false);
@@ -130,7 +130,7 @@ const UserModal: React.FC<UsuarioModalProps> = ({
         />
         <Button onClick={generatePassword} color="primary">Generar Contraseña</Button>
         <RolesCombo
-          value={((currentUsuario.roles && currentUsuario.roles[0].id) ? currentUsuario.roles[0].id : 0)}
+          value={((currentUsuario.roles &&  currentUsuario.roles[0] && currentUsuario.roles[0].id) ? currentUsuario.roles[0].id : 0)}
           onChange={handleRoleChange}
           disabled={editMode}
         />

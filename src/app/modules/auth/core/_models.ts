@@ -1,6 +1,7 @@
 export interface AuthModel {
   access_token: string
   refreshToken?: string
+  permissions: [{name: string}]
 }
 
 export interface UserAddressModel {
@@ -48,6 +49,13 @@ export interface RoleModel {
   id: number,
   name?: string,
   pagina_inicial?: string
+  permissions?:[
+    {
+      id: number
+      name: string
+    }
+
+  ]
 }
 
 export interface UserModel {
@@ -61,7 +69,7 @@ export interface UserModel {
   occupation?: string
   companyName?: string
   phone?: string
-  roles?: RoleModel[]
+  roles: RoleModel[]
   pic?: string
   language?: 'en' | 'de' | 'es' | 'fr' | 'ja' | 'zh' | 'ru'
   timeZone?: string
@@ -74,6 +82,7 @@ export interface UserModel {
   persona?: TransportistaModel
   role_id?:number
   persona_id?:number
+ 
 }
 
 
@@ -86,6 +95,7 @@ export const initialUser: UserModelWithRol = {
   username: '',
   password: '',
   email: '',
+  roles:[]
  
 
 

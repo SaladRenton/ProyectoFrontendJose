@@ -7,7 +7,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 interface TransportistaComboProps {
   value: string;
   onChange: (value: string) => void;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
@@ -58,7 +58,7 @@ const TransportistaCombo: React.FC<TransportistaComboProps> = ({ value, onChange
           value={value}
           onChange={handleSelectChange}
           label="Transportista"
-             disabled ={disabled?disabled:false}
+          disabled ={disabled?disabled:false}
         >
           {transportistas.map((transportista) => (
             <MenuItem key={transportista.id} value={transportista.id}>

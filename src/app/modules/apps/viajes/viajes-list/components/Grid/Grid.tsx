@@ -17,6 +17,7 @@ import EnviarLoteOmnileadsModal from '../../components/table/modal/_enviarLoteOm
 import OperacionCombo from '../../../../../combos/components/OperacionCombo';
 import DownloadCSVModal from '../table/modal/_descargarCsvLoteModal'; // Importa el nuevo modal de descargar CSV
 import '../table/css/rows.css';
+import ReasignarTransportistaModal from '../table/modal/_reasginarTransportista';
 
 
 import {
@@ -52,6 +53,7 @@ const ViajesList: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
+  const [reasignarTransportistaModalOpen, setReasignarTransportistaModalOpen] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | null>(null);
   const [operacionId, setOperacionId] = useState<number | boolean | string | string[]>(0);
@@ -177,6 +179,23 @@ const ViajesList: React.FC = () => {
     setRevertirLoteModalOpen(false);
     fetchViajesData(); // Refresca los datos después de la acción exitosa
   };
+
+
+
+
+  const handleOpenReasginarTransportistaModal = () => {
+    setReasignarTransportistaModalOpen(true);
+  };
+
+  const handleCloseReasignarTransportistaModal = () => {
+    setReasignarTransportistaModalOpen(false);
+  };
+
+  const handleSuccessReasignarTransportista = () => {
+    setReasignarTransportistaModalOpen(false);
+    fetchViajesData(); // Refresca los datos después de la acción exitosa
+  };
+
 
   const handleOpenUploadModal = () => {
     setUploadModalOpen(true);
@@ -372,6 +391,7 @@ const ViajesList: React.FC = () => {
         onOpenDownloadCSVModal={handleOpenDownloadCSVModal} // Añadir handler para abrir el modal de descargar CSV
         isSwitchOn={isSwitchOn}
         onSwitchChange={handleSwitchChange}
+        onReassign={handleOpenReasginarTransportistaModal}
       />
       <DataGrid
         rows={rows}
@@ -453,6 +473,14 @@ const ViajesList: React.FC = () => {
         onClose={handleCloseRevertirLoteModal}
         onSuccess={handleSuccessRevertirLote}
       />
+
+      <ReasignarTransportistaModal
+        open={reasignarTransportistaModalOpen}
+        onClose={handleCloseReasignarTransportistaModal}
+        onSuccess={handleSuccessReasignarTransportista}
+        filters={filters}
+      />
+
       <Dialog
         open={uploadModalOpen}
         onClose={handleCloseUploadModal}

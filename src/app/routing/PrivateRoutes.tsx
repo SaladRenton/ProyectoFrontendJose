@@ -26,10 +26,12 @@ const PrivateRoutes = () => {
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
   const { currentUser, logout } = useAuth()
   return (
+
+    
     <Routes>
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion  PAGINA INICIAL*/}
-        <Route path='auth/*' element={<Navigate to={currentUser?.role?.pagina_inicial ? currentUser.role.pagina_inicial : "/apps/viajes/list"} />} />
+        <Route path='auth/*' element={<Navigate to={(currentUser && currentUser.roles && currentUser.roles[0].pagina_inicial) ? currentUser.roles[0].pagina_inicial : "/apps/viajes/list"} />} />
         {/* Pages */}
 
         <Route path='dashboard' element={<DashboardWrapper />} />

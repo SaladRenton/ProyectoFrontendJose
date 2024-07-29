@@ -84,6 +84,33 @@ export const revertirLote = async (lote_viaje_id: number) => {
   }
 };
 
+const buildQueryParams = (params: Record<string, string | boolean | number | string[]>): string => {
+  return Object.entries(params)
+    .map(([key, value]) => {
+      if (key === 'persona_id_destino') {
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      }
+      if (Array.isArray(value)) {
+        return value.map(val => `filter[${encodeURIComponent(key)}][]=${encodeURIComponent(val)}`).join('&');
+      }
+      return `filter[${encodeURIComponent(key)}]=${encodeURIComponent(value)}`;
+    })
+    .join('&');
+};
+
+export const reasignarViajes = async (data: Record<string, string | boolean | number | string[]>) => {
+  try {
+    const queryParams = buildQueryParams(data);
+    const response = await axios.get(`${API_URL}/viajes/reasignacion?${queryParams}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || 'Error al reasignar los viajes.');
+    } else {
+      throw new Error('Error no manejado al reasignar los viajes.');
+    }
+  }
+};
 
 export const uploadFile = (file: File, operacion_id: number | boolean | string | string[]) => {
   const formData = new FormData();

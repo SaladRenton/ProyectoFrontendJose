@@ -13,13 +13,13 @@ interface FilterModalProps {
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]  >>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
     fecha_inicio: '',
     fecha_fin: '',
     contact_attempt_id: '',
-    zona_reparto_id:[] ,
+    zona_reparto_id: [],
     transportista_id: '',
     estado_id: '',
     nombre: '',
@@ -30,6 +30,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     sinTransportista: false,
     lote_viaje_id: '',
     id_identificacion_externo: '',
+    documento: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +79,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       sinTransportista: false,
       lote_viaje_id: '',
       id_identificacion_externo: '',
+      documento: ''
     });
   };
 
@@ -195,6 +197,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               fullWidth
               name="id_identificacion_externo"
               value={filters.id_identificacion_externo as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Documento"
+              fullWidth
+              name="documento"
+              value={filters.documento as string}
               onChange={handleInputChange}
             />
             <FormControlLabel

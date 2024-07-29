@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip,Stack,Switch, FormControlLabel  } from '@mui/material';
+import { Button, Tooltip, Stack, Switch, FormControlLabel } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; // Icono para el calendario
@@ -10,6 +10,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import MapIcon from '@mui/icons-material/Map';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 
 
@@ -29,6 +30,8 @@ interface ToolbarProps {
   onOpenDownloadCSVModal: () => void; // Añadir prop para abrir el modal de enviar lote a Omnileads
   isSwitchOn: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onReassign: () => void;
+
 
 
 }
@@ -47,6 +50,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onOpenDownloadCSVModal, // Añadir handler para abrir el modal de enviar lote a Omnileads
   isSwitchOn,
   onSwitchChange,
+  onReassign
 
 
 }) => {
@@ -95,25 +99,31 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
       <Tooltip title="Asignar Transportistas a un Lote">
         <IconButton color="primary" onClick={onOpenAsignarTransportistasModal}>
-        
-            <LocalShippingIcon />
-           
+
+          <LocalShippingIcon />
+
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Ver agenda de disponibilidad">
         <IconButton color="primary" onClick={onOpenDisponibilidadModal}>
-        
-            <CalendarTodayIcon />
-           
+
+          <CalendarTodayIcon />
+
         </IconButton>
       </Tooltip>
 
       <Tooltip title="Descargar CSV del Lote">
         <IconButton color="primary" onClick={onOpenDownloadCSVModal}>
-        
-            <GetAppIcon />
-           
+
+          <GetAppIcon />
+
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Reasignar Zona a transportista">
+        <IconButton color="primary" onClick={onReassign}>
+          <SwapHorizIcon />
         </IconButton>
       </Tooltip>
 
@@ -131,7 +141,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       />
 
 
-      
+
       {/* <Button variant="contained" color="primary" onClick={onOpenEnviarLoteOmnileadsModal}>
         Enviar Lote a Omnileads
       </Button> */}
