@@ -63,10 +63,10 @@ export const getColumns = (
     },
     { field: 'documento', headerName: 'Documento', width: 100, editable: false },
 
-    { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: true },
+    { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: false },
     { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false },
 
-    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: true, type: 'boolean', hide: true },
+    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: false, type: 'boolean', hide: false },
     {
       field: 'fecha_inicio',
       headerName: 'Fecha Inicio',
@@ -80,7 +80,7 @@ export const getColumns = (
       field: 'fecha_fin',
       headerName: 'Fecha Fin',
       width: 150,
-      editable: true,
+      editable: false,
       renderCell: (params) => {
         return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
@@ -119,13 +119,13 @@ export const getColumns = (
     },
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
     //{ field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
-    { field: 'email', headerName: 'Email', width: 200, editable: true },
-    { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
-    { field: 'apellido', headerName: 'Apellido', width: 150, editable: true },
-    { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: true },
+    { field: 'email', headerName: 'Email', width: 200, editable: false },
+    { field: 'nombre', headerName: 'Nombre', width: 150, editable: false },
+    { field: 'apellido', headerName: 'Apellido', width: 150, editable: false },
+    { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: false },
 
 
-    { field: 'user_id', headerName: 'User ID', width: 150, editable: true },
+    { field: 'user_id', headerName: 'User ID', width: 150, editable: false },
     {
       field: 'direccion',
       headerName: 'Dirección',
@@ -141,7 +141,7 @@ export const getColumns = (
 
       ),
     },
-    { field: 'telefono', headerName: 'Teléfono', width: 150, editable: true },
+    { field: 'telefono', headerName: 'Teléfono', width: 150, editable: false },
     {
       field: 'whatsapp', headerName: 'WhatsApp', width: 150,
       renderCell: (params) => {
@@ -161,7 +161,7 @@ export const getColumns = (
         }
       },
     },
-    { field: 'cantidad', headerName: 'Cantidad', width: 150, editable: true },
+    { field: 'cantidad', headerName: 'Cantidad', width: 150, editable: false },
 
     {
       field: 'paquetes', headerName: 'Paquetes', width: 150,
@@ -205,9 +205,9 @@ export const getColumns = (
       width: 150,
       renderCell: (params) => (
         <>
-          <IconButton onClick={() => handleOpenEditModal(params.row)}>
+          {/* <IconButton onClick={() => handleOpenEditModal(params.row)}>
             <EditIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton onClick={() => handleDeleteRow(params.row.id)}>
             <DeleteIcon />
           </IconButton>
