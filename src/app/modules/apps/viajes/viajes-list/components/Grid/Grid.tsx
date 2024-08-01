@@ -19,6 +19,8 @@ import DownloadCSVModal from '../table/modal/_descargarCsvLoteModal'; // Importa
 import '../table/css/rows.css';
 import ReasignarTransportistaModal from '../table/modal/_reasginarTransportista';
 
+import DocumentosModal from '../../../../../modals/components/DocumentosModal';
+import ValidacionModal from '../table/modal/_validacionModal';
 
 import {
   fetchViajes,
@@ -80,6 +82,8 @@ const ViajesList: React.FC = () => {
 
 
   const [contactoModalOpen, setContactoModalOpen] = useState<boolean>(false);
+  const [documentoModalOpen, setDocumentoModalOpen] = useState<boolean>(false);
+  const [validacionModalOpen, setValidacionModalOpen] = useState<boolean>(false);
 
   const [disponibilidadModalOpen, setDisponibilidadModalOpen] = useState<boolean>(false);
 
@@ -305,6 +309,35 @@ const ViajesList: React.FC = () => {
     setSelectedViaje(null);
   };
 
+
+  const handleOpenDocumentosModal = (viajeId: number, viaje: ViajeModel) => {
+    setSelectedViajeId(viajeId);
+    setCurrentViaje(viaje);
+    setDocumentoModalOpen(true);
+  };
+
+
+
+
+  const handleOpenValidacionModal = (viajeId: number, viaje: ViajeModel) => {
+    setSelectedViajeId(viajeId);
+    setCurrentViaje(viaje);
+    setValidacionModalOpen(true);
+  };
+
+
+
+  const handleCloseValidacionModal = () => {
+    setValidacionModalOpen(false);
+    setSelectedViaje(null);
+  };
+
+
+  const handleCloseDocumentosModal = () => {
+    setDocumentoModalOpen(false);
+    setSelectedViaje(null);
+  };
+
   const handleOpenDisponibilidadModal = () => {
     setDisponibilidadModalOpen(true);
   };
@@ -328,7 +361,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDownloadCSVModal = () => {
     setDownloadCSVModalOpen(false);
   };
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal);
+  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal, handleOpenDocumentosModal, handleOpenValidacionModal);
 
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSwitchOn(event.target.checked);
@@ -551,6 +584,25 @@ const ViajesList: React.FC = () => {
           open={contactoModalOpen}
           onClose={handleCloseContactoModal}
           viajeId={selectedViajeId}
+        />
+      )}
+
+
+      {selectedViajeId !== null && (
+        <DocumentosModal
+          open={documentoModalOpen}
+          onClose={handleCloseDocumentosModal}
+          viajeId={selectedViajeId}
+          currentViaje={currentViaje}
+        />
+      )}
+
+
+      {selectedViajeId !== null && (
+        <ValidacionModal
+          open={validacionModalOpen}
+          onClose={handleCloseValidacionModal}
+          validacion={currentViaje.validacion?currentViaje.validacion:null}
         />
       )}
 

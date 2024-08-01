@@ -11,6 +11,8 @@ import Link from '@mui/material/Link';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
+import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importa el icono de documentos adjuntos
+
 
 
 
@@ -21,6 +23,8 @@ export const getColumns = (
   handleOpenPaquetesModal: (paquetes: any[]) => void,
   handleOpenDireccionModal: (viaje: ViajeModel) => void,
   handleOpenContactosModal: (id: number) => void,
+  handleOpenDocumentosModal: (id: number,viaje: ViajeModel) => void,
+  handleOpenValidacionModal: (id: number,viaje: ViajeModel) => void,
 
 
 ): GridColDef[] => [
@@ -198,6 +202,33 @@ export const getColumns = (
       ),
 
     },
+
+    {
+      field: 'documentos', headerName: 'Documentos', width: 150,
+
+      renderCell: (params) => (
+
+        <IconButton onClick={() => handleOpenDocumentosModal(params.row.id,params.row)}>
+          <AttachFileIcon />
+        </IconButton>
+      ),
+
+    },
+
+    
+    {
+      field: 'validaciones', headerName: 'Validacion', width: 150,
+
+      renderCell: (params) => (
+
+        <IconButton onClick={() => handleOpenValidacionModal(params.row.id,params.row)}>
+          <AttachFileIcon style={{ color: params.row.validacion ? 'green' : 'gray' }} />
+        </IconButton>
+      ),
+
+    },
+
+    
 
     {
       field: 'actions',

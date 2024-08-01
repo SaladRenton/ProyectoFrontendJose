@@ -3,7 +3,7 @@ import { ZonaModel } from "../../../zonas/zonas-list/core/_models";
 
 
 export const includesConfig = {
-  viajes: ['operacion','zonaReparto','persona','estadoActual','paquetes'] // Añadir cualquier otro include necesario aquí
+  viajes: ['operacion','zonaReparto','persona','estadoActual','paquetes','validacion'] // Añadir cualquier otro include necesario aquí
 };
 
 
@@ -18,6 +18,15 @@ export interface OperacionModel {
   estado_inicial_id: number;
 }
 
+export interface ValidacionModel {
+  id: number;
+  viaje_id: number;
+  documento: string;
+  nombre_apellido: string;
+  firma: string; // Assuming this is a base64 string of the image
+  created_at: string;
+  updated_at: string;
+}
 
 
 // Tipo para el Viaje
@@ -57,6 +66,7 @@ export interface ViajeModel {
             contacto_exitoso: boolean,
             operacion?: OperacionModel; // Nuevo campo para la relación con OperacionModel
             zona_reparto?:ZonaModel
+            validacion?: ValidacionModel
 
 }
 
