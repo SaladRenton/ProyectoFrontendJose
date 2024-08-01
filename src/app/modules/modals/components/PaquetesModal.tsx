@@ -13,6 +13,7 @@ const PaquetesModal: React.FC<PaquetesModalProps> = ({ open, onClose, paquetes }
   const columns: GridColDef[] = [
     { field: 'descripcion', headerName: 'Descripción', width: 200 },
     { field: 'peso', headerName: 'Peso', width: 100 },
+    { field: 'mac', headerName: 'Mac', width: 200 },
     { field: 'codigo_barra', headerName: 'Código de Barra', width: 200 },
     { field: 'numero_serie', headerName: 'Número de Serie', width: 200 },
     { field: 'cantidad', headerName: 'Cantidad', width: 100 },
