@@ -88,7 +88,7 @@ const buildQueryParams = (params: Record<string, string | boolean | number | str
   return Object.entries(params)
     .map(([key, value]) => {
       if (key === 'persona_id_destino') {
-        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`;
       }
       if (Array.isArray(value)) {
         return value.map(val => `filter[${encodeURIComponent(key)}][]=${encodeURIComponent(val)}`).join('&');

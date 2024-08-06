@@ -60,7 +60,7 @@ const ReasignarTransportistaModal: React.FC<ReasignarTransportistaModalProps> = 
         </ol>
         <OperacionCombo
           value={operacionId}
-          onChange={(value) => setOperacionId(value)}
+          onChange={(value) => setOperacionId(value as string)}
         />
         <TransportistaCombo
           value={personaIdDestino as string}

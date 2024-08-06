@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
 import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importa el icono de documentos adjuntos
 
+import CreateIcon from '@mui/icons-material/Create';
 
 
 
@@ -222,7 +223,7 @@ export const getColumns = (
       renderCell: (params) => (
 
         <IconButton onClick={() => handleOpenValidacionModal(params.row.id,params.row)}>
-          <AttachFileIcon style={{ color: params.row.validacion ? 'green' : 'gray' }} />
+          <CreateIcon style={{ color: params.row.validacion ? 'green' : 'gray' }} />
         </IconButton>
       ),
 
