@@ -8,6 +8,7 @@ import OperacionTransportistaSelector from '../../../../../../selectors/componen
 import ErrorIcon from '@mui/icons-material/Error';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { format, eachDayOfInterval } from 'date-fns';
+import '../css/disponibilidad.css';
 
 interface TransportistaDisponibilidadProps {
   open: boolean;
@@ -70,7 +71,7 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
             disponibilidadMap.set(key, disp);
           });
           return disponibilidad?.map((disp: any) => ({
-            title: `${disp.disponibilidad}`,
+            title: `${disp.disponibilidad} (de ${disp.hora_inicio.split(':')[0]} a ${disp.hora_fin.split(':')[0]})`,
             start: disp.fecha,
             end: disp.fecha,
             allDay: true,
@@ -80,35 +81,35 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
           })).flat();
         });
 
-        const initialEvents = response.data.flatMap((item: any) => {
-          const { transportista, disponibilidad } = item;
-          return dateRange.map((date) => {
-            const formattedDate = format(date, 'yyyy-MM-dd');
-            const key = `${transportista.id}-${formattedDate}`;
+        // const initialEvents = response.data.flatMap((item: any) => {
+        //   const { transportista, disponibilidad } = item;
+        //   return dateRange.map((date) => {
+        //     const formattedDate = format(date, 'yyyy-MM-dd');
+        //     const key = `${transportista.id}-${formattedDate}`;
 
 
-            if (!disponibilidadMap.has(key)) {
-              return {
-                title: `${transportista.capacidad_maxima}`,
-                start: formattedDate,
-                end: formattedDate,
-                allDay: true,
-                backgroundColor: transportista.color || '#000000', // Fallback color
-                borderColor: transportista.color || '#000000', // Fallback color
-                transportistaId: transportista.id,
-              };
-            }
+        //     if (!disponibilidadMap.has(key)) {
+        //       return {
+        //         title: `${transportista.capacidad_maxima}`,
+        //         start: formattedDate,
+        //         end: formattedDate,
+        //         allDay: true,
+        //         backgroundColor: transportista.color || '#000000', // Fallback color
+        //         borderColor: transportista.color || '#000000', // Fallback color
+        //         transportistaId: transportista.id,
+        //       };
+        //     }
 
 
-          }).filter(Boolean);
-        });
+        //   }).filter(Boolean);
+        // });
 
         setTransportistas(response.data.map((item: any) => ({
           ...item.transportista,
           error: item.error || null,
         })));
 
-        setEvents([...initialEvents, ...fetchedEvents]);
+        setEvents([...fetchedEvents]);
       } catch (error) {
         console.error("Error fetching disponibilidad", error);
       }
@@ -208,11 +209,19 @@ const TransportistaDisponibilidad: React.FC<TransportistaDisponibilidadProps> = 
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               events={events}
+              //locales={[esLocale]} // Añadir la localización
+              locale="es" // Establecer el idioma a español
               headerToolbar={{
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,dayGridWeek,dayGridDay'
               }}
+              dayMaxEventRows={true} // Permitir que los eventos se envuelvan
+              eventContent={({ event }) => (
+                <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                  {event.title}
+                </div>
+              )}
             />
           </div>
         )}

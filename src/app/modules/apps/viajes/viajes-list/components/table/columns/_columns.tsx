@@ -24,8 +24,8 @@ export const getColumns = (
   handleOpenPaquetesModal: (paquetes: any[]) => void,
   handleOpenDireccionModal: (viaje: ViajeModel) => void,
   handleOpenContactosModal: (id: number) => void,
-  handleOpenDocumentosModal: (id: number,viaje: ViajeModel) => void,
-  handleOpenValidacionModal: (id: number,viaje: ViajeModel) => void,
+  handleOpenDocumentosModal: (id: number, viaje: ViajeModel) => void,
+  handleOpenValidacionModal: (id: number, viaje: ViajeModel) => void,
 
 
 ): GridColDef[] => [
@@ -40,7 +40,7 @@ export const getColumns = (
       headerName: 'Lote',
       width: 150,
       editable: false,
-      cellClassName:()=>'font-lote'
+      cellClassName: () => 'font-lote'
 
     },
     {
@@ -50,7 +50,7 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.operacion?.d_operacion
     },
-    
+
 
     {
       field: 'zona_reparto.codigo_zona',
@@ -81,6 +81,17 @@ export const getColumns = (
         return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
     },
+    // {
+    //   field: 'rango_horario',
+    //   headerName: 'Rango Horario',
+    //   width: 150,
+    //   editable: false,
+    //   renderCell: (params) => {
+    //     const { hora_desde, hora_hasta } = params.row;
+    //     const formatTime = (time) => time ? format(new Date(time), 'HH:mm') : '';
+    //     return hora_desde && hora_hasta ? `${formatTime(hora_desde)} - ${formatTime(hora_hasta)}` : '';
+    //   },
+    // },
     {
       field: 'fecha_fin',
       headerName: 'Fecha Fin',
@@ -209,27 +220,27 @@ export const getColumns = (
 
       renderCell: (params) => (
 
-        <IconButton onClick={() => handleOpenDocumentosModal(params.row.id,params.row)}>
+        <IconButton onClick={() => handleOpenDocumentosModal(params.row.id, params.row)}>
           <AttachFileIcon />
         </IconButton>
       ),
 
     },
 
-    
+
     {
       field: 'validaciones', headerName: 'Validacion', width: 150,
 
       renderCell: (params) => (
 
-        <IconButton onClick={() => handleOpenValidacionModal(params.row.id,params.row)}>
+        <IconButton onClick={() => handleOpenValidacionModal(params.row.id, params.row)}>
           <CreateIcon style={{ color: params.row.validacion ? 'green' : 'gray' }} />
         </IconButton>
       ),
 
     },
 
-    
+
 
     {
       field: 'actions',
