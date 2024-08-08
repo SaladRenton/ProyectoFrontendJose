@@ -1,6 +1,6 @@
 import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
 import { ViajeModel,includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest,asignarTransportistasRequest } from './_requests';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest,asignarTransportistasRequest,downloadViajesXlsx } from './_requests';
 
 export const fetchViajes = async (
   page: number,
@@ -249,6 +249,38 @@ export const asignarTransportistas = async (
       setModalErrors(errors);
     } else {
       setModalErrors([error.message]);
+    }
+  }
+  setLoading(false);
+};
+
+
+
+export const exportarViajePorLote = async (
+  lote: number,
+  setExportarViajesPorLoteErrors: React.Dispatch<React.SetStateAction<string | null>>,
+  setExportarViajesPorLoteLoading: React.Dispatch<React.SetStateAction<string[]>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await downloadViajesXlsx(lote);
+    setExportarViajesPorLoteErrors(null); // Limpiar cualquier error previo si la asignación es exitosa
+    setExportarViajesPorLoteLoading([]); // Limpiar cualquier error previo si la asignación es exitosa
+  
+  } catch (error: any) {
+    console.error("Error assigning zones", error);
+    const message = error.message || 'Asignar Zonas failed';
+    setExportarViajesPorLoteErrors(message);
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
+      setExportarViajesPorLoteErrors([message, ...errors]);
+    } else {
+      setExportarViajesPorLoteErrors([message]);
     }
   }
   setLoading(false);

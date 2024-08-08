@@ -11,6 +11,8 @@ import MapIcon from '@mui/icons-material/Map';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import TableChartIcon from '@mui/icons-material/TableChart';
+
 
 
 
@@ -31,6 +33,8 @@ interface ToolbarProps {
   isSwitchOn: boolean;
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onReassign: () => void;
+  onOpenExportarViajesPorLoteModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
+
 
 
 
@@ -50,7 +54,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onOpenDownloadCSVModal, // Añadir handler para abrir el modal de enviar lote a Omnileads
   isSwitchOn,
   onSwitchChange,
-  onReassign
+  onReassign,
+  onOpenExportarViajesPorLoteModal
 
 
 }) => {
@@ -113,10 +118,19 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Descargar CSV del Lote">
+      <Tooltip title="Descargar CSV Para Call Center">
         <IconButton color="primary" onClick={onOpenDownloadCSVModal}>
 
           <GetAppIcon />
+
+        </IconButton>
+      </Tooltip>
+
+
+      <Tooltip title="Descargar Xlsx de un Lote">
+        <IconButton color="primary" onClick={onOpenExportarViajesPorLoteModal}>
+
+          <TableChartIcon />
 
         </IconButton>
       </Tooltip>

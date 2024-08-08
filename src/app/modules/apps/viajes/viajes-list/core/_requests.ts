@@ -173,4 +173,42 @@ export const downloadCSV = async (loteViajeId: number, operacionId: string, zona
       throw new Error('Error descargando el CSV');
     }
   }
+
+
+
+  
+};
+
+
+
+export const downloadViajesXlsx = async (loteViajeId: number) => {
+  try {
+    const response = await axios.get(`${API_URL}/exportar-viajes`, {
+      params: {
+        'lote_viaje_id': loteViajeId,
+     
+      },
+      responseType: 'blob', // Important to handle binary data
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `lote_${loteViajeId}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+
+    if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
+      if (isAxiosErrorWithMessage(error)) {
+        const errorMessage = error.response?.data.message;
+        throw new Error(errorMessage);
+      }
+
+    } else {
+
+      throw new Error('Error descargando el CSV');
+    }
+  }
 };

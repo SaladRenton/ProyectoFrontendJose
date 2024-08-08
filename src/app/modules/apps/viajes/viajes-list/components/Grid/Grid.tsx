@@ -30,10 +30,13 @@ import {
   handleEditViaje,
   handleFileUpload,
   asignarZonas,
-  asignarTransportistas
+  asignarTransportistas,
+  exportarViajePorLote
+
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import ContactosHistoricosModal from '../../../../../modals/components/ContactosHistoricosModal';
+import ExportarViajesPorLoteModal from '../table/modal/_exportarViajesPorLoteModal';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -70,6 +73,12 @@ const ViajesList: React.FC = () => {
   const [asignarTransportistasModalOpen, setAsignarTransportistasModalOpen] = useState<boolean>(false);
   const [asignarTransportistasLoading, setAsignarTransportistasLoading] = useState<boolean>(false);
   const [asignarTransportistasErrors, setAsignarTransportistasErrors] = useState<string[]>([]);
+
+
+  const [exportarViajesPorLoteModalOpen, setExportarViajesPorLoteModalOpen] = useState<boolean>(false);
+  const [exportarViajesPorLoteErrors, setExportarViajesPorLoteErrors] = useState<string[]>([]);
+  const [exportarViajesPorLoteLoading, setExportarViajesPorLoteLoading] = useState<boolean>(false);
+
 
   const [historicosModalOpen, setHistoricosModalOpen] = useState<boolean>(false);
   const [selectedViajeId, setSelectedViajeId] = useState<number | null>(null);
@@ -238,6 +247,11 @@ const ViajesList: React.FC = () => {
     setAsignarZonasModalOpen(true);
   };
 
+  const handleExportarViajesPorLoteModal = () => {
+    setExportarViajesPorLoteModalOpen(true);
+  };
+
+
   const handleCloseAsignarZonasModal = () => {
     setAsignarZonasModalOpen(false);
     setAsignarZonasErrors([]); // Clear previous errors
@@ -250,6 +264,22 @@ const ViajesList: React.FC = () => {
       fetchViajesData(); // Refresca los datos después de la acción exitosa
     }
   };
+
+
+  const handleExportarViajesPorLote = async (lote: number) => {
+    await exportarViajePorLote(lote, setError, setExportarViajesPorLoteErrors, setExportarViajesPorLoteLoading);
+    if (asignarZonasErrors.length === 0) {
+      setExportarViajesPorLoteModalOpen(false); // Close modal only if there are no errors
+    }
+  };
+
+
+  const handleCloseExportarViajePorLote = () => {
+    setExportarViajesPorLoteModalOpen(false);
+    setExportarViajesPorLoteErrors([]); // Clear previous errors
+  };
+
+
 
   const handleOpenAsignarTransportistasModal = () => {
     setAsignarTransportistasModalOpen(true);
@@ -277,6 +307,9 @@ const ViajesList: React.FC = () => {
     setHistoricosModalOpen(false);
     setSelectedViajeId(null);
   };
+
+
+
 
   const handleOpenPaquetesModal = (paquetes: any[]) => {
     setSelectedPaquetes(paquetes);
@@ -418,6 +451,7 @@ const ViajesList: React.FC = () => {
         onOpenRevertirLoteModal={handleOpenRevertirLoteModal}
         onOpenUploadModal={handleOpenUploadModal} // Añadir handler para abrir el modal de carga
         onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
+        onOpenExportarViajesPorLoteModal={handleExportarViajesPorLoteModal}
         onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
         onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
         onOpenEnviarLoteOmnileadsModal={handleOpenEnviarLoteOmnileadsModal} // Añadir handler para abrir el modal de enviar lote a Omnileads
@@ -571,6 +605,9 @@ const ViajesList: React.FC = () => {
         loading={asignarTransportistasLoading}
         errors={asignarTransportistasErrors}
       />
+
+
+
       {selectedViajeId !== null && (
         <EstadosHistoricosModal
           open={historicosModalOpen}
@@ -602,7 +639,7 @@ const ViajesList: React.FC = () => {
         <ValidacionModal
           open={validacionModalOpen}
           onClose={handleCloseValidacionModal}
-          validacion={currentViaje.validacion?currentViaje.validacion:null}
+          validacion={currentViaje.validacion ? currentViaje.validacion : null}
         />
       )}
 
@@ -629,6 +666,14 @@ const ViajesList: React.FC = () => {
       <DownloadCSVModal
         open={downloadCSVModalOpen}
         onClose={handleCloseDownloadCSVModal}
+      />
+
+      <ExportarViajesPorLoteModal
+        open={exportarViajesPorLoteModalOpen}
+        onClose={handleCloseExportarViajePorLote}
+        onSubmit={handleExportarViajesPorLote}
+        loading={asignarZonasLoading}
+        errors={asignarZonasErrors}
       />
 
       <EnviarLoteOmnileadsModal

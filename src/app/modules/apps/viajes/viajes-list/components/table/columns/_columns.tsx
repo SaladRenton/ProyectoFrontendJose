@@ -81,17 +81,32 @@ export const getColumns = (
         return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
       },
     },
-    // {
-    //   field: 'rango_horario',
-    //   headerName: 'Rango Horario',
-    //   width: 150,
-    //   editable: false,
-    //   renderCell: (params) => {
-    //     const { hora_desde, hora_hasta } = params.row;
-    //     const formatTime = (time) => time ? format(new Date(time), 'HH:mm') : '';
-    //     return hora_desde && hora_hasta ? `${formatTime(hora_desde)} - ${formatTime(hora_hasta)}` : '';
-    //   },
-    // },
+    {
+      field: 'rango_horario',
+      headerName: 'Rango Horario',
+      width: 150,
+      editable: false,
+      renderCell: (params) => {
+        const { hora_desde, hora_hasta } = params.row;
+    
+        const parseTime = (time) => {
+          if (!time) return null;
+          const [hours, minutes, seconds] = time.split(':');
+          const date = new Date();
+          date.setHours(parseInt(hours, 10));
+          date.setMinutes(parseInt(minutes, 10));
+          date.setSeconds(parseInt(seconds, 10));
+          return date;
+        };
+    
+        const formatTime = (date) => date ? format(date, 'HH:mm') : '';
+    
+        const desdeDate = parseTime(hora_desde);
+        const hastaDate = parseTime(hora_hasta);
+    
+        return desdeDate && hastaDate ? `${formatTime(desdeDate)} - ${formatTime(hastaDate)}` : '';
+      },
+    },
     {
       field: 'fecha_fin',
       headerName: 'Fecha Fin',
