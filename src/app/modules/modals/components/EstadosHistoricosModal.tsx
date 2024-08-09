@@ -5,7 +5,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProg
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { esES } from '@mui/x-data-grid/locales';
-import { format } from 'date-fns';
+import { format,parseISO } from 'date-fns';
 
 interface EstadosHistoricosModalProps {
     open: boolean;
@@ -63,7 +63,7 @@ const EstadosHistoricosModal: React.FC<EstadosHistoricosModalProps> = ({ open, o
             headerName: 'Fecha',
             width: 150,
             renderCell: (params) => {
-                return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+                return params.value ? format(parseISO(params.value), 'dd/MM/yy') : null;
             },
         },
         {

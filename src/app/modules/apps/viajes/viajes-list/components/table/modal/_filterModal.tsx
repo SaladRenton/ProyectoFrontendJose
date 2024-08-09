@@ -16,8 +16,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
-    fecha_inicio: '',
-    fecha_fin: '',
+    fecha_inicio_desde: '',
+    fecha_inicio_hasta: '',
+    fecha_fin_desde: '',
+    fecha_fin_hasta: '',
     contact_attempt_id: '',
     zona_reparto_id: [],
     transportista_id: '',
@@ -65,8 +67,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     setFilters({
       id: '',
       operacion_id: '',
-      fecha_inicio: '',
-      fecha_fin: '',
+      fecha_inicio_desde: '',
+      fecha_inicio_hasta: '',
+      fecha_fin_desde: '',
+      fecha_fin_hasta: '',
       contact_attempt_id: '',
       zona_reparto_id: [],
       transportista_id: '',
@@ -83,6 +87,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     });
   };
 
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Filtrar Viajes</DialogTitle>
@@ -92,6 +97,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             <TextField
               margin="dense"
               label="ID Viaje"
+              placeholder='Ej: 2222,3333'
               fullWidth
               name="id"
               value={filters.id as string}
@@ -101,16 +107,32 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               value={filters.operacion_id}
               onChange={(value) => handleSelectChange('operacion_id', value)}
             />
-            <TextField
-              margin="dense"
-              label="Fecha Inicio"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              name="fecha_inicio"
-              value={filters.fecha_inicio as string}
-              onChange={handleInputChange}
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Inicio desde"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_inicio_desde"
+                  value={(filters.fecha_inicio_desde as string)}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Inicio Hasta"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_inicio_hasta"
+                  value={(filters.fecha_inicio_hasta as string)}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
             <ContactAttemptsTypeCombo
               value={filters.contact_attempt_id as string}
               onChange={(value) => handleSelectChange('contact_attempt_id', value)}
@@ -124,14 +146,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               value={filters.transportista_id as string}
               onChange={(value) => handleSelectChange('transportista_id', value)}
             />
-            <TextField
-              margin="dense"
-              label="Nombre"
-              fullWidth
-              name="nombre"
-              value={filters.nombre as string}
-              onChange={handleInputChange}
-            />
+
             <TextField
               margin="dense"
               label="Email"
@@ -153,28 +168,62 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              margin="dense"
-              label="Fecha Fin"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              name="fecha_fin"
-              value={filters.fecha_fin as string}
-              onChange={handleInputChange}
-            />
+
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Fin desde"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_fin_desde"
+                  value={filters.fecha_fin_desde as string}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Fin hasta"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_fin_hasta"
+                  value={filters.fecha_fin_hasta as string}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
             <EstadosCombo
               value={filters.estado_id as string}
               onChange={(value) => handleSelectChange('estado_id', value)}
             />
-            <TextField
-              margin="dense"
-              label="Apellido"
-              fullWidth
-              name="apellido"
-              value={filters.apellido as string}
-              onChange={handleInputChange}
-            />
+
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Nombre"
+                  fullWidth
+                  name="nombre"
+                  value={filters.nombre as string}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Apellido"
+                  fullWidth
+                  name="apellido"
+                  value={filters.apellido as string}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+
+            </Grid>
+
             <TextField
               margin="dense"
               label="Ubicación (latitud,longitud)"

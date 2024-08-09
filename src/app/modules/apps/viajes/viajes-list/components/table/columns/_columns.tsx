@@ -1,7 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { ViajeModel } from '../../../core/_models';
 import HistoryIcon from '@mui/icons-material/History';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -10,9 +9,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Link from '@mui/material/Link';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { format } from 'date-fns';
+import { format ,parseISO} from 'date-fns';
 import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importa el icono de documentos adjuntos
-
 import CreateIcon from '@mui/icons-material/Create';
 
 
@@ -78,7 +76,10 @@ export const getColumns = (
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+    
+        
+       //return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;esto asi atrasa un dia en la fecha
+        return params.value ? format(parseISO(params.value), 'dd/MM/yy') : null;
       },
     },
     {
@@ -113,7 +114,7 @@ export const getColumns = (
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+        return params.value ? format(parseISO(params.value), 'dd/MM/yy') : null;
       },
     },
     {
@@ -145,7 +146,7 @@ export const getColumns = (
       width: 150,
       editable: false,
       renderCell: (params) => {
-        return params.value ? format(new Date(params.value), 'dd/MM/yyyy') : null;
+        return params.value ? format(parseISO(params.value), 'dd/MM/yy') : null;
       },
     },
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
