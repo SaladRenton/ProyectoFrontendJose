@@ -22,7 +22,8 @@ const TransportistaCombo: React.FC<TransportistaComboProps> = ({ value, onChange
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const cachedTransportistas = localStorage.getItem('transportistas');
+    //const cachedTransportistas = localStorage.getItem('transportistas');
+    const cachedTransportistas = false;
     if (cachedTransportistas) {
       setTransportistas(JSON.parse(cachedTransportistas));
     } else {
@@ -31,7 +32,7 @@ const TransportistaCombo: React.FC<TransportistaComboProps> = ({ value, onChange
         try {
           const transportistasData = await fetchTransportistas();
           setTransportistas(transportistasData);
-          localStorage.setItem('transportistas', JSON.stringify(transportistasData));
+          //localStorage.setItem('transportistas', JSON.stringify(transportistasData));
         } catch (error) {
           console.error("Error fetching transportistas", error);
           setTransportistas([]);

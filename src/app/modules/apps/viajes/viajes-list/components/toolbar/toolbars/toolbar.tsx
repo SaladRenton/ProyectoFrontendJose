@@ -127,7 +127,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
 
 
-      <Tooltip title="Descargar Xlsx de un Lote">
+      <Tooltip title="Descargar XLSX">
         <IconButton color="primary" onClick={onOpenExportarViajesPorLoteModal}>
 
           <TableChartIcon />

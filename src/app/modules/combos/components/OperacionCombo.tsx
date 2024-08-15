@@ -19,7 +19,8 @@ const OperacionCombo: React.FC<OperacionComboProps> = ({ value, onChange }) => {
     const fetchOperaciones = async () => {
       setLoading(true);
       try {
-        const cachedOperaciones = localStorage.getItem('operaciones');
+       // const cachedOperaciones = localStorage.getItem('operaciones');
+       const cachedOperaciones = false;
         if (cachedOperaciones) {
           setOperaciones(JSON.parse(cachedOperaciones));
         } else {
@@ -32,7 +33,7 @@ const OperacionCombo: React.FC<OperacionComboProps> = ({ value, onChange }) => {
           });
           const operacionesData = response.data.data || [];
           setOperaciones(operacionesData);
-          localStorage.setItem('operaciones', JSON.stringify(operacionesData));
+        //  localStorage.setItem('operaciones', JSON.stringify(operacionesData));
         }
       } catch (error) {
         console.error("Error fetching operaciones", error);

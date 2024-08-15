@@ -20,14 +20,15 @@ const ContactAttemptsTypeCombo: React.FC<ContactAttemptsTypeComboProps> = ({ val
     const fetchTypes = async () => {
       setLoading(true);
       try {
-        const cachedTypes = localStorage.getItem('contact-attempts-types');
+     //   const cachedTypes = localStorage.getItem('contact-attempts-types');
+     const cachedTypes = false;
         if (cachedTypes) {
           setTypes(JSON.parse(cachedTypes));
         } else {
           const response = await axios.get(`${API_URL}/contact-attempts-types`);
           const TypesData = response.data.data || [];
           setTypes(TypesData);
-          localStorage.setItem('contact-attempts-types', JSON.stringify(TypesData));
+        //  localStorage.setItem('contact-attempts-types', JSON.stringify(TypesData));
         }
       } catch (error) {
         console.error("Error fetching Types", error);

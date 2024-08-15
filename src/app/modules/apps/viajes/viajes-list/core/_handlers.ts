@@ -257,21 +257,23 @@ export const asignarTransportistas = async (
 
 
 export const exportarViajePorLote = async (
-  lote: number,
-  setExportarViajesPorLoteErrors: React.Dispatch<React.SetStateAction<string | null>>,
-  setExportarViajesPorLoteLoading: React.Dispatch<React.SetStateAction<string[]>>,
+  filters: Record<string, string | boolean | number | string[]>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setExportarViajesPorLoteErrors: React.Dispatch<React.SetStateAction<string[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   setLoading(true);
   try {
-    const response = await downloadViajesXlsx(lote);
-    setExportarViajesPorLoteErrors(null); // Limpiar cualquier error previo si la asignación es exitosa
-    setExportarViajesPorLoteLoading([]); // Limpiar cualquier error previo si la asignación es exitosa
+    const response = await downloadViajesXlsx(filters);
+    setError(null); // Limpiar cualquier error previo si la asignación es exitosa
+    setExportarViajesPorLoteErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
+  
   
   } catch (error: any) {
-    console.error("Error assigning zones", error);
-    const message = error.message || 'Asignar Zonas failed';
-    setExportarViajesPorLoteErrors(message);
+    
+
+    const message = error.message || 'Exportando el XLSX';
+    setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
       const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
         ([field, descriptions]) => {

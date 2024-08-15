@@ -10,9 +10,11 @@ interface FilterModalProps {
   open: boolean;
   onClose: () => void;
   onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
+  title?:string;
+  buttonTitle?:string;
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
+const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title  ='Filtro de Viajes',buttonTitle="Aplicar"}) => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
@@ -20,6 +22,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     fecha_inicio_hasta: '',
     fecha_fin_desde: '',
     fecha_fin_hasta: '',
+    fecha_creacion_desde: '',
+    fecha_creacion_hasta: '',
     contact_attempt_id: '',
     zona_reparto_id: [],
     transportista_id: '',
@@ -71,6 +75,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       fecha_inicio_hasta: '',
       fecha_fin_desde: '',
       fecha_fin_hasta: '',
+      fecha_creacion_desde: '',
+      fecha_creacion_hasta: '',
       contact_attempt_id: '',
       zona_reparto_id: [],
       transportista_id: '',
@@ -90,7 +96,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Filtrar Viajes</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -129,6 +135,32 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
                   InputLabelProps={{ shrink: true }}
                   name="fecha_inicio_hasta"
                   value={(filters.fecha_inicio_hasta as string)}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Fin desde"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_fin_desde"
+                  value={filters.fecha_fin_desde as string}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  margin="dense"
+                  label="Fecha Fin hasta"
+                  type="date"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  name="fecha_fin_hasta"
+                  value={filters.fecha_fin_hasta as string}
                   onChange={handleInputChange}
                 />
               </Grid>
@@ -173,24 +205,24 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               <Grid item xs={6}>
                 <TextField
                   margin="dense"
-                  label="Fecha Fin desde"
+                  label="Fecha Creación desde"
                   type="date"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
-                  name="fecha_fin_desde"
-                  value={filters.fecha_fin_desde as string}
+                  name="fecha_creacion_desde"
+                  value={filters.fecha_creacion_desde as string}
                   onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   margin="dense"
-                  label="Fecha Fin hasta"
+                  label="Fecha Creación hasta"
                   type="date"
                   fullWidth
                   InputLabelProps={{ shrink: true }}
-                  name="fecha_fin_hasta"
-                  value={filters.fecha_fin_hasta as string}
+                  name="fecha_creacion_hasta"
+                  value={filters.fecha_creacion_hasta as string}
                   onChange={handleInputChange}
                 />
               </Grid>
@@ -236,6 +268,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               margin="dense"
               label="Lote Viaje ID"
               fullWidth
+              placeholder='Ej: 24,25'
               name="lote_viaje_id"
               value={filters.lote_viaje_id as string}
               onChange={handleInputChange}
@@ -275,7 +308,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
           Limpiar
         </Button>
         <Button onClick={handleApplyFilters} color="primary">
-          Aplicar
+          {buttonTitle}
         </Button>
       </DialogActions>
     </Dialog>

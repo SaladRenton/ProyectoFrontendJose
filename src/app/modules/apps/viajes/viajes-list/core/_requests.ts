@@ -181,34 +181,45 @@ export const downloadCSV = async (loteViajeId: number, operacionId: string, zona
 
 
 
-export const downloadViajesXlsx = async (loteViajeId: number) => {
+export const downloadViajesXlsx = async (filters: Record<string, string | boolean | number | string[]>) => { 
+
+
+
   try {
+
+    const filterParams = Object.keys(filters).reduce((acc, key) => {
+      acc[`filter[${key}]`] = filters[key].toString();
+      return acc;
+    }, {} as Record<string, string>);
+
     const response = await axios.get(`${API_URL}/exportar-viajes`, {
       params: {
-        'lote_viaje_id': loteViajeId,
+        ...filterParams,
      
       },
-      responseType: 'blob', // Important to handle binary data
+     // responseType: 'blob', // Important to handle binary data
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `lote_${loteViajeId}.xlsx`);
+    link.setAttribute('download', `viajes.xlsx`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   } catch (error) {
 
+
     if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
       if (isAxiosErrorWithMessage(error)) {
+       
         const errorMessage = error.response?.data.message;
         throw new Error(errorMessage);
       }
 
     } else {
 
-      throw new Error('Error descargando el CSV');
+      throw new Error('Error descargando el XLSX');
     }
   }
 };

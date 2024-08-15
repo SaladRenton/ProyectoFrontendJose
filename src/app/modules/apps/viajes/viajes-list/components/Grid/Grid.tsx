@@ -266,9 +266,9 @@ const ViajesList: React.FC = () => {
   };
 
 
-  const handleExportarViajesPorLote = async (lote: number) => {
-    await exportarViajePorLote(lote, setError, setExportarViajesPorLoteErrors, setExportarViajesPorLoteLoading);
-    if (asignarZonasErrors.length === 0) {
+  const handleExportarViajesPorLote = async (filters: Record<string, string | boolean | number | string[]>) => {
+    await exportarViajePorLote(filters, setError, setExportarViajesPorLoteErrors, setExportarViajesPorLoteLoading);
+    if (error && error.length >0 ) {
       setExportarViajesPorLoteModalOpen(false); // Close modal only if there are no errors
     }
   };
@@ -534,6 +534,7 @@ const ViajesList: React.FC = () => {
         open={filterDialogOpen}
         onClose={() => setFilterDialogOpen(false)}
         onApply={handleApplyFilters}
+        
       />
       <RevertirLoteModal
         open={revertirLoteModalOpen}
@@ -672,8 +673,8 @@ const ViajesList: React.FC = () => {
         open={exportarViajesPorLoteModalOpen}
         onClose={handleCloseExportarViajePorLote}
         onSubmit={handleExportarViajesPorLote}
-        loading={asignarZonasLoading}
-        errors={asignarZonasErrors}
+        loading={exportarViajesPorLoteLoading}
+        errors={exportarViajesPorLoteErrors}
       />
 
       <EnviarLoteOmnileadsModal
