@@ -128,6 +128,27 @@ export const asignarZonasRequest = (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-zonas/${lote}`);
 };
 
+
+export const cambioMasivoEstadosRequest = async (filters: Record<string, string | boolean | number | string[]>,estado_id_destino: string) => { 
+
+
+  const filterParams = Object.keys(filters).reduce((acc, key) => {
+    acc[`filter[${key}]`] = filters[key].toString();
+    return acc;
+  }, {} as Record<string, string>);
+
+  const response = await axios.get(`${API_URL}/viajes/cambiarEstados`, {
+    params: {
+      ...filterParams,
+      estado_id_destino: estado_id_destino
+   
+    }
+  });
+
+  return response;
+
+};
+
 export const asignarTransportistasRequest = async (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-transportistas/${lote}`);
 };
@@ -197,7 +218,7 @@ export const downloadViajesXlsx = async (filters: Record<string, string | boolea
         ...filterParams,
      
       },
-     // responseType: 'blob', // Important to handle binary data
+      responseType: 'blob', // Important to handle binary data
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));

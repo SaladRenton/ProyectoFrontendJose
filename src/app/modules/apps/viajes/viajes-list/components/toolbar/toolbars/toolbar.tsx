@@ -12,6 +12,9 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import TableChartIcon from '@mui/icons-material/TableChart';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+
+
 
 
 
@@ -34,6 +37,7 @@ interface ToolbarProps {
   onSwitchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onReassign: () => void;
   onOpenExportarViajesPorLoteModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
+  onOpenCambioEstadoMasivoModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
 
 
 
@@ -55,7 +59,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
   isSwitchOn,
   onSwitchChange,
   onReassign,
-  onOpenExportarViajesPorLoteModal
+  onOpenExportarViajesPorLoteModal,
+  onOpenCambioEstadoMasivoModal,
 
 
 }) => {
@@ -138,6 +143,15 @@ const Toolbar: React.FC<ToolbarProps> = ({
       <Tooltip title="Reasignar Zona a transportista">
         <IconButton color="primary" onClick={onReassign}>
           <SwapHorizIcon />
+        </IconButton>
+      </Tooltip>
+
+
+      <Tooltip title="Cambio de estados masivo">
+        <IconButton color="primary" onClick={onOpenCambioEstadoMasivoModal}>
+
+          <AutorenewIcon />
+
         </IconButton>
       </Tooltip>
 

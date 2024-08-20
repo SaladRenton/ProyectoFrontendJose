@@ -27,7 +27,8 @@ const OperacionZonaRepartoCombo: React.FC<OperacionZonaRepartoComboProps> = ({ o
             filter: {
               operacion_id: operacionId
             },
-            include: 'zonaReparto'
+            include: 'zonaReparto',
+            per_page: 200
           }
         });
         setZonas(response.data.data || []);

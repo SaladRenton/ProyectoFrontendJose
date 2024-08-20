@@ -1,6 +1,6 @@
-import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
-import { ViajeModel,includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile,asignarZonasRequest,asignarTransportistasRequest,downloadViajesXlsx } from './_requests';
+import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
+import { ViajeModel, includesConfig } from './_models';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest } from './_requests';
 
 export const fetchViajes = async (
   page: number,
@@ -68,7 +68,7 @@ export const handleProcessRowUpdate = async (
 export const handleDeleteRow = async (
   id: number,
   setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ViajeModel>>>,
-  
+
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   try {
@@ -144,13 +144,13 @@ export const handleEditViaje = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      
+
       const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
         ([field, descriptions]) => {
           return `${field}: ${(descriptions as string[]).join(' ')}`;
         }
       );
-    
+
       setModalErrors([message, ...errors]);
     } else {
       setModalErrors([message]);
@@ -211,6 +211,8 @@ export const asignarZonas = async (
     const response = await asignarZonasRequest(lote);
     setError(null); // Limpiar cualquier error previo si la asignación es exitosa
     setAsignarZonasErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
+    setLoading(false);
+
     return response.data;
   } catch (error: any) {
     console.error("Error assigning zones", error);
@@ -245,7 +247,7 @@ export const asignarTransportistas = async (
     console.error("Error assigning transportistas", error);
     setError(error.message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat().map(String);      
+      const errors = Object.values(error.response.data.errors).flat().map(String);
       setModalErrors(errors);
     } else {
       setModalErrors([error.message]);
@@ -267,10 +269,11 @@ export const exportarViajePorLote = async (
     const response = await downloadViajesXlsx(filters);
     setError(null); // Limpiar cualquier error previo si la asignación es exitosa
     setExportarViajesPorLoteErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
-  
-  
+    setLoading(false);
+
+
   } catch (error: any) {
-    
+
 
     const message = error.message || 'Exportando el XLSX';
     setError(message);
@@ -283,6 +286,43 @@ export const exportarViajePorLote = async (
       setExportarViajesPorLoteErrors([message, ...errors]);
     } else {
       setExportarViajesPorLoteErrors([message]);
+    }
+  }
+  setLoading(false);
+};
+
+
+
+
+
+export const cambioEstadoMasivo = async (
+  filters: Record<string, string | boolean | number | string[]>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setcambioMasivoEstadoModalErrors: React.Dispatch<React.SetStateAction<string[]>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  estado_id_destino: string
+) => {
+  setLoading(true);
+  try {
+    const response = await cambioMasivoEstadosRequest(filters,estado_id_destino);
+    setError(null); // Limpiar cualquier error previo si la asignación es exitosa
+    setcambioMasivoEstadoModalErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
+    setLoading(false);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error cambiando masivamente", error);
+    const message = error.message || 'El cambio masivo fallo';
+    setError(message);
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
+      setcambioMasivoEstadoModalErrors([message, ...errors]);
+      
+    } else {
+      setcambioMasivoEstadoModalErrors([message]);
     }
   }
   setLoading(false);

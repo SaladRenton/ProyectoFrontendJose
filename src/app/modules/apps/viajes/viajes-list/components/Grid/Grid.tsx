@@ -31,12 +31,13 @@ import {
   handleFileUpload,
   asignarZonas,
   asignarTransportistas,
-  exportarViajePorLote
-
+  exportarViajePorLote,
+  cambioEstadoMasivo
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import ContactosHistoricosModal from '../../../../../modals/components/ContactosHistoricosModal';
 import ExportarViajesPorLoteModal from '../table/modal/_exportarViajesPorLoteModal';
+import CambioEstadoMasivoModal from '../table/modal/_cambioEstadoMasivoModal';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -79,6 +80,10 @@ const ViajesList: React.FC = () => {
   const [exportarViajesPorLoteErrors, setExportarViajesPorLoteErrors] = useState<string[]>([]);
   const [exportarViajesPorLoteLoading, setExportarViajesPorLoteLoading] = useState<boolean>(false);
 
+
+  const [cambioMasivoEstadoModalOpen, setcambioMasivoEstadoModalOpen] = useState<boolean>(false);
+  const [cambioMasivoEstadoModalErrors, setcambioMasivoEstadoModalErrors] = useState<string[]>([]);
+  const [cambioMasivoEstadoModalLoading, setcambioMasivoEstadoModalLoading] = useState<boolean>(false);
 
   const [historicosModalOpen, setHistoricosModalOpen] = useState<boolean>(false);
   const [selectedViajeId, setSelectedViajeId] = useState<number | null>(null);
@@ -251,6 +256,10 @@ const ViajesList: React.FC = () => {
     setExportarViajesPorLoteModalOpen(true);
   };
 
+  const handleCambioEstadoMasivoModal = () => {
+    setcambioMasivoEstadoModalOpen(true);
+  };
+
 
   const handleCloseAsignarZonasModal = () => {
     setAsignarZonasModalOpen(false);
@@ -268,15 +277,46 @@ const ViajesList: React.FC = () => {
 
   const handleExportarViajesPorLote = async (filters: Record<string, string | boolean | number | string[]>) => {
     await exportarViajePorLote(filters, setError, setExportarViajesPorLoteErrors, setExportarViajesPorLoteLoading);
-    if (error && error.length >0 ) {
+    if (error && error.length > 0) {
       setExportarViajesPorLoteModalOpen(false); // Close modal only if there are no errors
     }
   };
 
 
+
+
+
+
   const handleCloseExportarViajePorLote = () => {
     setExportarViajesPorLoteModalOpen(false);
     setExportarViajesPorLoteErrors([]); // Clear previous errors
+  };
+
+
+
+  const handleCloseCambioEstadoMasivo = () => {
+    setcambioMasivoEstadoModalOpen(false);
+    setcambioMasivoEstadoModalErrors([]); // Clear previous errors
+  };
+
+
+
+
+  const handleCambioEstadoMasivo = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => {
+
+    try {
+      const response = await cambioEstadoMasivo(filters, setError, setcambioMasivoEstadoModalErrors, setcambioMasivoEstadoModalLoading, estado_id_destino);
+
+      if (error && error.length > 0) {
+        setcambioMasivoEstadoModalOpen(true);
+      }
+
+      return { message: response?.message || 'Estados actualizados correctamente.' };
+    } catch (error) {
+      console.error('Error en cambio masivo de estado:', error);
+      return { message: 'Error en cambio masivo de estado.' };
+    }
+
   };
 
 
@@ -452,6 +492,7 @@ const ViajesList: React.FC = () => {
         onOpenUploadModal={handleOpenUploadModal} // Añadir handler para abrir el modal de carga
         onOpenAsignarZonasModal={handleOpenAsignarZonasModal} // Añadir handler para abrir el modal de asignar zonas
         onOpenExportarViajesPorLoteModal={handleExportarViajesPorLoteModal}
+        onOpenCambioEstadoMasivoModal={handleCambioEstadoMasivoModal}
         onOpenAsignarTransportistasModal={handleOpenAsignarTransportistasModal} // Añadir handler para abrir el modal de asignar transportistas
         onOpenDisponibilidadModal={handleOpenDisponibilidadModal} // Añadir handler para abrir el modal de disponibilidad
         onOpenEnviarLoteOmnileadsModal={handleOpenEnviarLoteOmnileadsModal} // Añadir handler para abrir el modal de enviar lote a Omnileads
@@ -534,7 +575,7 @@ const ViajesList: React.FC = () => {
         open={filterDialogOpen}
         onClose={() => setFilterDialogOpen(false)}
         onApply={handleApplyFilters}
-        
+
       />
       <RevertirLoteModal
         open={revertirLoteModalOpen}
@@ -680,6 +721,15 @@ const ViajesList: React.FC = () => {
       <EnviarLoteOmnileadsModal
         open={enviarLoteOmnileadsModalOpen}
         onClose={handleCloseEnviarLoteOmnileadsModal}
+      />
+
+
+      <CambioEstadoMasivoModal
+        open={cambioMasivoEstadoModalOpen}
+        onClose={handleCloseCambioEstadoMasivo}
+        onSubmit={handleCambioEstadoMasivo}
+        loading={cambioMasivoEstadoModalLoading}
+        errors={cambioMasivoEstadoModalErrors}
       />
 
 

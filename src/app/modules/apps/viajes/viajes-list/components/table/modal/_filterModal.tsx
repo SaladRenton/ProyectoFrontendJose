@@ -10,11 +10,12 @@ interface FilterModalProps {
   open: boolean;
   onClose: () => void;
   onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
-  title?:string;
-  buttonTitle?:string;
+  title?: string;
+  buttonTitle?: string;
+  filtrosObligatorios?: string[]; // Nueva propiedad para los filtros obligatorios
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title  ='Filtro de Viajes',buttonTitle="Aplicar"}) => {
+const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply, title = 'Filtro de Viajes', buttonTitle = 'Aplicar', filtrosObligatorios = [] }) => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
@@ -38,6 +39,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
     id_identificacion_externo: '',
     documento: ''
   });
+
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [helperTexts, setHelperTexts] = useState<Record<string, string>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,8 +67,23 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
   };
 
   const handleApplyFilters = () => {
-    onApply(filters);
-    onClose();
+    const newErrors: Record<string, boolean> = {};
+    const newHelperTexts: Record<string, string> = {};
+
+    filtrosObligatorios.forEach((filtro) => {
+      if (!filters[filtro]) {
+        newErrors[filtro] = true;
+        newHelperTexts[filtro] = 'Este campo es obligatorio';
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setHelperTexts(newHelperTexts);
+    } else {
+      onApply(filters);
+      onClose();
+    }
   };
 
   const handleClearFilters = () => {
@@ -91,8 +110,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
       id_identificacion_externo: '',
       documento: ''
     });
+    setErrors({});
+    setHelperTexts({});
   };
-
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -108,10 +128,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="id"
               value={filters.id as string}
               onChange={handleInputChange}
+              error={!!errors.id}
+              helperText={helperTexts.id}
             />
             <OperacionCombo
               value={filters.operacion_id}
               onChange={(value) => handleSelectChange('operacion_id', value)}
+              error={!!errors.operacion_id}
+              helperText={helperTexts.operacion_id}
             />
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -122,8 +146,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   fullWidth
                   InputLabelProps={{ shrink: true }}
                   name="fecha_inicio_desde"
-                  value={(filters.fecha_inicio_desde as string)}
+                  value={filters.fecha_inicio_desde as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_inicio_desde}
+                  helperText={helperTexts.fecha_inicio_desde}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -134,8 +160,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   fullWidth
                   InputLabelProps={{ shrink: true }}
                   name="fecha_inicio_hasta"
-                  value={(filters.fecha_inicio_hasta as string)}
+                  value={filters.fecha_inicio_hasta as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_inicio_hasta}
+                  helperText={helperTexts.fecha_inicio_hasta}
                 />
               </Grid>
             </Grid>
@@ -150,6 +178,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="fecha_fin_desde"
                   value={filters.fecha_fin_desde as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_fin_desde}
+                  helperText={helperTexts.fecha_fin_desde}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -162,6 +192,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="fecha_fin_hasta"
                   value={filters.fecha_fin_hasta as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_fin_hasta}
+                  helperText={helperTexts.fecha_fin_hasta}
                 />
               </Grid>
             </Grid>
@@ -186,6 +218,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="email"
               value={filters.email as string}
               onChange={handleInputChange}
+              error={!!errors.email}
+              helperText={helperTexts.email}
             />
             <FormControlLabel
               control={
@@ -212,6 +246,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="fecha_creacion_desde"
                   value={filters.fecha_creacion_desde as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_creacion_desde}
+                  helperText={helperTexts.fecha_creacion_desde}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -224,12 +260,16 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="fecha_creacion_hasta"
                   value={filters.fecha_creacion_hasta as string}
                   onChange={handleInputChange}
+                  error={!!errors.fecha_creacion_hasta}
+                  helperText={helperTexts.fecha_creacion_hasta}
                 />
               </Grid>
             </Grid>
             <EstadosCombo
               value={filters.estado_id as string}
               onChange={(value) => handleSelectChange('estado_id', value)}
+              error={!!errors.estado_id}
+              helperText={helperTexts.estado_id}
             />
 
             <Grid container spacing={2}>
@@ -241,6 +281,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="nombre"
                   value={filters.nombre as string}
                   onChange={handleInputChange}
+                  error={!!errors.nombre}
+                  helperText={helperTexts.nombre}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -251,6 +293,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
                   name="apellido"
                   value={filters.apellido as string}
                   onChange={handleInputChange}
+                  error={!!errors.apellido}
+                  helperText={helperTexts.apellido}
                 />
               </Grid>
 
@@ -263,6 +307,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="location"
               value={filters.location as string}
               onChange={handleInputChange}
+              error={!!errors.location}
+              helperText={helperTexts.location}
             />
             <TextField
               margin="dense"
@@ -272,6 +318,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="lote_viaje_id"
               value={filters.lote_viaje_id as string}
               onChange={handleInputChange}
+              error={!!errors.lote_viaje_id}
+              helperText={helperTexts.lote_viaje_id}
             />
             <TextField
               margin="dense"
@@ -280,6 +328,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="id_identificacion_externo"
               value={filters.id_identificacion_externo as string}
               onChange={handleInputChange}
+              error={!!errors.id_identificacion_externo}
+              helperText={helperTexts.id_identificacion_externo}
             />
             <TextField
               margin="dense"
@@ -288,6 +338,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply,title 
               name="documento"
               value={filters.documento as string}
               onChange={handleInputChange}
+              error={!!errors.documento}
+              helperText={helperTexts.documento}
             />
             <FormControlLabel
               control={
