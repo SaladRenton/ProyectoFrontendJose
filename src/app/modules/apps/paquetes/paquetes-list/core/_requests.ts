@@ -26,7 +26,7 @@ function isAxiosError(error: unknown): error is AxiosError {
   return (error as AxiosError).isAxiosError !== undefined;
 }
 
-function isAxiosErrorWithMessage(error: unknown): error is AxiosError<{ message: string }> {
+function isAxiosErrorWithMessage(error: unknown): error is AxiosError<{ message: string,error?:string }> {
   return axios.isAxiosError(error) && error.response?.data && typeof error.response.data.message === 'string';
 }
 
@@ -54,16 +54,33 @@ export const revertirLotePaquete = async (lote_paquete_id: number) => {
 
 
 
-export const uploadFile = (file: File, operacion_id: number) => {
+export const uploadFile = async  (file: File, operacion_id: number) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('operacion_id', operacion_id.toString());
 
-  return axios.post(`${API_URL}/import/paquetes`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  try {
+
+    const response = await  axios.post(`${API_URL}/import/paquetes`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+
+    return response;
+
+  } catch (error: any) {
+    
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message + ' ' + error.response.data.error || 'Error al importar los equipos.');
+    } else {
+      throw new Error('Error no manejado al importar los equipos.');
+    }
+
+    
+  }
+
 };
 
 

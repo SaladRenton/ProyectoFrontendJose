@@ -74,6 +74,7 @@ export function MenuInner() {
             <MenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
           </MenuInnerWithSub>
           <MenuItem icon='abstract-28' to='/apps/zonas/list' title='Administracion de Zonas' />
+          <MenuItem icon='abstract-25' to='/apps/zonas-transportistas/list' title='Asociar zonas a transportistas' />
         </MenuInnerWithSub>
       }
 
