@@ -302,7 +302,7 @@ const ViajesList: React.FC = () => {
 
 
 
-  const handleCambioEstadoMasivo = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => {
+  const handleCambioEstadoMasivo = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) =>  {
 
     try {
       const response = await cambioEstadoMasivo(filters, setError, setcambioMasivoEstadoModalErrors, setcambioMasivoEstadoModalLoading, estado_id_destino);
@@ -311,10 +311,10 @@ const ViajesList: React.FC = () => {
         setcambioMasivoEstadoModalOpen(true);
       }
 
-      return { message: response?.message || 'Estados actualizados correctamente.' };
+      return { message: response?.message || 'Estados actualizados correctamente.',cantidad: response?.cantidad };
     } catch (error) {
       console.error('Error en cambio masivo de estado:', error);
-      return { message: 'Error en cambio masivo de estado.' };
+      return { message: 'Error en cambio masivo de estado.',cantidad:0 };
     }
 
   };
