@@ -6,7 +6,7 @@ import EstadoOrigenDestinoCombo from '../../../../../../combos/components/Estado
 interface CambioEstadoMasivoModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => Promise<{ message: string }>;
+  onSubmit: (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => Promise<{ message: string, cantidad: number }>;
   loading: boolean;
   errors: string[];
 }
@@ -15,7 +15,9 @@ const CambioEstadoMasivoModal: React.FC<CambioEstadoMasivoModalProps> = ({ open,
   const [activeStep, setActiveStep] = useState(0);
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [estadoIdDestino, setEstadoIdDestino] = useState<string>('');
-  const [finalMessage, setFinalMessage] = useState<string | null>(null);
+  const [finalMessage, setFinalMessage] = useState<{ message: string; cantidad: number } | null>(null);
+  const [estadoIdDestinoError, setEstadoIdDestinoError] = useState(false);
+
 
   const steps = ['Instrucciones', 'Filtrar Viajes', 'Seleccionar Estado Destino', 'Resultado'];
 
@@ -33,13 +35,18 @@ const CambioEstadoMasivoModal: React.FC<CambioEstadoMasivoModalProps> = ({ open,
   };
 
   const handleFinalSubmit = async () => {
+
+    if (!estadoIdDestino) {
+      setEstadoIdDestinoError(true);
+      return;
+    }
     try {
       const response = await onSubmit(filters, estadoIdDestino);
-      setFinalMessage(response.message); // Establece el mensaje final
+      setFinalMessage({ message: response.message, cantidad: response.cantidad }); // Establece el objeto con message y cantidad
       handleNext(); // Avanza al paso final para mostrar el mensaje
     } catch (error) {
       console.error('Error al cambiar el estado masivamente:', error);
-      setFinalMessage('Ocurrió un error al intentar cambiar los estados.');
+      setFinalMessage({ message: 'Ocurrió un error al intentar cambiar los estados.', cantidad: 0 });
       handleNext(); // Avanza al paso final incluso si hay un error
     }
   };
@@ -58,7 +65,7 @@ const CambioEstadoMasivoModal: React.FC<CambioEstadoMasivoModalProps> = ({ open,
   };
 
   const handleModalClose = () => {
-   
+
   };
 
   const handleFinalClose = () => {
@@ -101,14 +108,22 @@ const CambioEstadoMasivoModal: React.FC<CambioEstadoMasivoModalProps> = ({ open,
                 estado_id_origen={filters.estado_id as string}  // Usamos filters.estado_id como estado_id_origen
                 operacion_id={filters.operacion_id as string}  // Usamos filters.operacion_id como operacion_id
                 label="Estado Destino"
+                error={estadoIdDestinoError}
+                helperText={estadoIdDestinoError ? 'Este campo es obligatorio' : ''}
+           
               />
             </Grid>
           </Grid>
         )}
         {activeStep === 3 && finalMessage && (
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            {finalMessage}
-          </Typography>
+          <div>
+            <Typography variant="body1" sx={{ mt: 2, fontSize: '1.2rem' }}>
+              {finalMessage.message}
+            </Typography>
+            <Typography variant="h6" sx={{ mt: 1, fontSize: '1.44rem' }}>
+              Cantidad: {finalMessage.cantidad}
+            </Typography>
+          </div>
         )}
       </DialogContent>
       <DialogActions>
