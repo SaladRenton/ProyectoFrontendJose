@@ -26,6 +26,13 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.persona?.razon_social
     },
+    {
+      field: 'ultimo_viaje.viaje_id',
+      headerName: 'Viaje',
+      width: 150,
+      editable: false,
+      valueGetter: (params) => params.row.ultimo_viaje?.viaje_id
+    },
     { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: true },
     { field: 'lote_equipos_id', headerName: 'Lote Interno', width: 100, editable: true },
     { field: 'codigo_barra', headerName: 'Cod. Barra', width: 120, editable: true },

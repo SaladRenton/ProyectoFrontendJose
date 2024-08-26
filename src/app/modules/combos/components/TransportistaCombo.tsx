@@ -13,7 +13,11 @@ interface TransportistaComboProps {
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 const fetchTransportistas = async () => {
-  const response = await axios.get(`${API_URL}/transportistas`);
+  const response = await axios.get(`${API_URL}/transportistas`,{
+    params: {
+      per_page: 200
+    }
+  })
   return response.data.data || [];
 };
 

@@ -22,6 +22,7 @@ const ExportarViajesPorLoteModal: React.FC<ExportarViajesPorLoteModalProps> = ({
         title = "Exportar XLS de viajes"
         buttonTitle = "Exportar"
         filtrosObligatorios={['operacion_id']}
+        loading={loading}
       />
   );
 };

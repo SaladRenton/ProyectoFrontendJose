@@ -13,7 +13,7 @@ export const getViajes = (page: number, pageSize: number, filters: Record<string
   return axios.get(`${API_URL}/viajes`, {
     params: {
       page: page + 1,
-      sort: '-created_at',
+      sort: '-id',
       per_page: pageSize,
       ...filters,
       ...includeQuery

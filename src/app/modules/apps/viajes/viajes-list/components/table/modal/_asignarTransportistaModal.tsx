@@ -31,7 +31,7 @@ const AsignarTransportistasModal: React.FC<AsignarTransportistasModalProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Asignar Transportistas</DialogTitle>
+      <DialogTitle>Asignar Transportistas - Afecta solo viajes abiertos</DialogTitle>
       <DialogContent>
         <TextField
           margin="dense"

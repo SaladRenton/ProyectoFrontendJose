@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid, CircularProgress } from '@mui/material';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 import ContactAttemptsTypeCombo from '../../../../../../combos/components/ContactAttemptsTypeCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
@@ -13,9 +13,18 @@ interface FilterModalProps {
   title?: string;
   buttonTitle?: string;
   filtrosObligatorios?: string[]; // Nueva propiedad para los filtros obligatorios
+  loading?: boolean; // Propiedad opcional para controlar el estado de carga
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply, title = 'Filtro de Viajes', buttonTitle = 'Aplicar', filtrosObligatorios = [] }) => {
+const FilterModal: React.FC<FilterModalProps> = ({
+  open,
+  onClose,
+  onApply,
+  title = 'Filtro de Viajes',
+  buttonTitle = 'Aplicar',
+  filtrosObligatorios = [],
+  loading = false, // Por defecto, loading es false
+}) => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
     operacion_id: '',
@@ -81,8 +90,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply, title
       setErrors(newErrors);
       setHelperTexts(newHelperTexts);
     } else {
+
+
       onApply(filters);
-      onClose();
+      
+
+      if (!loading) {
+        onClose(); // Solo cerrar el modal si no está en estado de carga
+      }
     }
   };
 
@@ -359,8 +374,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply, title
         <Button onClick={handleClearFilters} color="secondary">
           Limpiar
         </Button>
-        <Button onClick={handleApplyFilters} color="primary">
-          {buttonTitle}
+        <Button onClick={handleApplyFilters} color="primary" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : buttonTitle}
         </Button>
       </DialogActions>
     </Dialog>

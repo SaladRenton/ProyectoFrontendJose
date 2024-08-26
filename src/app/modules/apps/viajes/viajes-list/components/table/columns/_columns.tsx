@@ -28,14 +28,14 @@ export const getColumns = (
 
 ): GridColDef[] => [
     {
-      field: 'id', headerName: 'Numero', width: 90, editable: false,
+      field: 'id', headerName: '#Numero', width: 90, editable: false,
       cellClassName: () => 'font-large'
       // getCellClassName: () => 'font-large', // Asigna una clase CSS a esta columna
 
     },
     {
       field: 'lote_viaje_id',
-      headerName: 'Lote',
+      headerName: '#Lote',
       width: 150,
       editable: false,
       cellClassName: () => 'font-lote'
@@ -66,10 +66,10 @@ export const getColumns = (
     },
     { field: 'documento', headerName: 'Documento', width: 100, editable: false },
 
-    { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: false },
-    { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false },
+    { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: false,hide: true   },
+    { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false ,hide: true },
 
-    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: false, type: 'boolean', hide: false },
+    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: false, type: 'boolean', hide: true },
     {
       field: 'fecha_inicio',
       headerName: 'Fecha Inicio',
@@ -157,7 +157,7 @@ export const getColumns = (
     { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: false },
 
 
-    { field: 'user_id', headerName: 'User ID', width: 150, editable: false },
+    { field: 'user_id', headerName: 'User ID', width: 150, editable: false,hide: true  },
     {
       field: 'direccion',
       headerName: 'Dirección',

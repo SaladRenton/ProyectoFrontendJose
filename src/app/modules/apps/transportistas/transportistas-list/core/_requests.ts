@@ -11,6 +11,7 @@ export const getTransportistas = (page: number, pageSize: number, filters: Recor
   return axios.get(`${API_URL}/transportistas`, {
     params: {
       page:page +1,
+      sort: 'id',
       per_page: pageSize,
       ...filters
     }

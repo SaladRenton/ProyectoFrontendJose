@@ -12,6 +12,7 @@ export const getUsuarios = (page: number, pageSize: number, filters: Record<stri
   return axios.get(`${API_URL}/users`, {
     params: {
       include: 'persona,roles',
+      sort: '-id',
       page: page + 1,
       per_page: pageSize,
       ...filters

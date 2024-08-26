@@ -263,13 +263,17 @@ export const exportarViajePorLote = async (
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setExportarViajesPorLoteErrors: React.Dispatch<React.SetStateAction<string[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
+
 ) => {
   setLoading(true);
+  //console.log("Descargando true");
   try {
     const response = await downloadViajesXlsx(filters);
     setError(null); // Limpiar cualquier error previo si la asignación es exitosa
     setExportarViajesPorLoteErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
     setLoading(false);
+    console.log("Descargando False");
+
 
 
   } catch (error: any) {

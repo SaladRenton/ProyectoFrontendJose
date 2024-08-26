@@ -11,6 +11,7 @@ interface PaquetesModalProps {
 
 const PaquetesModal: React.FC<PaquetesModalProps> = ({ open, onClose, paquetes }) => {
   const columns: GridColDef[] = [
+    { field: 'id', headerName: 'Id', width: 200 },
     { field: 'descripcion', headerName: 'Descripción', width: 200 },
     { field: 'peso', headerName: 'Peso', width: 100 },
     { field: 'mac', headerName: 'Mac', width: 200 },

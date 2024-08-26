@@ -12,15 +12,9 @@ interface FilterModalProps {
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
     id: '',
-    operacion_id: '',
-    transportista_id: '',
-    sinTransportista: false,
-    sinViaje: false,
-    entregado: false,
-    lote_equipos_id: '',
-    lote_externo: '',
-    caja: '',
-    pallet: '',
+    name:'',
+    email: '',
+
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,107 +47,35 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
   const handleClearFilters = () => {
     setFilters({
       id: '',
-      operacion_id: '',
-      transportista_id: '',
-      sinTransportista: false,
-      sinViaje: false,
-      entregado: false,
-      lote_equipos_id: '',
-      lote_externo: '',
-      caja: '',
-      pallet: '',
+      name:'',
+      email:''
     });
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Filtrar Paquetes</DialogTitle>
+      <DialogTitle>Filtrar Usuarios</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               margin="dense"
-              label="ID Paquete"
-              name="id"
+              label="Nombre"
+              name="name"
               fullWidth
-              value={filters.id as string}
+              value={filters.name as string}
               onChange={handleInputChange}
             />
-            <OperacionCombo
-              value={filters.operacion_id}
-              onChange={(value) => handleSelectChange('operacion_id', value)}
-            />
+          
             <TextField
               margin="dense"
-              label="Lote Equipos ID"
-              name="lote_equipos_id"
+              label="Email"
+              name="email"
               fullWidth
-              value={filters.lote_equipos_id as string}
+              value={filters.email as string}
               onChange={handleInputChange}
             />
-            <TextField
-              margin="dense"
-              label="Lote Externo"
-              name="lote_externo"
-              fullWidth
-              value={filters.lote_externo as string}
-              onChange={handleInputChange}
-            />
-            <TextField
-              margin="dense"
-              label="Caja"
-              name="caja"
-              fullWidth
-              value={filters.caja as string}
-              onChange={handleInputChange}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.sinViaje as boolean}
-                  onChange={handleCheckboxChange}
-                  name="sinViaje"
-                  color="primary"
-                />
-              }
-              label="Paquetes sin viaje asignado"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TransportistaCombo
-              value={filters.transportista_id as string}
-              onChange={(value) => handleSelectChange('transportista_id', value)}
-            />
-            <TextField
-              margin="dense"
-              label="Pallet"
-              name="pallet"
-              fullWidth
-              value={filters.pallet as string}
-              onChange={handleInputChange}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.sinTransportista as boolean}
-                  onChange={handleCheckboxChange}
-                  name="sinTransportista"
-                  color="primary"
-                />
-              }
-              label="Paquetes sin transportista"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filters.entregado as boolean}
-                  onChange={handleCheckboxChange}
-                  name="entregado"
-                  color="primary"
-                />
-              }
-              label="Paquetes entregados"
-            />
+           
           </Grid>
         </Grid>
       </DialogContent>

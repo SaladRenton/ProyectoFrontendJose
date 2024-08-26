@@ -24,6 +24,9 @@ export interface PaqueteModel {
     created_at?: string; // ISO date string
     updated_at?: string; // ISO date string
   };
+  ultimo_viaje?:{
+    viaje_id: number;
+  }
 }
 
 export const initialPaquete: PaqueteModel = {

@@ -107,7 +107,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
 
 
-      <Tooltip title="Asignar Transportistas a un Lote">
+      <Tooltip title="Asignar Transportista por Poligonos (solo viajes sin transportista) y abiertos">
         <IconButton color="primary" onClick={onOpenAsignarTransportistasModal}>
 
           <LocalShippingIcon />

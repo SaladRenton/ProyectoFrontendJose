@@ -24,7 +24,7 @@ const AsignarZonasModal: React.FC<AsignarZonasModalProps> = ({ open, onClose, on
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Asignar Zonas</DialogTitle>
+      <DialogTitle>Asignar Poligono (Zona) al Lote - Afecta solo viajes Abiertos</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Ingrese el número de lote para asignar las zonas.

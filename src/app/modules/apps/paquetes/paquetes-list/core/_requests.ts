@@ -11,7 +11,7 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 export const getPaquetes = (page: number, pageSize: number, filters: Record<string, string>) => {
   return axios.get(`${API_URL}/paquetes`, {
     params: {
-      include: 'persona,operacion,loteEquipos',
+      include: 'persona,operacion,loteEquipos,ultimoViaje',
       page: page + 1,
       per_page: pageSize,
       ...filters

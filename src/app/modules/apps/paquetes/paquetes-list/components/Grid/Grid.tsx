@@ -170,6 +170,19 @@ const PaquetesList: React.FC = () => {
         processRowUpdate={handleProcessRowUpdateWrapper}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+        sx={{
+          m: 2,
+          boxShadow: 1,
+          //border: 2,
+          '& .MuiDataGrid-columnHeaderTitle': {
+           //backgroundColor: '#f5f5f5',
+            fontSize: '1rem',
+            // fontWeight: 'bold',
+            color: 'black', // Color negro
+            fontWeight: 600, // Hacer la letra más negra
+            textTransform:  'uppercase'
+
+          }}}
 
       />
       <PaqueteModal

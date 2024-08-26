@@ -521,14 +521,16 @@ const ViajesList: React.FC = () => {
           m: 2,
           boxShadow: 1,
           //border: 2,
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#f5f5f5',
-            fontSize: '0.9rem',
+          '& .MuiDataGrid-columnHeaderTitle': {
+           //backgroundColor: '#f5f5f5',
+            fontSize: '1rem',
             // fontWeight: 'bold',
-            color: '#000', // Color negro
-            fontWeight: 900, // Hacer la letra más negra
+            color: 'black', // Color negro
+            fontWeight: 600, // Hacer la letra más negra
+            textTransform:  'uppercase'
 
           },
+          
           '& .font-large': {
             fontSize: '1.2rem', // Ajuste del tamaño de letra para la columna viaje_id
           },

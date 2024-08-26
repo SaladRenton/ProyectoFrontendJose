@@ -21,6 +21,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     lote_externo: '',
     caja: '',
     pallet: '',
+    mac: '',
+    codigo_barra: '',
+    numero_serie: '',
+    viaje_id: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +66,11 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       lote_externo: '',
       caja: '',
       pallet: '',
+      mac: '',
+      codigo_barra: '',
+      numero_serie: '',
+      viaje_id: ''
+
     });
   };
 
@@ -130,6 +139,42 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               name="pallet"
               fullWidth
               value={filters.pallet as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="MAC"
+              name="mac"
+              fullWidth
+              value={filters.mac as string}
+              onChange={handleInputChange}
+            />
+            <TextField
+              margin="dense"
+              label="Nro Serie"
+              name="numero_serie"
+              fullWidth
+              value={filters.numero_serie as string}
+              onChange={handleInputChange}
+            />
+
+           
+
+            <TextField
+              margin="dense"
+              label="Cod Barra"
+              name="codigo_barra"
+              fullWidth
+              value={filters.codigo_barra as string}
+              onChange={handleInputChange}
+            />
+
+             <TextField
+              margin="dense"
+              label="Viaje"
+              name="viaje_id"
+              fullWidth
+              value={filters.viaje_id as string}
               onChange={handleInputChange}
             />
             <FormControlLabel
