@@ -46,6 +46,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     sinTransportista: false,
     lote_viaje_id: '',
     id_identificacion_externo: '',
+    id_identificador_cliente_externo: '',
     documento: ''
   });
 
@@ -93,7 +94,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
 
       onApply(filters);
-      
+
 
       if (!loading) {
         onClose(); // Solo cerrar el modal si no está en estado de carga
@@ -123,6 +124,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
       sinTransportista: false,
       lote_viaje_id: '',
       id_identificacion_externo: '',
+      id_identificador_cliente_externo: '',
       documento: ''
     });
     setErrors({});
@@ -346,6 +348,18 @@ const FilterModal: React.FC<FilterModalProps> = ({
               error={!!errors.id_identificacion_externo}
               helperText={helperTexts.id_identificacion_externo}
             />
+
+            <TextField
+              margin="dense"
+              label="ID Cliente Externo"
+              fullWidth
+              name="id_identificador_cliente_externo"
+              value={filters.id_identificador_cliente_externo as string}
+              onChange={handleInputChange}
+              error={!!errors.id_identificador_cliente_externo}
+              helperText={helperTexts.id_identificador_cliente_externo}
+            />
+            
             <TextField
               margin="dense"
               label="Documento"

@@ -151,7 +151,7 @@ export const getColumns = (
     },
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
     //{ field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
-    { field: 'email', headerName: 'Email', width: 200, editable: false },
+    { field: 'email', headerName: 'Email', width: 200, editable: false ,hide: true },
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: false },
     { field: 'apellido', headerName: 'Apellido', width: 150, editable: false },
     { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: false },

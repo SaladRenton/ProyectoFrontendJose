@@ -38,6 +38,8 @@ import { esES } from '@mui/x-data-grid/locales';
 import ContactosHistoricosModal from '../../../../../modals/components/ContactosHistoricosModal';
 import ExportarViajesPorLoteModal from '../table/modal/_exportarViajesPorLoteModal';
 import CambioEstadoMasivoModal from '../table/modal/_cambioEstadoMasivoModal';
+import UploadExcelAsignacionManualTransportistasModal from '../table/modal/_uploadExcelAsignacionManualTransportistasModal';
+import UploadExcelAsignacionManualAgendaModal from '../table/modal/_uploadExcelAsignacionManualAgendaModal';
 
 const ViajesList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<ViajeModel>>([]);
@@ -102,6 +104,8 @@ const ViajesList: React.FC = () => {
   const [disponibilidadModalOpen, setDisponibilidadModalOpen] = useState<boolean>(false);
 
   const [enviarLoteOmnileadsModalOpen, setEnviarLoteOmnileadsModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
+  const [enviarUploadExcelAsignacionManualTransportistasModalOpen, setUploadExcelAsignacionManualTransportistasModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
+  const [enviarUploadExcelAsignacionManualAgendaModalOpen, setUploadExcelAsignacionManualAgendaModalOpen] = useState<boolean>(false); // Estado para el modal de enviar lote a Omnileads
 
   const [downloadCSVModalOpen, setDownloadCSVModalOpen] = useState<boolean>(false);
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false); // Estado para el switch
@@ -418,7 +422,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDisponibilidadModal = () => {
     setDisponibilidadModalOpen(false);
   };
-
+  
   const handleOpenEnviarLoteOmnileadsModal = () => {
     setEnviarLoteOmnileadsModalOpen(true);
   };
@@ -426,6 +430,29 @@ const ViajesList: React.FC = () => {
   const handleCloseEnviarLoteOmnileadsModal = () => {
     setEnviarLoteOmnileadsModalOpen(false);
   };
+
+
+  const handleOpenUploadExcelAsignacionManualTransportistasModal = () => {
+    setUploadExcelAsignacionManualTransportistasModalOpen(true);
+  };
+
+  const handleCloseUploadExcelAsignacionManualTransportistasModal = () => {
+    setUploadExcelAsignacionManualTransportistasModalOpen(false);
+  };
+
+
+
+  
+  const handleOpenUploadExcelAsignacionManualAgendaModal = () => {
+    setUploadExcelAsignacionManualAgendaModalOpen(true);
+  };
+
+  const handleCloseUploadExcelAsignacionManualAgendaModal = () => {
+    setUploadExcelAsignacionManualAgendaModalOpen(false);
+  };
+
+
+
 
   const handleOpenDownloadCSVModal = () => {
     setDownloadCSVModalOpen(true);
@@ -500,6 +527,8 @@ const ViajesList: React.FC = () => {
         isSwitchOn={isSwitchOn}
         onSwitchChange={handleSwitchChange}
         onReassign={handleOpenReasginarTransportistaModal}
+        onOpenUploadExcelAsignacionManualTransportistasModal={handleOpenUploadExcelAsignacionManualTransportistasModal}
+        onOpenUploadExcelAsignacionManualAgendaModal={handleOpenUploadExcelAsignacionManualAgendaModal}
       />
       <DataGrid
         rows={rows}
@@ -596,7 +625,7 @@ const ViajesList: React.FC = () => {
         open={uploadModalOpen}
         onClose={handleCloseUploadModal}
       >
-        <DialogTitle>{"Cargar Archivo"}</DialogTitle>
+        <DialogTitle>{"Cargar Archivo de Viajes"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Selecciona un archivo y una operación para cargar.
@@ -723,6 +752,17 @@ const ViajesList: React.FC = () => {
       <EnviarLoteOmnileadsModal
         open={enviarLoteOmnileadsModalOpen}
         onClose={handleCloseEnviarLoteOmnileadsModal}
+      />
+
+        <UploadExcelAsignacionManualTransportistasModal
+        open={enviarUploadExcelAsignacionManualTransportistasModalOpen}
+        onClose={handleCloseUploadExcelAsignacionManualTransportistasModal}
+      />
+
+
+      <UploadExcelAsignacionManualAgendaModal
+        open={enviarUploadExcelAsignacionManualAgendaModalOpen}
+        onClose={handleCloseUploadExcelAsignacionManualAgendaModal}
       />
 
 

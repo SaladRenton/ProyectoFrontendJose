@@ -13,6 +13,10 @@ import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+
+
 
 
 
@@ -38,6 +42,8 @@ interface ToolbarProps {
   onReassign: () => void;
   onOpenExportarViajesPorLoteModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
   onOpenCambioEstadoMasivoModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
+  onOpenUploadExcelAsignacionManualTransportistasModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
+  onOpenUploadExcelAsignacionManualAgendaModal: () => void; // Añadir prop para abrir el modal de asignar transportistas
 
 
 
@@ -61,6 +67,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onReassign,
   onOpenExportarViajesPorLoteModal,
   onOpenCambioEstadoMasivoModal,
+  onOpenUploadExcelAsignacionManualTransportistasModal,
+  onOpenUploadExcelAsignacionManualAgendaModal
+  
 
 
 }) => {
@@ -107,11 +116,30 @@ const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
 
 
-      <Tooltip title="Asignar Transportista por Poligonos (solo viajes sin transportista) y abiertos">
+      <Tooltip title="Asignar transportista por poligonos">
         <IconButton color="primary" onClick={onOpenAsignarTransportistasModal}>
 
           <LocalShippingIcon />
 
+        </IconButton>
+      </Tooltip>
+
+
+
+
+      <Tooltip title="Asignar agenda manualmente">
+        <IconButton color="primary" onClick={onOpenUploadExcelAsignacionManualAgendaModal}>
+
+          <DateRangeIcon />
+
+        </IconButton>
+      </Tooltip>
+
+
+      
+      <Tooltip title="Asignar transportistas manualmente">
+        <IconButton color="primary" onClick={onOpenUploadExcelAsignacionManualTransportistasModal}>
+          <HandymanIcon />
         </IconButton>
       </Tooltip>
 

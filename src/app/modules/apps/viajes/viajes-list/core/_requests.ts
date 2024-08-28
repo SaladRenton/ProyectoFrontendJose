@@ -124,12 +124,163 @@ export const uploadFile = (file: File, operacion_id: number | boolean | string |
   });
 };
 
+
+export const uploadFileAsignacionTransportistasManual = async (file: File): Promise<string> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.post(`${API_URL}/upload-asignacion-transportistas-manual`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      responseType: 'blob', // Esto asegura que la respuesta se maneje como blob para archivos
+    });
+
+    // Verificar el tipo de contenido
+    const contentType = response.headers['content-type'];
+
+    if (contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      // Si es un archivo Excel, lo descargamos
+      const blob = new Blob([response.data], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'asignacion_transportistas.xlsx'); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      return 'Error: Existen errores cheque el archivo descargado';
+    } else if (contentType === 'application/json') {
+      // Si es JSON, lo parseamos y retornamos el mensaje
+      const text = await response.data.text(); // Leer la respuesta como texto
+      const jsonResponse = JSON.parse(text); // Parsear a JSON
+      return jsonResponse.message || 'Operación realizada exitosamente';
+    } else {
+      // Manejar otros tipos de respuestas si es necesario
+      throw new Error('Error: Tipo de respuesta desconocido');
+    }
+
+  } catch (error: any) {
+    if (error.response) {
+      // Manejo de errores del servidor
+      throw new Error(`Error: ${error.response.data.message}`);
+
+
+    } else {
+      // Manejo de errores de red o otros
+      throw new Error('Error al subir el archivo ' + error);
+
+
+    }
+  }
+};
+
+
+
+
+export const uploadFileAsignacionAgendaManual = async (file: File,operacionId: number | string): Promise<string> => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('operacion_id',  operacionId.toString());
+
+  try {
+    const response = await axios.post(`${API_URL}/upload-asignacion-agendamiento-manual`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      responseType: 'blob', // Esto asegura que la respuesta se maneje como blob para archivos
+    });
+
+    // Verificar el tipo de contenido
+    const contentType = response.headers['content-type'];
+
+    if (contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      // Si es un archivo Excel, lo descargamos
+      const blob = new Blob([response.data], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'asignacion_agenda.xlsx'); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      return 'Error: Existen errores cheque el archivo descargado';
+    } else if (contentType === 'application/json') {
+      // Si es JSON, lo parseamos y retornamos el mensaje
+      const text = await response.data.text(); // Leer la respuesta como texto
+      const jsonResponse = JSON.parse(text); // Parsear a JSON
+      return jsonResponse.message || 'Operación realizada exitosamente';
+    } else {
+      // Manejar otros tipos de respuestas si es necesario
+      throw new Error('Error: Tipo de respuesta desconocido');
+    }
+
+  } catch (error: any) {
+    if (error.response) {
+      // Manejo de errores del servidor
+      throw new Error(`Error: ${error.response.data.message}`);
+
+
+    } else {
+      // Manejo de errores de red o otros
+      throw new Error('Error al subir el archivo ' + error);
+
+
+    }
+  }
+};
+
+
+
+export const downloadTemplate = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/download-template/transportistas-asignacion-manual`, {
+      responseType: 'blob', // Muy importante para recibir el archivo binario
+    });
+
+    // Crear un enlace para descargar el archivo
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'template-transportistas-asignacion-manual.xlsx'); // Nombre del archivo a descargar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    throw new Error('Error al descargar la plantilla.');
+  }
+};
+
+
+
+export const downloadTemplateAgenda = async ( operacionId : number | string) => {
+  try {
+    const response = await axios.get(`${API_URL}/download-template/agenda-template/`+operacionId, {
+      responseType: 'blob', // Muy importante para recibir el archivo binario
+    });
+
+    // Crear un enlace para descargar el archivo
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'template-transportistas-asignacion-agenda.xlsx'); // Nombre del archivo a descargar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    throw new Error('Error al descargar la plantilla.');
+  }
+};
+
 export const asignarZonasRequest = (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-zonas/${lote}`);
 };
 
 
-export const cambioMasivoEstadosRequest = async (filters: Record<string, string | boolean | number | string[]>,estado_id_destino: string) => { 
+export const cambioMasivoEstadosRequest = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => {
 
 
   const filterParams = Object.keys(filters).reduce((acc, key) => {
@@ -141,7 +292,7 @@ export const cambioMasivoEstadosRequest = async (filters: Record<string, string 
     params: {
       ...filterParams,
       estado_id_destino: estado_id_destino
-   
+
     }
   });
 
@@ -197,12 +348,12 @@ export const downloadCSV = async (loteViajeId: number, operacionId: string, zona
 
 
 
-  
+
 };
 
 
 
-export const downloadViajesXlsx = async (filters: Record<string, string | boolean | number | string[]>) => { 
+export const downloadViajesXlsx = async (filters: Record<string, string | boolean | number | string[]>) => {
 
 
 
@@ -216,7 +367,7 @@ export const downloadViajesXlsx = async (filters: Record<string, string | boolea
     const response = await axios.get(`${API_URL}/exportar-viajes`, {
       params: {
         ...filterParams,
-     
+
       },
       responseType: 'blob', // Important to handle binary data
     });
@@ -233,7 +384,7 @@ export const downloadViajesXlsx = async (filters: Record<string, string | boolea
 
     if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
       if (isAxiosErrorWithMessage(error)) {
-       
+
         const errorMessage = error.response?.data.message;
         throw new Error(errorMessage);
       }
