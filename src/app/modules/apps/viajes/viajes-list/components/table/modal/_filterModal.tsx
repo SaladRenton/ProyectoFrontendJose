@@ -47,7 +47,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
     lote_viaje_id: '',
     id_identificacion_externo: '',
     id_identificador_cliente_externo: '',
-    documento: ''
+    documento: '',
+    conPaquetes: false,
+    sinPaquetes: false,
+    enOml:false,
+    noEnOml: false
   });
 
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -125,7 +129,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
       lote_viaje_id: '',
       id_identificacion_externo: '',
       id_identificador_cliente_externo: '',
-      documento: ''
+      documento: '',
+      conPaquetes: false,
+      sinPaquetes: false,
+      enOml: false,
+      noEnOml: false
     });
     setErrors({});
     setHelperTexts({});
@@ -249,6 +257,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
               }
               label="Viajes sin zona"
             />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.enOml as boolean}
+                  onChange={handleCheckboxChange}
+                  name="enOml"
+                  color="primary"
+                />
+              }
+              label="En OML"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.noEnOml as boolean}
+                  onChange={handleCheckboxChange}
+                  name="noEnOml"
+                  color="primary"
+                />
+              }
+              label="No esten en OML"
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
 
@@ -359,7 +391,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               error={!!errors.id_identificador_cliente_externo}
               helperText={helperTexts.id_identificador_cliente_externo}
             />
-            
+
             <TextField
               margin="dense"
               label="Documento"
@@ -380,6 +412,29 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 />
               }
               label="Viajes sin transportista"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.sinPaquetes as boolean}
+                  onChange={handleCheckboxChange}
+                  name="sinPaquetes"
+                  color="primary"
+                />
+              }
+              label="Viajes sin paquetes"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.conPaquetes as boolean}
+                  onChange={handleCheckboxChange}
+                  name="conPaquetes"
+                  color="primary"
+                />
+              }
+              label="Viajes con paquetes"
             />
           </Grid>
         </Grid>
