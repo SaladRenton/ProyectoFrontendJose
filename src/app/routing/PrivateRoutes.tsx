@@ -9,6 +9,8 @@ import { WithChildren } from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import { useAuth } from '../modules/auth'
 
+
+
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
@@ -21,13 +23,14 @@ const PrivateRoutes = () => {
   const DisponibilidadPage = lazy(() => import('../modules/apps/disponibilidad/DisponibilidadPage'))
   const ZonasPage = lazy(() => import('../modules/apps/zonas/ZonasPage'))
   const ViajesPage = lazy(() => import('../modules/apps/viajes/ViajesPage'))
+  const SeguimientoPage = lazy(() => import('../modules/apps/seguimiento/ViajesPage'))
   const PaquetesPage = lazy(() => import('../modules/apps/paquetes/PaquetesPage'))
   const UsuariosPage = lazy(() => import('../modules/apps/usuarios/UsuariosPage'))
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
   const { currentUser, logout } = useAuth()
   return (
 
-    
+
     <Routes>
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion  PAGINA INICIAL*/}
@@ -122,6 +125,17 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <ViajesPage />
+
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='apps/seguimiento/*'
+          element={
+            <SuspensedView>
+              <SeguimientoPage />
+
             </SuspensedView>
           }
         />

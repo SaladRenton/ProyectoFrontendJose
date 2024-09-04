@@ -1,121 +1,142 @@
-import {useIntl} from 'react-intl'
-import {KTIcon} from '../../../../helpers'
-import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
-import {SidebarMenuItem} from './SidebarMenuItem'
+import { useIntl } from 'react-intl'
+import { KTIcon } from '../../../../helpers'
+import { SidebarMenuItemWithSub } from './SidebarMenuItemWithSub'
+import { SidebarMenuItem } from './SidebarMenuItem'
+import { useAuth } from '../../../../../app/modules/auth';
+
+const API_URL = import.meta.env.VITE_APP_API_URL.replace('/api', ''); // Reemplaza "/api" si está presente
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
+  const { auth } = useAuth()
+
+
+
+
+  const hasPermission = (permissionName: string): boolean => {
+
+    if (auth)
+      return auth.permissions.some(permission => permission.name === permissionName);
+    else
+      return false
+  };
+
 
   return (
     <>
-      <SidebarMenuItem
-        to='/dashboard'
-        icon='element-11'
-        title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
-        fontIcon='bi-app-indicator'
-      />
-      <SidebarMenuItem to='/builder' icon='switch' title='Layout Builder' fontIcon='bi-layers' />
-      <div className='menu-item'>
-        <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
-        </div>
-      </div>
-      <SidebarMenuItemWithSub
-        to='/crafted/pages'
-        title='Pages'
-        fontIcon='bi-archive'
-        icon='element-plus'
-      >
-        <SidebarMenuItemWithSub to='/crafted/pages/profile' title='Profile' hasBullet={true}>
-          <SidebarMenuItem to='/crafted/pages/profile/overview' title='Overview' hasBullet={true} />
-          <SidebarMenuItem to='/crafted/pages/profile/projects' title='Projects' hasBullet={true} />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/campaigns'
-            title='Campaigns'
-            hasBullet={true}
-          />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/documents'
-            title='Documents'
-            hasBullet={true}
-          />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/connections'
-            title='Connections'
-            hasBullet={true}
-          />
-        </SidebarMenuItemWithSub>
+      {/* Dashboard */}
+      {/* <SidebarMenuItem
+        to='/apps/dashboard'
+        icon='speedometer2' // Bootstrap icon
+        title={intl.formatMessage({ id: 'MENU.DASHBOARD' })}
+      /> */}
 
-        <SidebarMenuItemWithSub to='/crafted/pages/wizards' title='Wizards' hasBullet={true}>
-          <SidebarMenuItem
-            to='/crafted/pages/wizards/horizontal'
-            title='Horizontal'
-            hasBullet={true}
-          />
-          <SidebarMenuItem to='/crafted/pages/wizards/vertical' title='Vertical' hasBullet={true} />
+
+
+      {/* Operaciones */}
+      <SidebarMenuItemWithSub
+        to='/apps/operaciones'
+        title='Operaciones'
+        icon='shop' // Bootstrap icon
+      >
+        {hasPermission('viajes.store') &&
+          <SidebarMenuItem to='/apps/viajes/list' title='Gestion de Viajes' hasBullet={true} />
+        }
+        {hasPermission('viajes.index') &&
+          <SidebarMenuItem to='/apps/seguimiento/list' title='Seguimiento' hasBullet={true} />
+        }
+        <SidebarMenuItemWithSub to='/apps/operaciones/campañas' title='Campañas' hasBullet={true}>
+          <SidebarMenuItem to='/apps/operaciones/campañas/list' title='Listado de Campañas' hasBullet={true} />
+          <SidebarMenuItem to='/apps/operaciones/campañas/crear' title='Crear Campaña' hasBullet={true} />
         </SidebarMenuItemWithSub>
       </SidebarMenuItemWithSub>
-      <SidebarMenuItemWithSub
-        to='/crafted/accounts'
-        title='Accounts'
-        icon='profile-circle'
-        fontIcon='bi-person'
-      >
-        <SidebarMenuItem to='/crafted/account/overview' title='Overview' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/account/settings' title='Settings' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <SidebarMenuItemWithSub to='/error' title='Errors' fontIcon='bi-sticky' icon='cross-circle'>
-        <SidebarMenuItem to='/error/404' title='Error 404' hasBullet={true} />
-        <SidebarMenuItem to='/error/500' title='Error 500' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <SidebarMenuItemWithSub
-        to='/crafted/widgets'
-        title='Widgets'
-        icon='element-7'
-        fontIcon='bi-layers'
-      >
-        <SidebarMenuItem to='/crafted/widgets/lists' title='Lists' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/statistics' title='Statistics' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/charts' title='Charts' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/mixed' title='Mixed' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/tables' title='Tables' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/feeds' title='Feeds' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <div className='menu-item'>
-        <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Apps</span>
-        </div>
-      </div>
-      <SidebarMenuItemWithSub
-        to='/apps/chat'
-        title='Chat'
-        fontIcon='bi-chat-left'
-        icon='message-text-2'
-      >
-        <SidebarMenuItem to='/apps/chat/private-chat' title='Private Chat' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/group-chat' title='Group Chart' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <SidebarMenuItem
-        to='/apps/user-management/users'
-        icon='abstract-28'
-        title='User management'
-        fontIcon='bi-layers'
-      />
-      <div className='menu-item'>
-        <a
-          target='_blank'
-          className='menu-link'
-          href={import.meta.env.VITE_APP_PREVIEW_DOCS_URL + '/changelog'}
+
+      {/* Transportistas */}
+      {hasPermission('transportistas.store') &&
+        <SidebarMenuItemWithSub
+          to='/apps/transportistas'
+          title='Transportistas'
+          icon='truck' // Bootstrap icon
         >
-          <span className='menu-icon'>
-            <KTIcon iconName='code' className='fs-2' />
-          </span>
-          <span className='menu-title'>Changelog {import.meta.env.VITE_APP_VERSION}</span>
-        </a>
-      </div>
+          <SidebarMenuItem to='/apps/transportistas/list' title='Gestión de Transportistas' hasBullet={true} />
+          <SidebarMenuItem to='/apps/transportistas/asociar-zonas' title='Asociar Transportistas a Zonas' hasBullet={true} />
+          <SidebarMenuItem to='/apps/transportistas/gestion' title='Gestión de Transportes' hasBullet={true} />
+          {hasPermission('disponibilidad-transportistas.obtenerDisponibilidadDiaria') &&
+            <SidebarMenuItem to='/apps/disponibilidad/list' title='Ver Agenda' hasBullet={true} />
+          }
+        </SidebarMenuItemWithSub>
+      }
+      {/* Zonas */}
+
+      {hasPermission('zonas-reparto.update') &&
+        <SidebarMenuItemWithSub
+          to='/apps/zonas'
+          title='Zonas'
+          icon='map' // Bootstrap icon for map
+        >
+          <SidebarMenuItem to='/apps/zonas/list' title='Gestión de Zonas' hasBullet={true} />
+          <SidebarMenuItem to='/apps/zonas/asociar-operaciones' title='Asociar Operaciones y Zonas' hasBullet={true} />
+        </SidebarMenuItemWithSub>
+      }
+
+
+
+      {/* Paquetes */}
+      {hasPermission('paquetes.store') &&
+        <SidebarMenuItem
+          to='/apps/paquetes/list'
+          title='Paquetes'
+          icon='gift' // Bootstrap icon for Paquetes
+        />
+      }
+      {hasPermission('usuarios.index') &&
+
+        <SidebarMenuItemWithSub
+          to='/apps/usuarios'
+          title='Usuarios'
+          icon='people' // Bootstrap icon
+        >
+          <SidebarMenuItem to='/apps/usuarios/list' title='Gestión de Usuarios' hasBullet={true} />
+          <SidebarMenuItem to='/apps/usuarios/roles' title='Gestión de Roles' hasBullet={true} />
+        </SidebarMenuItemWithSub>
+      }
+
+
+      {/* Monitorización */}
+      <SidebarMenuItemWithSub
+        to='#' // We don't use 'to' since these are external links
+        title='Monitorización'
+        icon='eye' // Bootstrap icon
+      >
+        <div className='menu-item'>
+          <a
+            href={`${API_URL}/horizon`} // Removed /api/ and added horizon
+            target='_blank'
+            rel='noopener noreferrer'
+            className='menu-link'
+          >
+            <span className='menu-bullet'>
+              <span className='bullet bullet-dot'></span>
+            </span>
+            <span className='menu-title'>Procesos Background</span>
+          </a>
+        </div>
+        <div className='menu-item'>
+          <a
+            href={`${API_URL}/telescope`} // Removed /api/ and added telescope
+            target='_blank'
+            rel='noopener noreferrer'
+            className='menu-link'
+          >
+            <span className='menu-bullet'>
+              <span className='bullet bullet-dot'></span>
+            </span>
+            <span className='menu-title'>Telescope</span>
+          </a>
+        </div>
+      </SidebarMenuItemWithSub>
     </>
   )
 }
 
-export {SidebarMenuMain}
+export { SidebarMenuMain }

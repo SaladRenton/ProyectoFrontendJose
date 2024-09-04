@@ -21,16 +21,16 @@ const Sidebar = () => {
   return (
     <>
       {(config.layoutType === 'dark-sidebar' || config.layoutType === 'light-sidebar') && (
-        // <div
-        //   ref={sidebarRef}
-        //   id='kt_app_sidebar'
-        //   className={clsx('app-sidebar', config.app?.sidebar?.default?.class)}
-        // >
-        //   <SidebarLogo sidebarRef={sidebarRef} />
-        //   <SidebarMenu />
-        //   <SidebarFooter />
-        // </div>
-        <></>
+        <div
+          ref={sidebarRef}
+          id='kt_app_sidebar'
+          className={clsx('app-sidebar', config.app?.sidebar?.default?.class)}
+        >
+          <SidebarLogo sidebarRef={sidebarRef} />
+          <SidebarMenu />
+          <SidebarFooter />
+        </div>
+
       )}
     </>
   )

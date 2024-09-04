@@ -1,7 +1,7 @@
 import {ILayout} from './_Models'
 
 export const DefaultConfig: ILayout = {
-  layoutType: 'dark-sidebar',
+  layoutType: 'light-sidebar',
   main: {
     componentName: 'main',
     type: 'default',
@@ -44,7 +44,7 @@ export const DefaultConfig: ILayout = {
         push: {
           header: true,
           toolbar: true,
-          footer: true,
+          footer: false,
         },
         drawer: {
           enabled: true,
@@ -94,7 +94,7 @@ export const DefaultConfig: ILayout = {
     pageTitle: {
       componentName: 'page-title',
       display: true,
-      breadCrumb: true,
+      breadCrumb: false,
       description: false,
       direction: 'column',
     },

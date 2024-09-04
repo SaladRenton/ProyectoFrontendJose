@@ -21,7 +21,7 @@ export function MenuInner() {
   };
 
 
-
+  return ( <MenuItem title='Seguimiento' to='apps/seguimiento/list' />);
 
 
   return (

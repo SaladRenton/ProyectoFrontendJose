@@ -4,8 +4,8 @@ import {ViajesListWrapper} from './viajes-list/ViajeList'
 
 const usersBreadcrumbs: Array<PageLink> = [
   {
-    title: 'Operaciones',
-    path: '/apps/viajes/list',
+    title: 'Seguimiento',
+    path: '/apps/seguimiento/list',
     isSeparator: false,
     isActive: false,
   },

@@ -1,0 +1,34 @@
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 20px;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+  
+  .progress-bar-low {
+    background-color: #f44336;
+  }
+  
+  .progress-bar-medium {
+    background-color: #ffeb3b;
+  }
+  
+  .progress-bar-high {
+    background-color: #4caf50;
+  }
+  
+  .fc .fc-daygrid-event {
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  .fc .fc-daygrid-day-frame {
+    height: auto !important;
+  }
+  

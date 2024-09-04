@@ -1,0 +1,21 @@
+/* styles.css */
+.row-assigned {
+    background-color: orange;
+  }
+  
+  .row-completed {
+    
+    background-color: greenyellow;
+    
+  }
+  
+  .row-cancelled {
+    background-color: red;
+  }
+
+  .row-open {
+    background-color: white;
+  }
+  
+  /* Add other classes as needed */
+  
