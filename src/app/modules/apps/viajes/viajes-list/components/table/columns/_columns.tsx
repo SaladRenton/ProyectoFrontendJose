@@ -64,6 +64,13 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.persona?.razon_social
     },
+    {
+      field: 'campana_activa.nombre',
+      headerName: 'Campaña',
+      width: 150,
+      editable: false,
+      valueGetter: (params) => params.row.campana_activa?.nombre
+    },
     { field: 'documento', headerName: 'Documento', width: 100, editable: false },
 
     { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: false,hide: true   },
@@ -117,22 +124,8 @@ export const getColumns = (
         return params.value ? format(parseISO(params.value), 'dd/MM/yy') : null;
       },
     },
-    {
-      field: 'contacto_en_omnileads',
-      headerName: 'Contacto en Omnileads',
-      width: 150,
-      hide: false,
-      renderCell: (params) => (
-        params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
-      ),
-    },
-    {
-      field: 'error_contacto_omnileads',
-      headerName: 'Error Contacto Omnileads',
-      width: 200,
-      hide: true,
-      editable: false,
-    },
+   
+   
     {
       field: 'estado_actual.d_estado',
       headerName: 'Estado',

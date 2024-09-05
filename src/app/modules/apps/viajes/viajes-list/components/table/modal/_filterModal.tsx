@@ -267,7 +267,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   color="primary"
                 />
               }
-              label="En OML"
+              label="Tiene Campaña CallCenter"
             />
 
             <FormControlLabel
@@ -279,7 +279,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   color="primary"
                 />
               }
-              label="No esten en OML"
+              label="No tiene campaña CallCenter"
             />
           </Grid>
           <Grid item xs={12} sm={6}>

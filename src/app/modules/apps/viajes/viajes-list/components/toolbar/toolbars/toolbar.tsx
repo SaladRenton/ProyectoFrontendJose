@@ -151,13 +151,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Descargar CSV Para Call Center">
+    {/*   <Tooltip title="Descargar CSV Para Call Center">
         <IconButton color="primary" onClick={onOpenDownloadCSVModal}>
 
           <GetAppIcon />
 
         </IconButton>
-      </Tooltip>
+      </Tooltip> */}
 
 
       <Tooltip title="Descargar XLSX">

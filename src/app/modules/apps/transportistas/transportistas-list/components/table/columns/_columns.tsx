@@ -22,7 +22,7 @@ export const getColumns = (
     { field: 'cuit', headerName: 'Cuit.', width: 100, editable: true },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: 'Acciones',
       width: 150,
       renderCell: (params) => (
         <>

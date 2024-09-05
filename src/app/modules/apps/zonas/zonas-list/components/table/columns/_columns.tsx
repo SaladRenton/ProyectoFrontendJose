@@ -21,7 +21,7 @@ export const getColumns = (
   
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: 'Acciones',
       width: 150,
       renderCell: (params) => (
         <>

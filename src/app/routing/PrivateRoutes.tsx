@@ -27,6 +27,7 @@ const PrivateRoutes = () => {
   const PaquetesPage = lazy(() => import('../modules/apps/paquetes/PaquetesPage'))
   const UsuariosPage = lazy(() => import('../modules/apps/usuarios/UsuariosPage'))
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
+  const CampanasPage = lazy(() => import('../modules/apps/campanas/CampanasPage'))
   const { currentUser, logout } = useAuth()
   return (
 
@@ -135,6 +136,17 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <SeguimientoPage />
+
+            </SuspensedView>
+          }
+        />
+
+
+        <Route
+          path='/apps/operaciones/campanas/*'
+          element={
+            <SuspensedView>
+              <CampanasPage />
 
             </SuspensedView>
           }

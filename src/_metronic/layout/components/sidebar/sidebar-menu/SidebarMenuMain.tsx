@@ -45,10 +45,12 @@ const SidebarMenuMain = () => {
         {hasPermission('viajes.index') &&
           <SidebarMenuItem to='/apps/seguimiento/list' title='Seguimiento' hasBullet={true} />
         }
-        <SidebarMenuItemWithSub to='/apps/operaciones/campañas' title='Campañas' hasBullet={true}>
-          <SidebarMenuItem to='/apps/operaciones/campañas/list' title='Listado de Campañas' hasBullet={true} />
-          <SidebarMenuItem to='/apps/operaciones/campañas/crear' title='Crear Campaña' hasBullet={true} />
-        </SidebarMenuItemWithSub>
+
+        {hasPermission('campana.index') &&
+          <SidebarMenuItemWithSub to='/apps/operaciones/campanas' title='Campañas' hasBullet={true}>
+            <SidebarMenuItem to='/apps/operaciones/campanas/list' title='Gestión de Campañas' hasBullet={true} />
+          </SidebarMenuItemWithSub>
+        }
       </SidebarMenuItemWithSub>
 
       {/* Transportistas */}

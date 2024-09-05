@@ -3,7 +3,7 @@ import { ZonaModel } from "../../../zonas/zonas-list/core/_models";
 
 
 export const includesConfig = {
-  viajes: ['operacion','zonaReparto','persona','estadoActual','paquetes','validacion'] // Añadir cualquier otro include necesario aquí
+  viajes: ['operacion','zonaReparto','persona','estadoActual','paquetes','validacion','campanaActiva'] // Añadir cualquier otro include necesario aquí
 };
 
 

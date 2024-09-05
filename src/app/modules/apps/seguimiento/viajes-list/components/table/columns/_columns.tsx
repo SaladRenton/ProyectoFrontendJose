@@ -64,12 +64,10 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.persona?.razon_social
     },
-    { field: 'documento', headerName: 'Documento', width: 100, editable: false },
 
-    { field: 'id_identificador_cliente_externo', headerName: 'Nro. Cliente Externo', width: 150, editable: false,hide: true   },
-    { field: 'lote_externo', headerName: 'Lote Externo', width: 150, editable: false ,hide: true },
 
-    { field: 'contacto_exitoso', headerName: 'Contacto Exitoso', width: 150, editable: false, type: 'boolean', hide: true },
+   
+
     {
       field: 'fecha_inicio',
       headerName: 'Fecha Inicio',
@@ -125,16 +123,15 @@ export const getColumns = (
       editable: false,
       valueGetter: (params) => params.row.estado_actual?.d_estado
     },
+
    
     //{ field: 'latitud', headerName: 'Latitud', width: 150, editable: true },
     //{ field: 'longitud', headerName: 'Longitud', width: 150, editable: true },
 
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: false },
     { field: 'apellido', headerName: 'Apellido', width: 150, editable: false },
-    { field: 'id_identificacion_externo', headerName: 'ID Identificación Externo', width: 150, editable: false },
 
 
-    { field: 'user_id', headerName: 'User ID', width: 150, editable: false,hide: true  },
     {
       field: 'direccion',
       headerName: 'Dirección',

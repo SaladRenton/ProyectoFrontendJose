@@ -69,7 +69,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onOpenCambioEstadoMasivoModal,
   onOpenUploadExcelAsignacionManualTransportistasModal,
   onOpenUploadExcelAsignacionManualAgendaModal
-  
+
 
 
 }) => {
@@ -97,7 +97,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </IconButton>
       </Tooltip>
 
-    
+      <Tooltip title="Descargar XLSX">
+        <IconButton color="primary" onClick={onOpenExportarViajesPorLoteModal}>
+
+          <TableChartIcon />
+
+        </IconButton>
+      </Tooltip>
 
 
       <FormControlLabel
@@ -112,6 +118,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
         label="Ver estados con colores"
       />
 
+      
 
 
       {/* <Button variant="contained" color="primary" onClick={onOpenEnviarLoteOmnileadsModal}>
