@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { filterConfig } from '../../../core/_filterConfig';
+import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 
 
 interface FilterModalProps {
@@ -24,10 +25,22 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     onClose();
   };
 
+  const handleSelectChange = (name: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value
+    }));
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Filtrar Campañas</DialogTitle>
       <DialogContent>
+        <OperacionCombo
+          value={filters.operacion_id}
+          onChange={(value) => handleSelectChange('operacion_id', value as string)}
+
+        />
         {filterConfig.filter(config => config.enabled).map(config => (
           <TextField
             key={config.field}
@@ -37,7 +50,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             fullWidth
             value={filters[config.field] || ''}
             onChange={handleInputChange}
-            placeholder={config.placeholder?config.placeholder:'' }
+            placeholder={config.placeholder ? config.placeholder : ''}
           />
         ))}
       </DialogContent>

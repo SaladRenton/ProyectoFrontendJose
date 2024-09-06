@@ -2,19 +2,9 @@ import React from 'react';
 import { Button, Tooltip, Stack, Switch, FormControlLabel } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; // Icono para el calendario
 import { IconButton } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import UndoIcon from '@mui/icons-material/Undo';
-import MapIcon from '@mui/icons-material/Map';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import HandymanIcon from '@mui/icons-material/Handyman';
-import DateRangeIcon from '@mui/icons-material/DateRange';
 
 
 

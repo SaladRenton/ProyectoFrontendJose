@@ -16,6 +16,14 @@ export const getColumns = (
   ): GridColDef[] => [
     { field: 'id', headerName: 'ID', width: 90, editable: false },
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
+    {
+      field: 'operacion.d_operacion',
+      headerName: 'Operación',
+      width: 150,
+      editable: false,
+      valueGetter: (params) => params.row.operacion?.d_operacion
+    },
+
     { field: 'descripcion', headerName: 'Descripción', width: 300, editable: true },
     { field: 'total_campana_viajes', headerName: 'Cantidad Leads', width: 150, editable: false },
     { field: 'total_contact_attempts', headerName: 'Citas concretadas', width: 200, editable: false },

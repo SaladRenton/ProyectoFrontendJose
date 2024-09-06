@@ -49,6 +49,9 @@ const SidebarMenuMain = () => {
         {hasPermission('campana.index') &&
           <SidebarMenuItemWithSub to='/apps/operaciones/campanas' title='Campañas' hasBullet={true}>
             <SidebarMenuItem to='/apps/operaciones/campanas/list' title='Gestión de Campañas' hasBullet={true} />
+            {hasPermission('estado-contacto.index') &&
+              <SidebarMenuItem to='/apps/operaciones/campanas/liquidaciones/list' title='Liquidación' hasBullet={true} />
+            }
           </SidebarMenuItemWithSub>
         }
       </SidebarMenuItemWithSub>

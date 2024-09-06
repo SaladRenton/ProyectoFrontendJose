@@ -1,71 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { FormControl, InputLabel, Select, MenuItem, CircularProgress } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, CircularProgress, FormHelperText, Checkbox, ListItemText } from '@mui/material';
 import axios from 'axios';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-interface ContactAttemptsTypeComboProps {
-  value: string;
-  onChange: (value: string) => void;
+interface ContactAttemptsTypesComboProps {
+  value: string[]; // Ahora es un array para manejar valores múltiples
+  onChange: (value: string[]) => void;
+  error?: boolean;
+  helperText?: string;
+  label?: string;
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
+const fetchContactAttemptsTypes = async () => {
+  const response = await axios.get(`${API_URL}/contact-attempts-types`, {
+    params: {
+      per_page: 200
+    }
+  });
+  return response.data.data || [];
+};
 
-
-const ContactAttemptsTypeCombo: React.FC<ContactAttemptsTypeComboProps> = ({ value, onChange }) => {
-  const [types, setTypes] = useState<any[]>([]);
+const ContactAttemptsTypesCombo: React.FC<ContactAttemptsTypesComboProps> = ({ value, onChange, error, helperText, label }) => {
+  const [types, setContactAttemptsTypes] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchTypes = async () => {
-      setLoading(true);
-      try {
-     //   const cachedTypes = localStorage.getItem('contact-attempts-types');
-     const cachedTypes = false;
-        if (cachedTypes) {
-          setTypes(JSON.parse(cachedTypes));
-        } else {
-          const response = await axios.get(`${API_URL}/contact-attempts-types`);
-          const TypesData = response.data.data || [];
-          setTypes(TypesData);
-        //  localStorage.setItem('contact-attempts-types', JSON.stringify(TypesData));
+    const cachedContactAttemptsTypes = localStorage.getItem('contact-attempts-types');
+    if (cachedContactAttemptsTypes) {
+      setContactAttemptsTypes(JSON.parse(cachedContactAttemptsTypes));
+    } else {
+      const fetchAndCacheContactAttemptsTypes = async () => {
+        setLoading(true);
+        try {
+          const contactAttemptsTypesData = await fetchContactAttemptsTypes();
+          setContactAttemptsTypes(contactAttemptsTypesData);
+          localStorage.setItem('contact-attempts-types', JSON.stringify(contactAttemptsTypesData));
+        } catch (error) {
+          console.error("Error fetching contact attempts types", error);
+          setContactAttemptsTypes([]);
         }
-      } catch (error) {
-        console.error("Error fetching Types", error);
-        setTypes([]);
-      }
-      setLoading(false);
-    };
+        setLoading(false);
+      };
 
-    fetchTypes();
+      fetchAndCacheContactAttemptsTypes();
+    }
   }, []);
 
-
-  const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const selectedValue = event.target.value as string;
-    onChange(selectedValue);
+  const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
+    const selectedValues = event.target.value as string[];
+    onChange(selectedValues);
   };
 
   return (
-    <FormControl fullWidth margin="dense">
-      <InputLabel>Tipo de Contacto</InputLabel>
+    <FormControl fullWidth margin="dense" error={error}>
+      <InputLabel>{label ? label : 'Tipos de Contacto'}</InputLabel>
       {loading ? (
         <CircularProgress size={24} />
       ) : (
-        <Select
-          value={value}
-          onChange={handleSelectChange}
-          label="Tipo Contacto"
-        >
-          {types.map((type) => (
-            <MenuItem key={type.id} value={type.id}>
-              {type.descripcion}
-            </MenuItem>
-          ))}
-        </Select>
+        <>
+          <Select
+            multiple
+            value={value}
+            onChange={handleSelectChange}
+            label={label ? label : 'Tipos de Contacto'}
+
+            renderValue={(selected) => selected.map(val => {
+              const type = types.find(z => z.id === val);
+              return type ? type.codigo_crm : '';
+            }).join(', ')}
+          >
+            {types.map((type) => (
+              <MenuItem key={type.id} value={type.id}>
+                <Checkbox checked={value.indexOf(type.id) > -1} />
+                <ListItemText primary={type.codigo_crm} />
+              </MenuItem>
+            ))}
+          </Select>
+          {helperText && <FormHelperText>{helperText}</FormHelperText>}
+        </>
       )}
     </FormControl>
   );
 };
 
-export default ContactAttemptsTypeCombo;
+export default ContactAttemptsTypesCombo;

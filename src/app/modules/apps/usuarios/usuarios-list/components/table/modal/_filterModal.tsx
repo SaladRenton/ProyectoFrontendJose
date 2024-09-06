@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid } from '@mui/material';
-import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
-import TransportistaCombo from '../../../../../../combos/components/TransportistaCombo';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Grid } from '@mui/material';
 
 interface FilterModalProps {
   open: boolean;
@@ -29,20 +27,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     onClose();
   };
 
-  const handleSelectChange = (name: string, value: string | boolean | number | string[]) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value
-    }));
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: checked
-    }));
-  };
+ 
 
   const handleClearFilters = () => {
     setFilters({

@@ -34,7 +34,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     fecha_fin_hasta: '',
     fecha_creacion_desde: '',
     fecha_creacion_hasta: '',
-    contact_attempt_id: '',
+    contact_attempt_id: [],
     zona_reparto_id: [],
     transportista_id: '',
     estado_id: '',
@@ -116,7 +116,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
       fecha_fin_hasta: '',
       fecha_creacion_desde: '',
       fecha_creacion_hasta: '',
-      contact_attempt_id: '',
+      contact_attempt_id: [],
       zona_reparto_id: [],
       transportista_id: '',
       estado_id: '',
@@ -223,7 +223,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               </Grid>
             </Grid>
             <ContactAttemptsTypeCombo
-              value={filters.contact_attempt_id as string}
+              value={filters.contact_attempt_id as string[]}
               onChange={(value) => handleSelectChange('contact_attempt_id', value)}
             />
             <OperacionZonaRepartoCombo
