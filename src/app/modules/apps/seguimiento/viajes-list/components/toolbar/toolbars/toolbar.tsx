@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip, Stack, Switch, FormControlLabel } from '@mui/material';
+import { Tooltip, Switch, FormControlLabel } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
 import { IconButton } from '@mui/material';
@@ -111,9 +111,6 @@ const Toolbar: React.FC<ToolbarProps> = ({
       
 
 
-      {/* <Button variant="contained" color="primary" onClick={onOpenEnviarLoteOmnileadsModal}>
-        Enviar Lote a Omnileads
-      </Button> */}
 
     </div>
   );

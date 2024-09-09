@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
-import { filterConfig } from '../../../core/_filterConfig';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, FormControlLabel, Checkbox, Grid } from '@mui/material';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
-
 
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string>) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
+
+    nombre: '',
+    activa: false,
+    viajes: '',
+    operacion_id: '',
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({
@@ -25,36 +29,88 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     onClose();
   };
 
-  const handleSelectChange = (name: string, value: string) => {
+  const handleSelectChange = (name: string, value: string | boolean | number | string[]) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value
     }));
   };
 
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: checked
+    }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+
+      nombre: '',
+      activa: '',
+      viajes: '',
+      operacion_id: '',
+
+    });
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Filtrar Campañas</DialogTitle>
+      <DialogTitle>Filtrar Campaña</DialogTitle>
       <DialogContent>
-        <OperacionCombo
-          value={filters.operacion_id}
-          onChange={(value) => handleSelectChange('operacion_id', value as string)}
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+          
+            <OperacionCombo
+              value={filters.operacion_id}
+              onChange={(value) => handleSelectChange('operacion_id', value)}
+            />
+            <TextField
+              margin="dense"
+              label="Nombre"
+              name="nombre"
+              fullWidth
+              value={filters.nombre as string}
+              onChange={handleInputChange}
+            />
+           
+       
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filters.activa as boolean}
+                  onChange={handleCheckboxChange}
+                  name="activa"
+                  color="primary"
+                />
+              }
+              label="Activa"
+            />
+          </Grid>
+          <Grid item xs={6}>
+        
+         
 
-        />
-        {filterConfig.filter(config => config.enabled).map(config => (
-          <TextField
-            key={config.field}
-            margin="dense"
-            label={config.headerName}
-            name={config.field}
-            fullWidth
-            value={filters[config.field] || ''}
-            onChange={handleInputChange}
-            placeholder={config.placeholder ? config.placeholder : ''}
-          />
-        ))}
+
+
+            <TextField
+              margin="dense"
+              label="Viaje"
+              name="viaje_id"
+              fullWidth
+              value={filters.viaje_id as string}
+              onChange={handleInputChange}
+            />
+           
+         
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleClearFilters} color="secondary">
+          Limpiar
+        </Button>
         <Button onClick={onClose} color="primary">
           Cancelar
         </Button>

@@ -27,7 +27,8 @@ const ContactAttemptsTypesCombo: React.FC<ContactAttemptsTypesComboProps> = ({ v
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const cachedContactAttemptsTypes = localStorage.getItem('contact-attempts-types');
+    //const cachedContactAttemptsTypes = localStorage.getItem('contact-attempts-types');
+    const cachedContactAttemptsTypes = false;
     if (cachedContactAttemptsTypes) {
       setContactAttemptsTypes(JSON.parse(cachedContactAttemptsTypes));
     } else {

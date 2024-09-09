@@ -2,8 +2,6 @@ import clsx from 'clsx'
 import { ToolbarType ,useLayout} from '../../../../../../../_metronic/layout/core'
 import {Toolbar} from './Toolbar'
 import {PageTitleWrapper} from './page-title'
-import { Navbar } from '../../../../../../../_metronic/layout/components/header/Navbar'
-import { HeaderWrapper } from '../../../../../../../_metronic/layout/components/header'
 
 const ToolbarWrapper = () => {
   const {config, classes} = useLayout()
