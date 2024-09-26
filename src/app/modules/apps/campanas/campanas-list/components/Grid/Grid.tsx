@@ -99,6 +99,14 @@ const CampanasList: React.FC = () => {
     }));
   };
 
+  const handleHtmlPlantillaChange = (plantilla_email: string) => {
+    setCurrentCampana((prev) => ({
+      ...prev,
+      plantilla_email: plantilla_email,
+ 
+    }));
+  };
+
   
   const handleExportarCsv = async (campanaId: number) => {
     await handleDownloadCsv(campanaId, setError, setModalLoading);
@@ -166,6 +174,7 @@ const CampanasList: React.FC = () => {
         onSubmit={handleAddCampanaWrapper}
         onOperacionChange={handleOperacionChange}
         onZonasRepartoChange={handleZonaRepartoChange}
+        onsetHtmlContent={handleHtmlPlantillaChange}
       />
 
       <FilterModal

@@ -26,6 +26,7 @@ export const getColumns = (
     },
 
     { field: 'descripcion', headerName: 'Descripción', width: 150, editable: true },
+    { field: 'total_emails_enviados', headerName: 'Cantidad Mails Enviados', width: 150, editable: true },
     { field: 'total_campana_viajes', headerName: 'Cantidad Leads', width: 150, editable: false },
     { field: 'total_contact_attempts', headerName: 'Concretadas', width: 200, editable: false },
     { field: 'total_contact_attempts_oml', headerName: 'Total OML', width: 100, editable: false },
@@ -83,6 +84,17 @@ export const getColumns = (
           onChange={(event) => params.api.setEditCellValue({ id: params.id, field: params.field, value: event.target.checked })}
         />
       ),
+    },
+
+    {
+      field: 'envio_en_proceso',
+      headerName: 'Envio mails activo?',
+      width: 200,
+      hide: false,
+      editable: false,
+      renderCell: (params) => (
+        params.value ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />
+      )
     },
    
    
