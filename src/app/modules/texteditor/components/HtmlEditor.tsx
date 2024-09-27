@@ -6,7 +6,6 @@ import 'react-quill/dist/quill.snow.css'; // Importar estilos de Quill
 interface HtmlEditorProps {
   value: string;
   onChange: (value: string) => void;
-  asuntoCorreo: string;
   
 }
 

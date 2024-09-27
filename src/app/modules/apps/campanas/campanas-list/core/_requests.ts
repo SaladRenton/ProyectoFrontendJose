@@ -39,6 +39,24 @@ export const updateCampana = async (campana: CampanaModel) => {
 };
 
 
+// Nuevo endpoint para actualizar un transportista
+export const enviarMasivo = async (campanaId: number) => {
+  try {
+    const response = await axios.post(`${API_URL}/campanas/${campanaId}/enviar-correos`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
+
+
+
+
+
+
 
 
 // Nuevo endpoint para agregar un transportista

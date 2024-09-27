@@ -9,9 +9,18 @@ import {
   fetchCampanas,
   handleProcessRowUpdate,
   handleAddCampana,
-  handleDownloadCsv
+  handleDownloadCsv,
+  handleEnviarMasivo,
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from '@mui/material'; // Importa los componentes necesarios de Material UI
 
 const CampanasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<CampanaModel>>([]);
@@ -23,13 +32,14 @@ const CampanasList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-
   const [modalErrors, setModalErrors] = useState<string[]>([]);
   const [currentCampana, setCurrentCampana] = useState<CampanaModel>(initialCampana);
-
-
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+
+  // Estado para el dialog de confirmación de envío masivo
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
+  const [selectedCampanaId, setSelectedCampanaId] = useState<number | null>(null);
 
   const fetchCampanasData = useCallback(() => {
     fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -39,15 +49,21 @@ const CampanasList: React.FC = () => {
     fetchCampanasData();
   }, [page, pageSize, fetchCampanasData]);
 
-  const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<CampanaModel>, oldRow: GridRowModel<CampanaModel>) => {
+  const handleProcessRowUpdateWrapper = async (
+    newRow: GridRowModel<CampanaModel>,
+    oldRow: GridRowModel<CampanaModel>
+  ) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
   };
 
-
-
   const validateFields = (): boolean => {
-    if (!currentCampana.nombre || !currentCampana.descripcion || !currentCampana.operacion_id || !currentCampana.zona_reparto_id) {
-      setValidationError('Los campos Nombre , descripción,operación y zona de reparto son obligatorios.');
+    if (
+      !currentCampana.nombre ||
+      !currentCampana.descripcion ||
+      !currentCampana.operacion_id ||
+      !currentCampana.zona_reparto_id
+    ) {
+      setValidationError('Los campos Nombre, Descripción, Operación y Zona de reparto son obligatorios.');
       return false;
     }
     setValidationError(null);
@@ -56,10 +72,17 @@ const CampanasList: React.FC = () => {
 
   const handleAddCampanaWrapper = async () => {
     if (!validateFields()) return;
-    handleAddCampana(currentCampana, fetchCampanasData, setOpen, setCurrentCampana, initialCampana, setError, setModalErrors, setModalLoading);
+    handleAddCampana(
+      currentCampana,
+      fetchCampanasData,
+      setOpen,
+      setCurrentCampana,
+      initialCampana,
+      setError,
+      setModalErrors,
+      setModalLoading
+    );
   };
-
- 
 
   const handleOpenAddModal = () => {
     setCurrentCampana(initialCampana);
@@ -79,23 +102,17 @@ const CampanasList: React.FC = () => {
     fetchCampanasData();
   };
 
-  
   const handleOperacionChange = (operacion_id: number) => {
     setCurrentCampana((prev) => ({
       ...prev,
       operacion_id: operacion_id,
- 
     }));
   };
 
-
-
-  
   const handleZonaRepartoChange = (zona_reparto_id: string[]) => {
     setCurrentCampana((prev) => ({
       ...prev,
       zona_reparto_id: zona_reparto_id,
- 
     }));
   };
 
@@ -103,18 +120,38 @@ const CampanasList: React.FC = () => {
     setCurrentCampana((prev) => ({
       ...prev,
       plantilla_email: plantilla_email,
- 
     }));
   };
 
-  
   const handleExportarCsv = async (campanaId: number) => {
     await handleDownloadCsv(campanaId, setError, setModalLoading);
-   
   };
 
+  const enviarMasivo = async (campanaId: number) => {
+    await handleEnviarMasivo(campanaId, setError, setModalLoading);
+    fetchCampanasData();
+  };
 
-  const columns = getColumns(handleExportarCsv);
+  // Abrir el diálogo de confirmación
+  const handleOpenConfirmDialog = (campanaId: number) => {
+    setSelectedCampanaId(campanaId);
+    setConfirmDialogOpen(true);
+  };
+
+  // Confirmar envío masivo después del diálogo
+  const handleConfirmEnviarMasivo = async () => {
+    if (selectedCampanaId !== null) {
+      await enviarMasivo(selectedCampanaId);
+    }
+    setConfirmDialogOpen(false); // Cerrar el diálogo después del envío
+  };
+
+  // Cancelar el diálogo de confirmación
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog);
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -150,18 +187,13 @@ const CampanasList: React.FC = () => {
         sx={{
           m: 2,
           boxShadow: 1,
-          //border: 2,
           '& .MuiDataGrid-columnHeaderTitle': {
-            //backgroundColor: '#f5f5f5',
             fontSize: '1rem',
-            // fontWeight: 'bold',
             color: 'black', // Color negro
             fontWeight: 600, // Hacer la letra más negra
-            textTransform: 'uppercase'
-
-          }
+            textTransform: 'uppercase',
+          },
         }}
-
       />
       <CampanaModal
         open={open}
@@ -183,7 +215,28 @@ const CampanasList: React.FC = () => {
         onApply={handleApplyFilters}
       />
 
-     
+      {/* Diálogo de confirmación */}
+      <Dialog
+        open={confirmDialogOpen}
+        onClose={handleCloseConfirmDialog}
+        aria-labelledby="confirm-dialog-title"
+        aria-describedby="confirm-dialog-description"
+      >
+        <DialogTitle id="confirm-dialog-title">{"Confirmar Envío Masivo"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-dialog-description">
+            ¿Desea generar el envío masivo de correos para esta campaña?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmEnviarMasivo} color="primary">
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

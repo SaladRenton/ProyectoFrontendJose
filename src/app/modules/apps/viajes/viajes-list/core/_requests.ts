@@ -27,6 +27,18 @@ export const getViajes = (page: number, pageSize: number, filters: Record<string
 // Otras funciones (updateviaje, deleteviaje, addviaje) permanecen igual
 
 
+// Nuevo endpoint para eliminar un viaje
+export const asignacionMasterViaje = async (id: number) => {
+  try {
+    const response = await axios.post(`${API_URL}/viajes/reasignacion-master/${id}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
 
 
 

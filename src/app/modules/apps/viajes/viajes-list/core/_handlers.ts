@@ -1,6 +1,6 @@
 import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
 import { ViajeModel, includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest } from './_requests';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest,asignacionMasterViaje } from './_requests';
 
 export const fetchViajes = async (
   page: number,
@@ -62,6 +62,26 @@ export const handleProcessRowUpdate = async (
       setModalErrors([message]);
     }
     return oldRow; // Revertir a la fila anterior si hay un error
+  }
+};
+
+
+
+
+export const handleAsignacionMasterRow = async (
+  id: number,
+  setRows: React.Dispatch<React.SetStateAction<GridRowsProp<ViajeModel>>>,
+
+  setError: React.Dispatch<React.SetStateAction<string | null>>
+) => {
+  try {
+    await asignacionMasterViaje(id);
+    //setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    setError(null); // Limpiar cualquier error previo si la eliminación es exitosa
+  } catch (error: any) {
+    console.error("Error cambiando el estado en forma Admin-master", error);
+    const message = error.message || 'Error cambiando el estado en forma Admin-master';
+    setError(message);
   }
 };
 

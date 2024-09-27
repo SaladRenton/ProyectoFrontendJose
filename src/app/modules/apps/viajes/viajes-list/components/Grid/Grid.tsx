@@ -32,7 +32,8 @@ import {
   asignarZonas,
   asignarTransportistas,
   exportarViajePorLote,
-  cambioEstadoMasivo
+  cambioEstadoMasivo,
+  handleAsignacionMasterRow
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import ContactosHistoricosModal from '../../../../../modals/components/ContactosHistoricosModal';
@@ -111,6 +112,12 @@ const ViajesList: React.FC = () => {
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false); // Estado para el switch
 
 
+  
+  const [asignacionMasterOpen, setAsignacionMasterDialogOpen] = useState<boolean>(false);
+  const [asignacionMasterItemId, setAsignacionMasterItemId] = useState<number | null>(null);
+  const [asignacionMasterLoading, setAsignacionMasterLoading] = useState<boolean>(false);
+
+
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
@@ -128,6 +135,12 @@ const ViajesList: React.FC = () => {
     setDeleteDialogOpen(true);
   };
 
+  
+  const handleAsignacionMasterRowWrapper = async (id: number) => {
+    setAsignacionMasterItemId(id);
+    setAsignacionMasterDialogOpen(true);
+  };
+
   const confirmDeleteRow = async () => {
     if (deleteItemId !== null) {
       setDeleteLoading(true);
@@ -135,6 +148,18 @@ const ViajesList: React.FC = () => {
       setDeleteLoading(false);
       setDeleteDialogOpen(false);
       setDeleteItemId(null);
+    }
+  };
+
+  
+  const confirmAsignacionMasterRow = async () => {
+    if (asignacionMasterItemId !== null) {
+      setAsignacionMasterLoading(true);
+      await handleAsignacionMasterRow(asignacionMasterItemId, setRows, setError);
+      fetchViajesData();
+      setAsignacionMasterLoading(false);
+      setAsignacionMasterDialogOpen(false);
+      setAsignacionMasterItemId(null);
     }
   };
 
@@ -461,7 +486,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDownloadCSVModal = () => {
     setDownloadCSVModalOpen(false);
   };
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal, handleOpenDocumentosModal, handleOpenValidacionModal);
+  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal, handleOpenDocumentosModal, handleOpenValidacionModal,handleAsignacionMasterRowWrapper);
 
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSwitchOn(event.target.checked);
@@ -602,6 +627,28 @@ const ViajesList: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={asignacionMasterOpen}
+        onClose={() => setAsignacionMasterDialogOpen(false)}
+      >
+        <DialogTitle>{"Confirmar Asignación"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Estás seguro que deseas pasar a asignado este viaje? Esta acción no se puede deshacer.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAsignacionMasterDialogOpen(false)} color="primary" disabled={asignacionMasterLoading}>
+            Cancelar
+          </Button>
+          <Button onClick={confirmAsignacionMasterRow} color="primary" autoFocus disabled={asignacionMasterLoading}>
+            {deleteLoading ? <CircularProgress size={24} /> : 'Confirmar'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
       <FilterModal
         open={filterDialogOpen}
         onClose={() => setFilterDialogOpen(false)}

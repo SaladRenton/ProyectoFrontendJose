@@ -1,5 +1,5 @@
 import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
-import { getCampanas, updateCampana, addCampana,downloadCSV } from './_requests';
+import { getCampanas, updateCampana, addCampana,downloadCSV,enviarMasivo } from './_requests';
 import { CampanaModel } from './_models';
 
 export const fetchCampanas = async (
@@ -124,6 +124,28 @@ export const handleDownloadCsv = async (
   } catch (error: any) {
     console.error("Error descargando el CSV", error);
     const message = "Error descargando el CSV " + error.message;
+    setError(message);
+   
+  }
+  setLoading(false);
+};
+
+
+
+
+export const handleEnviarMasivo = async (
+  campanaId: number,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+ 
+    await enviarMasivo(campanaId);
+    setError(null); // Limpiar cualquier error previo si la edición es exitosa
+  } catch (error: any) {
+    console.error("Error en el envio masivo", error);
+    const message = "Error en el envio masivo " + error.message;
     setError(message);
    
   }

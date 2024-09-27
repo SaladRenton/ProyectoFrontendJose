@@ -12,6 +12,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { format ,parseISO} from 'date-fns';
 import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importa el icono de documentos adjuntos
 import CreateIcon from '@mui/icons-material/Create';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+
 
 
 
@@ -24,6 +26,8 @@ export const getColumns = (
   handleOpenContactosModal: (id: number) => void,
   handleOpenDocumentosModal: (id: number, viaje: ViajeModel) => void,
   handleOpenValidacionModal: (id: number, viaje: ViajeModel) => void,
+  handleReasignacionMasivaRow: (id: number) => void,
+
 
 
 ): GridColDef[] => [
@@ -264,6 +268,9 @@ export const getColumns = (
             <DeleteIcon />
           </IconButton>
 
+          <IconButton onClick={() => handleReasignacionMasivaRow(params.row.id)}>
+            <AutorenewIcon />
+          </IconButton>
 
 
         </>
