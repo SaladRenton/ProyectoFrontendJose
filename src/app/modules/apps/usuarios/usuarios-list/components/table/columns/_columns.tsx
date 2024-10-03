@@ -12,6 +12,7 @@ export const getColumns = (
     { field: 'id', headerName: 'ID', width: 90, editable: false },
     { field: 'name', headerName: 'Nombre', width: 150, editable: true },
     { field: 'email', headerName: 'Email', width: 150, editable: true },
+    { field: 'celular', headerName: 'Celular', width: 150, editable: true },
     {
       field: 'roles.name',
       headerName: 'Rol',

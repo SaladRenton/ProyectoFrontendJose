@@ -81,7 +81,8 @@ export interface UserModel {
   socialNetworks?: UserSocialNetworksModel
   persona?: TransportistaModel
   role_id?:number
-  persona_id?:number
+  persona_id?:number,
+  celular:string
  
 }
 
@@ -95,7 +96,8 @@ export const initialUser: UserModelWithRol = {
   username: '',
   password: '',
   email: '',
-  roles:[]
+  roles:[],
+  celular:''
  
 
 
