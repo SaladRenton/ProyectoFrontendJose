@@ -5,14 +5,13 @@ import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[] | null>) => void; // Permitimos null en el tipo
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
-
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[] | null>>({
     nombre: '',
-    activa: false,
+    activa: null,  // Valor inicial de null
     viajes: '',
     operacion_id: '',
   });
@@ -36,22 +35,20 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
     }));
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
+  // Manejamos el ciclo null -> true -> false
+  const handleCheckboxChange = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: checked
+      activa: prevFilters.activa === null ? true : prevFilters.activa ? false : null,
     }));
   };
 
   const handleClearFilters = () => {
     setFilters({
-
       nombre: '',
-      activa: '',
+      activa: null,  // Volvemos a null al limpiar
       viajes: '',
       operacion_id: '',
-
     });
   };
 
@@ -61,7 +58,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-          
             <OperacionCombo
               value={filters.operacion_id}
               onChange={(value) => handleSelectChange('operacion_id', value)}
@@ -75,11 +71,12 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               onChange={handleInputChange}
             />
            
-       
+            {/* Checkbox con tres estados: true, false, null */}
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.activa as boolean}
+                  checked={filters.activa === true} // Si es true, se marca
+                  indeterminate={filters.activa === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="activa"
                   color="primary"
@@ -89,11 +86,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
             />
           </Grid>
           <Grid item xs={6}>
-        
-         
-
-
-
             <TextField
               margin="dense"
               label="Viaje"
@@ -102,8 +94,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               value={filters.viaje_id as string}
               onChange={handleInputChange}
             />
-           
-         
           </Grid>
         </Grid>
       </DialogContent>

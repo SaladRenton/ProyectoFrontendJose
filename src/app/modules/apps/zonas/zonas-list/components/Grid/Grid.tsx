@@ -53,9 +53,7 @@ const ZonasList: React.FC = () => {
     fetchZonas(page, pageSize, setRows, setRowCount, setError, setLoading, adjustedFilters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchZonasData();
-  }, [page, pageSize, fetchZonasData]);
+  
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ZonaModel>, oldRow: GridRowModel<ZonaModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
@@ -112,6 +110,7 @@ const ZonasList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string>) => {
     setFilters(filters);
+    fetchZonasData();
   };
 
   const handleClearFilters = () => {

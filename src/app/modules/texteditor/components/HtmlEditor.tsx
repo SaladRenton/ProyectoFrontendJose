@@ -12,7 +12,6 @@ interface HtmlEditorProps {
 const variables = [
   { name: 'Nombre', value: '{nombre}' },
   { name: 'Apellido', value: '{apellido}' },
-  { name: 'Email', value: '{email}' },
   { name: 'Teléfono', value: '{telefono}' },
   { name: 'Cantidad ', value: '{cantidad}' },
   { name: 'Link formulario de contacto', value: '{link_formulario}' }, // Nueva variable

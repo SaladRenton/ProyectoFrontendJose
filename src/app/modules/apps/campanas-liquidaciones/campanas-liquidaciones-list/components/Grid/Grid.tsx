@@ -34,10 +34,6 @@ const CampanasLiquidacionesList: React.FC = () => {
     fetchContactAttempt(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchContactAttemptData();
-  }, [page, pageSize, fetchContactAttemptData]);
-
 
 
   const handleOpenFilterModal = () => {
@@ -46,6 +42,7 @@ const CampanasLiquidacionesList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string>) => {
     setFilters(filters);
+    fetchContactAttemptData();
   };
 
   const handleClearFilters = () => {

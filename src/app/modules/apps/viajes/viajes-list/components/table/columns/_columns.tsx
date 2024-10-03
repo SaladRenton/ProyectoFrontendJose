@@ -190,7 +190,7 @@ export const getColumns = (
         }
       },
     },
-    { field: 'cantidad', headerName: 'Cantidad', width: 150, editable: false },
+    { field: 'cantidad', headerName: 'Cantidad', width: 150, editable: true },
 
     {
       field: 'paquetes', headerName: 'Paquetes', width: 150,

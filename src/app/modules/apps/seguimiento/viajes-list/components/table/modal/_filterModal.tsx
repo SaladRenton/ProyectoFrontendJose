@@ -250,6 +250,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.sinZona as boolean}
+                  indeterminate={filters.sinZona === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="sinZona"
                   color="primary"
@@ -262,6 +263,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.enOml as boolean}
+                  indeterminate={filters.enOml === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="enOml"
                   color="primary"
@@ -274,6 +276,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.noEnOml as boolean}
+                  indeterminate={filters.noEnOml === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="noEnOml"
                   color="primary"
@@ -406,6 +409,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.sinTransportista as boolean}
+                  indeterminate={filters.sinTransportista === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="sinTransportista"
                   color="primary"
@@ -418,6 +422,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.sinPaquetes as boolean}
+                  indeterminate={filters.sinPaquetes === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="sinPaquetes"
                   color="primary"
@@ -429,6 +434,9 @@ const FilterModal: React.FC<FilterModalProps> = ({
               control={
                 <Checkbox
                   checked={filters.conPaquetes as boolean}
+                  indeterminate={filters.conPaquetes === null} // Si es null, se muestra indeterminado
+
+                  
                   onChange={handleCheckboxChange}
                   name="conPaquetes"
                   color="primary"

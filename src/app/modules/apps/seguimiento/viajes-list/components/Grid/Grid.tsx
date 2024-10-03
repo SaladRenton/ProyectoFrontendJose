@@ -115,9 +115,7 @@ const ViajesList: React.FC = () => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchViajesData();
-  }, [page, pageSize, fetchViajesData]);
+
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ViajeModel>, oldRow: GridRowModel<ViajeModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError, setModalErrors);
@@ -182,6 +180,7 @@ const ViajesList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
     setFilters(filters);
+    fetchViajesData();
   };
 
   const handleClearFilters = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
-import { CampanaModel, initialCampana } from '../../core/_models'; // Importa la interfaz adaptada
-import { getColumns } from '../../components/table/columns/_columns'; // Ajusta la ruta si es necesario
+import { CampanaModel, initialCampana } from '../../core/_models'; 
+import { getColumns } from '../../components/table/columns/_columns';
 import CampanaModal from '../../components/table/modal/_modal';
 import FilterModal from '../table/modal/_filterModal';
 import Toolbar from '../toolbar/toolbars/toolbar';
@@ -11,6 +11,7 @@ import {
   handleAddCampana,
   handleDownloadCsv,
   handleEnviarMasivo,
+  handleEnviarWhatsappMasivo, // Handler para el envío de WhatsApp
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import {
@@ -20,7 +21,7 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-} from '@mui/material'; // Importa los componentes necesarios de Material UI
+} from '@mui/material';
 
 const CampanasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<CampanaModel>>([]);
@@ -37,17 +38,16 @@ const CampanasList: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
 
-  // Estado para el dialog de confirmación de envío masivo
+  // Estado para el dialog de confirmación de envío masivo de correo
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
+  const [confirmWhatsappDialogOpen, setConfirmWhatsappDialogOpen] = useState<boolean>(false); // Dialog para WhatsApp
   const [selectedCampanaId, setSelectedCampanaId] = useState<number | null>(null);
 
   const fetchCampanasData = useCallback(() => {
     fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchCampanasData();
-  }, [page, pageSize, fetchCampanasData]);
+
 
   const handleProcessRowUpdateWrapper = async (
     newRow: GridRowModel<CampanaModel>,
@@ -95,6 +95,9 @@ const CampanasList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string>) => {
     setFilters(filters);
+    fetchCampanasData();  // Vuelve a cargar los datos después de aplicar los filtros
+
+    
   };
 
   const handleClearFilters = () => {
@@ -123,6 +126,14 @@ const CampanasList: React.FC = () => {
     }));
   };
 
+
+  const handleHtmlWhatsappPlantillaChange = (plantilla_whatsapp: string) => {
+    setCurrentCampana((prev) => ({
+      ...prev,
+      plantilla_whatsapp: plantilla_whatsapp,
+    }));
+  };
+
   const handleExportarCsv = async (campanaId: number) => {
     await handleDownloadCsv(campanaId, setError, setModalLoading);
   };
@@ -132,13 +143,24 @@ const CampanasList: React.FC = () => {
     fetchCampanasData();
   };
 
-  // Abrir el diálogo de confirmación
+  const enviarWhatsappMasivo = async (campanaId: number) => {
+    await handleEnviarWhatsappMasivo(campanaId, setError, setModalLoading);
+    fetchCampanasData();
+  };
+
+  // Abrir el diálogo de confirmación para correos
   const handleOpenConfirmDialog = (campanaId: number) => {
     setSelectedCampanaId(campanaId);
     setConfirmDialogOpen(true);
   };
 
-  // Confirmar envío masivo después del diálogo
+  // Abrir el diálogo de confirmación para WhatsApp
+  const handleOpenConfirmWhatsappDialog = (campanaId: number) => {
+    setSelectedCampanaId(campanaId);
+    setConfirmWhatsappDialogOpen(true);
+  };
+
+  // Confirmar envío masivo de correos después del diálogo
   const handleConfirmEnviarMasivo = async () => {
     if (selectedCampanaId !== null) {
       await enviarMasivo(selectedCampanaId);
@@ -146,12 +168,25 @@ const CampanasList: React.FC = () => {
     setConfirmDialogOpen(false); // Cerrar el diálogo después del envío
   };
 
-  // Cancelar el diálogo de confirmación
+  // Confirmar envío masivo de WhatsApp después del diálogo
+  const handleConfirmEnviarWhatsappMasivo = async () => {
+    if (selectedCampanaId !== null) {
+      await enviarWhatsappMasivo(selectedCampanaId);
+    }
+    setConfirmWhatsappDialogOpen(false); // Cerrar el diálogo después del envío
+  };
+
+  // Cancelar el diálogo de confirmación para correos
   const handleCloseConfirmDialog = () => {
     setConfirmDialogOpen(false);
   };
 
-  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog);
+  // Cancelar el diálogo de confirmación para WhatsApp
+  const handleCloseConfirmWhatsappDialog = () => {
+    setConfirmWhatsappDialogOpen(false);
+  };
+
+  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog, handleOpenConfirmWhatsappDialog); // Incluimos ambos diálogos
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -182,15 +217,15 @@ const CampanasList: React.FC = () => {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         loading={loading}
         processRowUpdate={handleProcessRowUpdateWrapper}
-        experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
+        experimentalFeatures={{ newEditingApi: true }}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         sx={{
           m: 2,
           boxShadow: 1,
           '& .MuiDataGrid-columnHeaderTitle': {
             fontSize: '1rem',
-            color: 'black', // Color negro
-            fontWeight: 600, // Hacer la letra más negra
+            color: 'black',
+            fontWeight: 600,
             textTransform: 'uppercase',
           },
         }}
@@ -207,6 +242,7 @@ const CampanasList: React.FC = () => {
         onOperacionChange={handleOperacionChange}
         onZonasRepartoChange={handleZonaRepartoChange}
         onsetHtmlContent={handleHtmlPlantillaChange}
+        onsetHtmlContentWhatsapp={handleHtmlWhatsappPlantillaChange}
       />
 
       <FilterModal
@@ -215,14 +251,14 @@ const CampanasList: React.FC = () => {
         onApply={handleApplyFilters}
       />
 
-      {/* Diálogo de confirmación */}
+      {/* Diálogo de confirmación para correos */}
       <Dialog
         open={confirmDialogOpen}
         onClose={handleCloseConfirmDialog}
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-description"
       >
-        <DialogTitle id="confirm-dialog-title">{"Confirmar Envío Masivo"}</DialogTitle>
+        <DialogTitle id="confirm-dialog-title">{"Confirmar Envío Masivo de Correos"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="confirm-dialog-description">
             ¿Desea generar el envío masivo de correos para esta campaña?
@@ -233,6 +269,29 @@ const CampanasList: React.FC = () => {
             Cancelar
           </Button>
           <Button onClick={handleConfirmEnviarMasivo} color="primary">
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Diálogo de confirmación para WhatsApp */}
+      <Dialog
+        open={confirmWhatsappDialogOpen}
+        onClose={handleCloseConfirmWhatsappDialog}
+        aria-labelledby="confirm-whatsapp-dialog-title"
+        aria-describedby="confirm-whatsapp-dialog-description"
+      >
+        <DialogTitle id="confirm-whatsapp-dialog-title">{"Confirmar Envío Masivo de WhatsApp"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-whatsapp-dialog-description">
+            ¿Desea generar el envío masivo de mensajes por WhatsApp para esta campaña?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmWhatsappDialog} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmEnviarWhatsappMasivo} color="primary">
             Confirmar
           </Button>
         </DialogActions>

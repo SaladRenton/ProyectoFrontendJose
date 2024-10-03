@@ -120,6 +120,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               control={
                 <Checkbox
                   checked={filters.sinViaje as boolean}
+                  indeterminate={filters.sinViaje === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="sinViaje"
                   color="primary"
@@ -181,6 +182,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               control={
                 <Checkbox
                   checked={filters.sinTransportista as boolean}
+                  indeterminate={filters.sinTransportista === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="sinTransportista"
                   color="primary"
@@ -192,6 +194,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => 
               control={
                 <Checkbox
                   checked={filters.entregado as boolean}
+                  indeterminate={filters.entregado === null} // Si es null, se muestra indeterminado
                   onChange={handleCheckboxChange}
                   name="entregado"
                   color="primary"

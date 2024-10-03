@@ -9,7 +9,7 @@ import EstadosCombo from '../../../../../../combos/components/EstadosCombo';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  onApply: (filters: Record<string, string | boolean | number | string[]>) => void;
+  onApply: (filters: Record<string, string | boolean | number | string[] | null>) => void;
   title?: string;
   buttonTitle?: string;
   filtrosObligatorios?: string[]; // Nueva propiedad para los filtros obligatorios
@@ -25,7 +25,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   filtrosObligatorios = [],
   loading = false, // Por defecto, loading es false
 }) => {
-  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({
+  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[] | null>>({
     id: '',
     operacion_id: '',
     fecha_inicio_desde: '',
@@ -42,16 +42,16 @@ const FilterModal: React.FC<FilterModalProps> = ({
     apellido: '',
     email: '',
     location: '',
-    sinZona: false,
-    sinTransportista: false,
+    sinZona: null, // Inicializado en null
+    sinTransportista: null, // Inicializado en null
     lote_viaje_id: '',
     id_identificacion_externo: '',
     id_identificador_cliente_externo: '',
     documento: '',
-    conPaquetes: false,
-    sinPaquetes: false,
-    enOml:false,
-    noEnOml: false
+    conPaquetes: null, // Inicializado en null
+    sinPaquetes: null, // Inicializado en null
+    enOml: null, // Inicializado en null
+    noEnOml: null, // Inicializado en null
   });
 
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -61,22 +61,23 @@ const FilterModal: React.FC<FilterModalProps> = ({
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSelectChange = (name: string, value: string | boolean | number | string[]) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value
+      [name]: value,
     }));
   };
 
+  // Manejamos el ciclo null -> true -> false
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
+    const { name } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: checked
+      [name]: prevFilters[name] === null ? true : prevFilters[name] ? false : null,
     }));
   };
 
@@ -95,11 +96,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
       setErrors(newErrors);
       setHelperTexts(newHelperTexts);
     } else {
-
-
       onApply(filters);
-
-
       if (!loading) {
         onClose(); // Solo cerrar el modal si no está en estado de carga
       }
@@ -124,16 +121,16 @@ const FilterModal: React.FC<FilterModalProps> = ({
       apellido: '',
       email: '',
       location: '',
-      sinZona: false,
-      sinTransportista: false,
+      sinZona: null, // Volvemos a null
+      sinTransportista: null, // Volvemos a null
       lote_viaje_id: '',
       id_identificacion_externo: '',
       id_identificador_cliente_externo: '',
       documento: '',
-      conPaquetes: false,
-      sinPaquetes: false,
-      enOml: false,
-      noEnOml: false
+      conPaquetes: null, // Volvemos a null
+      sinPaquetes: null, // Volvemos a null
+      enOml: null, // Volvemos a null
+      noEnOml: null, // Volvemos a null
     });
     setErrors({});
     setHelperTexts({});
@@ -148,7 +145,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <TextField
               margin="dense"
               label="ID Viaje"
-              placeholder='Ej: 2222,3333'
+              placeholder="Ej: 2222,3333"
               fullWidth
               name="id"
               value={filters.id as string}
@@ -157,7 +154,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
               helperText={helperTexts.id}
             />
             <OperacionCombo
-              value={filters.operacion_id}
+              value={filters.operacion_id as string}
               onChange={(value) => handleSelectChange('operacion_id', value)}
               error={!!errors.operacion_id}
               helperText={helperTexts.operacion_id}
@@ -246,10 +243,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
               error={!!errors.email}
               helperText={helperTexts.email}
             />
+
+            {/* Checkboxes con valores iniciales null */}
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.sinZona as boolean}
+                  checked={filters.sinZona === true} // Marcado si es true
+                  indeterminate={filters.sinZona === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="sinZona"
                   color="primary"
@@ -261,7 +261,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.enOml as boolean}
+                  checked={filters.enOml === true} // Marcado si es true
+                  indeterminate={filters.enOml === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="enOml"
                   color="primary"
@@ -273,7 +274,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.noEnOml as boolean}
+                  checked={filters.noEnOml === true} // Marcado si es true
+                  indeterminate={filters.noEnOml === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="noEnOml"
                   color="primary"
@@ -283,7 +285,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -346,7 +347,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
                   helperText={helperTexts.apellido}
                 />
               </Grid>
-
             </Grid>
 
             <TextField
@@ -359,17 +359,19 @@ const FilterModal: React.FC<FilterModalProps> = ({
               error={!!errors.location}
               helperText={helperTexts.location}
             />
+
             <TextField
               margin="dense"
               label="Lote Viaje ID"
               fullWidth
-              placeholder='Ej: 24,25'
+              placeholder="Ej: 24,25"
               name="lote_viaje_id"
               value={filters.lote_viaje_id as string}
               onChange={handleInputChange}
               error={!!errors.lote_viaje_id}
               helperText={helperTexts.lote_viaje_id}
             />
+
             <TextField
               margin="dense"
               label="ID Identificación Externo"
@@ -402,10 +404,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
               error={!!errors.documento}
               helperText={helperTexts.documento}
             />
+
+            {/* Más checkboxes */}
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.sinTransportista as boolean}
+                  checked={filters.sinTransportista === true} // Marcado si es true
+                  indeterminate={filters.sinTransportista === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="sinTransportista"
                   color="primary"
@@ -417,7 +422,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.sinPaquetes as boolean}
+                  checked={filters.sinPaquetes === true} // Marcado si es true
+                  indeterminate={filters.sinPaquetes === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="sinPaquetes"
                   color="primary"
@@ -425,10 +431,12 @@ const FilterModal: React.FC<FilterModalProps> = ({
               }
               label="Viajes sin paquetes"
             />
+
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={filters.conPaquetes as boolean}
+                  checked={filters.conPaquetes === true} // Marcado si es true
+                  indeterminate={filters.conPaquetes === null} // Indeterminado si es null
                   onChange={handleCheckboxChange}
                   name="conPaquetes"
                   color="primary"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, CircularProgress, FormControlLabel, Checkbox } from '@mui/material';
-import { CampanaModel } from '../../../core/_models';
+import { CampanaModel } from '../../../../../campanas/campanas-list/core/_models';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
 

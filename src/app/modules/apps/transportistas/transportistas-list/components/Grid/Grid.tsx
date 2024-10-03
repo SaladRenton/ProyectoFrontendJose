@@ -40,9 +40,7 @@ const TransportistasList: React.FC = () => {
     fetchTransportistas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchTransportistasData();
-  }, [page, pageSize, fetchTransportistasData]);
+  
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<TransportistaModel>, oldRow: GridRowModel<TransportistaModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
@@ -100,6 +98,7 @@ const TransportistasList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string>) => {
     setFilters(filters);
+    fetchTransportistasData();
   };
 
   const handleClearFilters = () => {

@@ -17,6 +17,8 @@ export interface CampanaModel {
   fecha_limitada_agenda:boolean;
   limite_dias_cita:number;
   asunto_correo: string;
+  waapi_api_token:string;
+  waapi_instance_id:number;
 
  
   // Agrega más campos según sea necesario

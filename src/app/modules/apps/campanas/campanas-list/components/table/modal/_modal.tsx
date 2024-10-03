@@ -4,7 +4,7 @@ import { CampanaModel } from '../../../core/_models';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
 import HtmlEditor from '../../../../../../texteditor/components/HtmlEditor';
-
+import WhatsAppTextEditor from '../../../../../../texteditor/components/WhatsAppTextEditor';
 interface CampanaModalProps {
   open: boolean;
   currentCampana: CampanaModel;
@@ -17,6 +17,7 @@ interface CampanaModalProps {
   onOperacionChange: (value: number) => void;
   onZonasRepartoChange: (value: string[]) => void;
   onsetHtmlContent: (value: string) => void;
+  onsetHtmlContentWhatsapp: (value: string) => void;
 }
 
 const CampanaModal: React.FC<CampanaModalProps> = ({
@@ -30,11 +31,13 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
   onSubmit,
   onOperacionChange,
   onZonasRepartoChange,
-  onsetHtmlContent
+  onsetHtmlContent,
+  onsetHtmlContentWhatsapp,
 }) => {
   const [operacionId, setOperacionId] = useState<string>('');
   const [zonaRepartoId, setZonaRepartoId] = useState<string[]>([]);
   const [htmlplantilla, setHtmlContent] = useState<string>('');
+  const [htmlplantillaWhatsapp, setHtmlContentWhatsapp] = useState<string>(''); // Estado para la plantilla de WhatsApp
   const [selectedTab, setSelectedTab] = useState<number>(0); // Para manejar los tabs
 
   const handleOperacionChange = (value: number) => {
@@ -48,8 +51,13 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
   };
 
   const handleOnChange = (value: string) => {
-    setHtmlContent(value); // Aquí guardas el contenido HTML directamente
+    setHtmlContent(value);
     onsetHtmlContent(value);
+  };
+
+  const handleOnChangeWhatsapp = (value: string) => {
+    setHtmlContentWhatsapp(value); // Actualiza el contenido del HTML de WhatsApp
+    onsetHtmlContentWhatsapp(value); // Si el contenido debe ser enviado al padre, puedes usar esta función
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -64,6 +72,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
           <Tab label="General" />
           <Tab label="Correo Masivo" />
           <Tab label="Agenda" />
+          <Tab label="Envío por Waapi" /> {/* Nuevo Tab */}
         </Tabs>
 
         {/* Tab General */}
@@ -101,8 +110,8 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
             />
 
             <TextField
-              label="Lote Viaje ID"
-              type="number"
+              label="Listado de Lotes"
+              placeholder='Ej: 2,3,4'
               fullWidth
               name="lote_viaje_id"
               value={currentCampana.lote_viaje_id}
@@ -162,6 +171,29 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
               onChange={onChange}
               margin="dense"
             />
+          </Box>
+        )}
+
+        {/* Tab Envío por Waapi */}
+        {selectedTab === 3 && (
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              label="API Token"
+              fullWidth
+              margin="dense"
+              name="waapi_api_token"
+              value={currentCampana.waapi_api_token || ''} // Valor predeterminado vacío si no existe
+              onChange={onChange}
+            />
+            <TextField
+              label="Instance ID"
+              fullWidth
+          
+              name="waapi_instance_id"
+              value={currentCampana.waapi_instance_id || ''} // Valor predeterminado vacío si no existe
+              onChange={onChange}
+            />
+            <WhatsAppTextEditor value={htmlplantillaWhatsapp} onChange={handleOnChangeWhatsapp} /> {/* Editor de plantilla de WhatsApp */}
           </Box>
         )}
 

@@ -47,9 +47,7 @@ const PaquetesList: React.FC = () => {
     fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchPaquetesData();
-  }, [page, pageSize, fetchPaquetesData]);
+ 
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<PaqueteModel>, oldRow: GridRowModel<PaqueteModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
@@ -107,6 +105,7 @@ const PaquetesList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
     setFilters(filters);
+    fetchPaquetesData();
   };
 
   const handleClearFilters = () => {

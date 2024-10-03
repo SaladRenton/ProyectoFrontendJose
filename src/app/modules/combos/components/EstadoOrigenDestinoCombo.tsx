@@ -28,7 +28,7 @@ const EstadoOrigenDestinoCombo: React.FC<EstadosComboProps> = ({ value, onChange
             'filter[estado_id_origen]': estado_id_origen,
             'filter[operacion_id]': operacion_id,
             per_page: 200,
-            include: 'estadoDestino'
+            include: 'estadoDestino,contactAttemptType'
           }
         });
         setEstados(response.data.data || []);
@@ -61,7 +61,7 @@ const EstadoOrigenDestinoCombo: React.FC<EstadosComboProps> = ({ value, onChange
           >
             {estados.map((estado) => (
               <MenuItem key={estado.estado_destino.id} value={estado.estado_destino.id}>
-                {estado.estado_destino.d_estado}
+                {estado.estado_destino.d_estado}-{estado.contact_attempt_type.descripcion}
               </MenuItem>
             ))}
           </Select>

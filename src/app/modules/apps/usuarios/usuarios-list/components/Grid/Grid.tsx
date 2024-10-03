@@ -39,10 +39,6 @@ const UsuariosList: React.FC = () => {
     fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  useEffect(() => {
-    fetchUsuariosData();
-  }, [page, pageSize, fetchUsuariosData]);
-
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<UserModelWithRol>, oldRow: GridRowModel<UserModelWithRol>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
   };
@@ -95,6 +91,8 @@ const UsuariosList: React.FC = () => {
 
   const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
     setFilters(filters);
+    fetchUsuariosData();
+
   };
 
   const handleClearFilters = () => {

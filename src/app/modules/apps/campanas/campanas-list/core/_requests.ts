@@ -53,6 +53,20 @@ export const enviarMasivo = async (campanaId: number) => {
 };
 
 
+// Nuevo endpoint para actualizar un transportista
+export const enviarWhatsappMasivo = async (campanaId: number) => {
+  try {
+    const response = await axios.post(`${API_URL}/campanas/${campanaId}/enviar-whatsapp`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+    throw new Error('An unexpected error occurred');
+  }
+};
+
+
 
 
 

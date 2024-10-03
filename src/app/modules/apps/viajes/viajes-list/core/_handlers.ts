@@ -16,10 +16,13 @@ export const fetchViajes = async (
   try {
 
     const filterParams = Object.keys(filters).reduce((acc, key) => {
-      acc[`filter[${key}]`] = filters[key].toString();
+      // Solo agregamos filtros que no sean null o undefined
+      if (filters[key] !== null && filters[key] !== undefined) {
+        acc[`filter[${key}]`] = filters[key].toString();
+      }
       return acc;
     }, {} as Record<string, string>);
-
+    
 
     const response = await getViajes(page, pageSize, filterParams, includesConfig.viajes);
     setRows(response.data.data);
