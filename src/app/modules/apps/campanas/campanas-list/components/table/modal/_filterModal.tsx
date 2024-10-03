@@ -11,7 +11,7 @@ interface FilterModalProps {
 const FilterModal: React.FC<FilterModalProps> = ({ open, onClose, onApply }) => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[] | null>>({
     nombre: '',
-    activa: null,  // Valor inicial de null
+    activa: true,  // Valor inicial de null
     viajes: '',
     operacion_id: '',
   });

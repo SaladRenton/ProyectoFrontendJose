@@ -178,14 +178,22 @@ const ViajesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
-    setFilters(filters);
-    fetchViajesData();
+  
+
+  const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
+      return updatedFilters;
+    });
   };
 
   const handleClearFilters = () => {
-    setFilters({});
-    fetchViajesData();
+    setFilters((prevFilters) => {
+      const updatedFilters = {};
+      fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
+      return updatedFilters;
+    });
   };
 
   const handleOpenRevertirLoteModal = () => {

@@ -89,15 +89,24 @@ const UsuariosList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
-    setFilters(filters);
-    fetchUsuariosData();
-
+  const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
+    // Primero actualizamos los filtros
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters }; // Fusionamos los nuevos filtros con los anteriores
+      // Luego llamamos a fetchUsuariosData con los filtros actualizados
+      fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
+      return updatedFilters; // Retornamos los filtros actualizados al estado
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchUsuariosData();
+    // Limpiamos los filtros
+    setFilters(() => {
+      const clearedFilters = {}; // Filtros vacíos
+      // Luego llamamos a fetchUsuariosData con los filtros vacíos
+      fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters);
+      return clearedFilters; // Retornamos los filtros vacíos al estado
+    });
   };
 
   const handleRoleChange = (roleId: number) => {

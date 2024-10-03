@@ -108,15 +108,33 @@ const ZonasList: React.FC = () => {
     setMapDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
-    setFilters(filters);
-    fetchZonasData();
+  const handleApplyFilters = (newFilters: Record<string, string>) => {
+    // Actualiza los filtros y después ejecuta fetchZonasData
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      // Ejecutar fetchZonas con los filtros actualizados
+      const adjustedFilters = { ...updatedFilters };
+  
+      // Renombrar los filtros para que sean `location` en vez de `lat` y `lng`
+      if (updatedFilters.lat && updatedFilters.lng) {
+        adjustedFilters.location = `${updatedFilters.lat},${updatedFilters.lng}`;
+        delete adjustedFilters.lat;
+        delete adjustedFilters.lng;
+      }
+  
+      fetchZonas(page, pageSize, setRows, setRowCount, setError, setLoading, adjustedFilters);
+      return updatedFilters;
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchZonasData();
+    // Limpia los filtros y después ejecuta fetchZonasData
+    setFilters(() => {
+      fetchZonas(page, pageSize, setRows, setRowCount, setError, setLoading, {});
+      return {};
+    });
   };
+  
 
   const handleSelectLocation = (lat: number, lng: number) => {
     setFilters({

@@ -40,16 +40,22 @@ const CampanasLiquidacionesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
-    setFilters(filters);
-    fetchContactAttemptData();
+  const handleApplyFilters = (newFilters: Record<string, string>) => {
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchContactAttempt(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar con los filtros actualizados
+      return updatedFilters;
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchContactAttemptData();
+    setFilters((prevFilters) => {
+      const clearedFilters = {};
+      fetchContactAttempt(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters); // Llamar con filtros vacíos
+      return clearedFilters;
+    });
   };
-
+  
 
 
   const handleExportarCalificacionesModal = () => {

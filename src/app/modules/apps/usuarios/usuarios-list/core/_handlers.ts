@@ -23,8 +23,8 @@ export const fetchUsuarios = async (
     setRowCount(response.data.total);
     setError(null); // Limpiar cualquier error previo
   } catch (error) {
-    console.error("Error fetching Paquetes data", error);
-    setError('Error fetching Paquetes data');
+    console.error("Error fetching Usuarios data", error);
+    setError('Error fetching Usuarios data');
   }
   setLoading(false);
 };

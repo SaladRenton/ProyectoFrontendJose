@@ -93,17 +93,22 @@ const CampanasList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
-    setFilters(filters);
-    fetchCampanasData();  // Vuelve a cargar los datos después de aplicar los filtros
-
-    
+  const handleApplyFilters = (newFilters: Record<string, string>) => {
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamada con los filtros actualizados
+      return updatedFilters;
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchCampanasData();
+    setFilters((prevFilters) => {
+      const clearedFilters = {};
+      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters); // Llamada con filtros vacíos
+      return clearedFilters;
+    });
   };
+  
 
   const handleOperacionChange = (operacion_id: number) => {
     setCurrentCampana((prev) => ({

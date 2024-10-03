@@ -103,15 +103,24 @@ const PaquetesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string | boolean | number | string[]>) => {
-    setFilters(filters);
-    fetchPaquetesData();
+  const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
+    // Actualiza los filtros y luego llama a fetchPaquetesData con los filtros actualizados
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      // Llamamos a la función de obtención de paquetes con los nuevos filtros
+      fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
+      return updatedFilters;  // Actualizamos el estado con los nuevos filtros
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchPaquetesData();
+    // Limpiamos los filtros y luego llamamos a fetchPaquetesData con los filtros vacíos
+    setFilters(() => {
+      fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, {});
+      return {};  // Limpiamos los filtros en el estado
+    });
   };
+  
 
   const handleOpenRevertirLoteModal = () => {
     setRevertirLoteModalOpen(true);

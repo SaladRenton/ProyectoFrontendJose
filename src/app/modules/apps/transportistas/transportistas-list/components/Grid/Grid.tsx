@@ -96,15 +96,24 @@ const TransportistasList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (filters: Record<string, string>) => {
-    setFilters(filters);
-    fetchTransportistasData();
+  const handleApplyFilters = (newFilters: Record<string, string>) => {
+    // Actualiza los filtros y después ejecuta fetchTransportistasData
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchTransportistas(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
+      return updatedFilters;
+    });
   };
-
+  
   const handleClearFilters = () => {
-    setFilters({});
-    fetchTransportistasData();
+    // Limpia los filtros y después ejecuta fetchTransportistasData
+    setFilters(() => {
+      fetchTransportistas(page, pageSize, setRows, setRowCount, setError, setLoading, {});
+      return {};
+    });
   };
+  
+  
 
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
 
