@@ -296,9 +296,14 @@ export const cambioMasivoEstadosRequest = async (filters: Record<string, string 
 
 
   const filterParams = Object.keys(filters).reduce((acc, key) => {
-    acc[`filter[${key}]`] = filters[key].toString();
+    // Solo agregamos filtros que no sean null o undefined
+    if (filters[key] !== null && filters[key] !== undefined) {
+      acc[`filter[${key}]`] = filters[key].toString();
+    }
     return acc;
   }, {} as Record<string, string>);
+
+
 
   const response = await axios.get(`${API_URL}/viajes/cambiarEstados`, {
     params: {
@@ -311,6 +316,36 @@ export const cambioMasivoEstadosRequest = async (filters: Record<string, string 
   return response;
 
 };
+
+
+
+
+export const cambioMasivoEstadosConsultaRequest = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => {
+
+
+  const filterParams = Object.keys(filters).reduce((acc, key) => {
+    // Solo agregamos filtros que no sean null o undefined
+    if (filters[key] !== null && filters[key] !== undefined) {
+      acc[`filter[${key}]`] = filters[key].toString();
+    }
+    return acc;
+  }, {} as Record<string, string>);
+
+
+  const response = await axios.get(`${API_URL}/viajes/cambiarEstadosConsulta`, {
+    params: {
+      ...filterParams,
+      estado_id_destino: estado_id_destino
+
+    }
+  });
+
+  return response;
+
+};
+
+
+
 
 export const asignarTransportistasRequest = async (lote: number) => {
   return axios.post(`${API_URL}/viajes/asignar-transportistas/${lote}`);
@@ -372,7 +407,10 @@ export const downloadViajesXlsx = async (filters: Record<string, string | boolea
   try {
 
     const filterParams = Object.keys(filters).reduce((acc, key) => {
-      acc[`filter[${key}]`] = filters[key].toString();
+      // Solo agregamos filtros que no sean null o undefined
+      if (filters[key] !== null && filters[key] !== undefined) {
+        acc[`filter[${key}]`] = filters[key].toString();
+      }
       return acc;
     }, {} as Record<string, string>);
 

@@ -1,6 +1,7 @@
 import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
 import { ViajeModel, includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest,asignacionMasterViaje } from './_requests';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest,asignacionMasterViaje,cambioMasivoEstadosConsultaRequest } from './_requests';
+import { AxiosResponse } from 'axios';
 
 export const fetchViajes = async (
   page: number,
@@ -320,37 +321,61 @@ export const exportarViajePorLote = async (
 
 
 
-
-
 export const cambioEstadoMasivo = async (
   filters: Record<string, string | boolean | number | string[]>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setcambioMasivoEstadoModalErrors: React.Dispatch<React.SetStateAction<string[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  estado_id_destino: string
+  estado_id_destino: string,
+  showConfirmationDialog: (message: string) => Promise<boolean>  // Cambiamos aquí para usar una promesa
 ) => {
   setLoading(true);
   try {
-    const response = await cambioMasivoEstadosRequest(filters,estado_id_destino);
-    setError(null); // Limpiar cualquier error previo si la asignación es exitosa
-    setcambioMasivoEstadoModalErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
-    setLoading(false);
-    return response.data;
+    // Realizamos la consulta para obtener la cantidad de viajes
+    const responseConsulta = await cambioMasivoEstadosConsultaRequest(filters, estado_id_destino);
+    const cantidad = responseConsulta.data.cantidad;
+
+    if (cantidad === 0) {
+      // Si no hay cambios por hacer, mostramos un mensaje especial
+      const confirmation = await showConfirmationDialog('La consulta que va a ejecutar no va a producir ningún cambio.');
+
+      if (!confirmation) {
+        // Si el usuario cancela, salimos sin hacer nada
+        setLoading(false);
+        return;
+      }
+    } else {
+      // Mostramos la confirmación para el cambio masivo
+      const confirmation = await showConfirmationDialog(`¿Está seguro que quiere modificar ${cantidad} viajes?`);
+
+      if (!confirmation) {
+        // Si el usuario cancela, salimos sin hacer nada
+        setLoading(false);
+        return;
+      }
+
+      // Solo se ejecuta si el usuario confirma
+      const response = await cambioMasivoEstadosRequest(filters, estado_id_destino);
+      setError(null); // Limpiar cualquier error previo si la asignación es exitosa
+      setcambioMasivoEstadoModalErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
+      setLoading(false);
+      return response.data;
+    }
   } catch (error: any) {
-    console.error("Error cambiando masivamente", error);
-    const message = error.message || 'El cambio masivo fallo';
+    console.error('Error cambiando masivamente', error);
+    const message = error.message || 'El cambio masivo falló';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+      const errors = Object.entries(error.response.data.errors as ErrorResponse['errors']).map(
         ([field, descriptions]) => {
           return `${field}: ${(descriptions as string[]).join(' ')}`;
         }
       );
       setcambioMasivoEstadoModalErrors([message, ...errors]);
-      
     } else {
       setcambioMasivoEstadoModalErrors([message]);
     }
+    setLoading(false);
   }
   setLoading(false);
 };

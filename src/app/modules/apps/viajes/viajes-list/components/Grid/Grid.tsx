@@ -112,18 +112,55 @@ const ViajesList: React.FC = () => {
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false); // Estado para el switch
 
 
-  
+
   const [asignacionMasterOpen, setAsignacionMasterDialogOpen] = useState<boolean>(false);
   const [asignacionMasterItemId, setAsignacionMasterItemId] = useState<number | null>(null);
   const [asignacionMasterLoading, setAsignacionMasterLoading] = useState<boolean>(false);
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [onDialogConfirm, setOnDialogConfirm] = useState<() => void>(() => { });
+  const [onDialogCancel, setOnDialogCancel] = useState<() => void>(() => { });
+
+
+  const showConfirmationDialog = (message: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      // Al confirmar, se llama a "resolve(true)" para continuar la ejecución
+      const handleConfirm = () => {
+        resolve(true);
+        setDialogOpen(false);  // Cierra el diálogo
+        setcambioMasivoEstadoModalLoading(false);
+
+      };
+  
+      // Al cancelar, se llama a "resolve(false)" para detener la ejecución
+      const handleCancel = () => {
+        resolve(false);
+        setDialogOpen(false);  // Cierra el diálogo
+        setcambioMasivoEstadoModalLoading(false);
+      };
+  
+      setDialogMessage(message);
+      setOnDialogConfirm(() => handleConfirm); // Asignamos la función confirm
+      setOnDialogCancel(() => handleCancel);   // Asignamos la función cancel
+      setDialogOpen(true);  // Abrimos el diálogo
+      setcambioMasivoEstadoModalLoading(false);
+    });
+  };
+  
+  
+
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
 
   const fetchViajesData = useCallback(() => {
- 
+
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
- 
+
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ViajeModel>, oldRow: GridRowModel<ViajeModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError, setModalErrors);
@@ -134,7 +171,7 @@ const ViajesList: React.FC = () => {
     setDeleteDialogOpen(true);
   };
 
-  
+
   const handleAsignacionMasterRowWrapper = async (id: number) => {
     setAsignacionMasterItemId(id);
     setAsignacionMasterDialogOpen(true);
@@ -150,7 +187,7 @@ const ViajesList: React.FC = () => {
     }
   };
 
-  
+
   const confirmAsignacionMasterRow = async () => {
     if (asignacionMasterItemId !== null) {
       setAsignacionMasterLoading(true);
@@ -204,21 +241,21 @@ const ViajesList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-    const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
-      setFilters((prevFilters) => {
-        const updatedFilters = { ...prevFilters, ...newFilters };
-        fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
-        return updatedFilters;
-      });
-    };
+  const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
+    setFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
+      return updatedFilters;
+    });
+  };
 
-    const handleClearFilters = () => {
-      setFilters((prevFilters) => {
-        const updatedFilters = {};
-        fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
-        return updatedFilters;
-      });
-    };
+  const handleClearFilters = () => {
+    setFilters((prevFilters) => {
+      const updatedFilters = {};
+      fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamar aquí con los filtros actualizados
+      return updatedFilters;
+    });
+  };
 
   const handleOpenRevertirLoteModal = () => {
     setRevertirLoteModalOpen(true);
@@ -337,19 +374,23 @@ const ViajesList: React.FC = () => {
 
 
 
-  const handleCambioEstadoMasivo = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) =>  {
+  const handleCambioEstadoMasivo = async (filters: Record<string, string | boolean | number | string[]>, estado_id_destino: string) => {
 
     try {
-      const response = await cambioEstadoMasivo(filters, setError, setcambioMasivoEstadoModalErrors, setcambioMasivoEstadoModalLoading, estado_id_destino);
+      const response = await cambioEstadoMasivo(filters, setError, setcambioMasivoEstadoModalErrors, setcambioMasivoEstadoModalLoading, estado_id_destino,showConfirmationDialog);
+
+      if(response == null){
+    
+        return { message: 'No hay registros que modificar puede cerrar la ventana', cantidad: 0 };
+      }
 
       if (error && error.length > 0) {
         setcambioMasivoEstadoModalOpen(true);
       }
 
-      return { message: response?.message || 'Estados actualizados correctamente.',cantidad: response?.cantidad };
+      return { message: response?.message || 'Estados actualizados correctamente.', cantidad: response?.cantidad };
     } catch (error) {
-      console.error('Error en cambio masivo de estado:', error);
-      return { message: 'Error en cambio masivo de estado.',cantidad:0 };
+      return { message: 'Error en cambio masivo de estado. Puede cerrar la ventana', cantidad: 0 };
     }
 
   };
@@ -453,7 +494,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDisponibilidadModal = () => {
     setDisponibilidadModalOpen(false);
   };
-  
+
   const handleOpenEnviarLoteOmnileadsModal = () => {
     setEnviarLoteOmnileadsModalOpen(true);
   };
@@ -473,7 +514,7 @@ const ViajesList: React.FC = () => {
 
 
 
-  
+
   const handleOpenUploadExcelAsignacionManualAgendaModal = () => {
     setUploadExcelAsignacionManualAgendaModalOpen(true);
   };
@@ -492,7 +533,7 @@ const ViajesList: React.FC = () => {
   const handleCloseDownloadCSVModal = () => {
     setDownloadCSVModalOpen(false);
   };
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal, handleOpenDocumentosModal, handleOpenValidacionModal,handleAsignacionMasterRowWrapper);
+  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper, handleOpenHistoricosModal, handleOpenPaquetesModal, handleOpenDireccionModal, handleOpenContactosModal, handleOpenDocumentosModal, handleOpenValidacionModal, handleAsignacionMasterRowWrapper);
 
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSwitchOn(event.target.checked);
@@ -518,6 +559,7 @@ const ViajesList: React.FC = () => {
       return '';
     }
   };
+
 
 
 
@@ -582,15 +624,15 @@ const ViajesList: React.FC = () => {
           boxShadow: 1,
           //border: 2,
           '& .MuiDataGrid-columnHeaderTitle': {
-           //backgroundColor: '#f5f5f5',
+            //backgroundColor: '#f5f5f5',
             fontSize: '1rem',
             // fontWeight: 'bold',
             color: 'black', // Color negro
             fontWeight: 600, // Hacer la letra más negra
-            textTransform:  'uppercase'
+            textTransform: 'uppercase'
 
           },
-          
+
           '& .font-large': {
             fontSize: '1.2rem', // Ajuste del tamaño de letra para la columna viaje_id
           },
@@ -717,6 +759,28 @@ const ViajesList: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Confirmación</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{dialogMessage}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={() => {
+            onDialogConfirm();
+            handleDialogClose();
+          }} color="primary">
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
       <AsignarZonasModal
         open={asignarZonasModalOpen}
         onClose={handleCloseAsignarZonasModal}
@@ -724,6 +788,9 @@ const ViajesList: React.FC = () => {
         loading={asignarZonasLoading}
         errors={asignarZonasErrors}
       />
+
+
+
       <AsignarTransportistasModal
         open={asignarTransportistasModalOpen}
         onClose={handleCloseAsignarTransportistasModal}
@@ -807,7 +874,7 @@ const ViajesList: React.FC = () => {
         onClose={handleCloseEnviarLoteOmnileadsModal}
       />
 
-        <UploadExcelAsignacionManualTransportistasModal
+      <UploadExcelAsignacionManualTransportistasModal
         open={enviarUploadExcelAsignacionManualTransportistasModalOpen}
         onClose={handleCloseUploadExcelAsignacionManualTransportistasModal}
       />
@@ -828,6 +895,7 @@ const ViajesList: React.FC = () => {
       />
 
 
+      
     </div>
   );
 };
