@@ -36,6 +36,7 @@ const ZonasList: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [mapDialogOpen, setMapDialogOpen] = useState<boolean>(false); // Estado para el modal de OpenStreetMap
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
   const fetchZonasData = useCallback(() => {
     const adjustedFilters = { ...filters };
@@ -54,6 +55,14 @@ const ZonasList: React.FC = () => {
   }, [page, pageSize, filters]);
 
   
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchZonasData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, fetchZonasData]);
+
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ZonaModel>, oldRow: GridRowModel<ZonaModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);

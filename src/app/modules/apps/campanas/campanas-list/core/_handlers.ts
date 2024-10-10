@@ -1,5 +1,5 @@
-import { GridRowModel,GridRowsProp } from '@mui/x-data-grid';
-import { getCampanas, updateCampana, addCampana,downloadCSV,enviarMasivo,enviarWhatsappMasivo } from './_requests';
+import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
+import { getCampanas, updateCampana, addCampana, downloadCSV, enviarMasivo, enviarWhatsappMasivo } from './_requests';
 import { CampanaModel } from './_models';
 
 export const fetchCampanas = async (
@@ -59,7 +59,7 @@ export const handleAddCampana = async (
 ) => {
   setModalLoading(true);
   try {
-   const response =  await addCampana(currentCampana);
+    const response = await addCampana(currentCampana);
     fetchCampanasData(); // Recargar datos después de agregar
     setOpen(false);
     setCurrentCampana(initialCampana);
@@ -69,7 +69,7 @@ export const handleAddCampana = async (
     const message = error.message || 'Add failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat().map(String);      
+      const errors = Object.values(error.response.data.errors).flat().map(String);
       setModalErrors(errors);
     } else {
       setModalErrors([message]);
@@ -100,7 +100,7 @@ export const handleEditCampana = async (
     const message = error.message || 'Update failed';
     setError(message);
     if (error.response && error.response.data && error.response.data.errors) {
-      const errors = Object.values(error.response.data.errors).flat().map(String);      
+      const errors = Object.values(error.response.data.errors).flat().map(String);
       setModalErrors(errors);
     } else {
       setModalErrors([message]);
@@ -118,14 +118,14 @@ export const handleDownloadCsv = async (
 ) => {
   setLoading(true);
   try {
- 
+
     await downloadCSV(campanaId);
     setError(null); // Limpiar cualquier error previo si la edición es exitosa
   } catch (error: any) {
     console.error("Error descargando el CSV", error);
     const message = "Error descargando el CSV " + error.message;
     setError(message);
-   
+
   }
   setLoading(false);
 };
@@ -140,16 +140,20 @@ export const handleEnviarMasivo = async (
 ) => {
   setLoading(true);
   try {
- 
+
     await enviarMasivo(campanaId);
     setError(null); // Limpiar cualquier error previo si la edición es exitosa
+    setLoading(false);
+    return 1;
   } catch (error: any) {
     console.error("Error en el envio masivo", error);
     const message = "Error en el envio masivo " + error.message;
     setError(message);
-   
+    setLoading(false);
+    return 0;
+
   }
-  setLoading(false);
+
 };
 
 
@@ -160,14 +164,18 @@ export const handleEnviarWhatsappMasivo = async (
 ) => {
   setLoading(true);
   try {
- 
+
     await enviarWhatsappMasivo(campanaId);
     setError(null); // Limpiar cualquier error previo si la edición es exitosa
+    setLoading(false);
+    return 1;
   } catch (error: any) {
     console.error("Error en el envio masivo", error);
     const message = "Error en el envio masivo " + error.message;
     setError(message);
-   
+    setLoading(false);
+    return 0;
+
   }
-  setLoading(false);
+ 
 };

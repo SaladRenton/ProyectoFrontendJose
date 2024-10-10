@@ -16,7 +16,7 @@ import {
   handleAddPaquete,
   handleEditPaquete
 } from '../../core/_handlers';
-import { esES  } from '@mui/x-data-grid/locales';
+import { esES } from '@mui/x-data-grid/locales';
 
 const PaquetesList: React.FC = () => {
 
@@ -42,12 +42,23 @@ const PaquetesList: React.FC = () => {
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
   const fetchPaquetesData = useCallback(() => {
     fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
- 
+
+  useEffect(() => {
+
+    if (!isFirstLoad) {
+      fetchPaquetesData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+
+  }, [page, pageSize, fetchPaquetesData]);
+
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<PaqueteModel>, oldRow: GridRowModel<PaqueteModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
@@ -112,7 +123,7 @@ const PaquetesList: React.FC = () => {
       return updatedFilters;  // Actualizamos el estado con los nuevos filtros
     });
   };
-  
+
   const handleClearFilters = () => {
     // Limpiamos los filtros y luego llamamos a fetchPaquetesData con los filtros vacíos
     setFilters(() => {
@@ -120,7 +131,7 @@ const PaquetesList: React.FC = () => {
       return {};  // Limpiamos los filtros en el estado
     });
   };
-  
+
 
   const handleOpenRevertirLoteModal = () => {
     setRevertirLoteModalOpen(true);
@@ -183,14 +194,15 @@ const PaquetesList: React.FC = () => {
           boxShadow: 1,
           //border: 2,
           '& .MuiDataGrid-columnHeaderTitle': {
-           //backgroundColor: '#f5f5f5',
+            //backgroundColor: '#f5f5f5',
             fontSize: '1rem',
             // fontWeight: 'bold',
             color: 'black', // Color negro
             fontWeight: 600, // Hacer la letra más negra
-            textTransform:  'uppercase'
+            textTransform: 'uppercase'
 
-          }}}
+          }
+        }}
 
       />
       <PaqueteModal

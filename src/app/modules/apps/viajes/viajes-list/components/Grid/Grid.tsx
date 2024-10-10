@@ -121,6 +121,9 @@ const ViajesList: React.FC = () => {
   const [dialogMessage, setDialogMessage] = useState('');
   const [onDialogConfirm, setOnDialogConfirm] = useState<() => void>(() => { });
   const [onDialogCancel, setOnDialogCancel] = useState<() => void>(() => { });
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
+
+
 
 
   const showConfirmationDialog = (message: string): Promise<boolean> => {
@@ -161,6 +164,14 @@ const ViajesList: React.FC = () => {
   }, [page, pageSize, filters]);
 
 
+
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchViajesData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, fetchViajesData]);
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ViajeModel>, oldRow: GridRowModel<ViajeModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError, setModalErrors);
@@ -701,6 +712,7 @@ const ViajesList: React.FC = () => {
         open={filterDialogOpen}
         onClose={() => setFilterDialogOpen(false)}
         onApply={handleApplyFilters}
+        filtrosObligatorios={['operacion_id']}
 
       />
       <RevertirLoteModal

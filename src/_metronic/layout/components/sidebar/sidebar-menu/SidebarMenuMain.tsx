@@ -46,12 +46,32 @@ const SidebarMenuMain = () => {
           <SidebarMenuItem to='/apps/seguimiento/list' title='Seguimiento' hasBullet={true} />
         }
 
+
+      </SidebarMenuItemWithSub>
+
+
+
+      {/* Operaciones */}
+      <SidebarMenuItemWithSub
+        to='/apps/crm'
+        title='CRM'
+        icon='people' // Bootstrap icon
+      >
+
+
         {hasPermission('campana.index') &&
           <SidebarMenuItemWithSub to='/apps/operaciones/campanas' title='Campañas' hasBullet={true}>
             <SidebarMenuItem to='/apps/operaciones/campanas/list' title='Gestión de Campañas' hasBullet={true} />
             {hasPermission('estado-contacto.index') &&
               <SidebarMenuItem to='/apps/operaciones/campanas/liquidaciones/list' title='Liquidación' hasBullet={true} />
             }
+          </SidebarMenuItemWithSub>
+        }
+
+        {hasPermission('formularios.index') &&
+          <SidebarMenuItemWithSub to='/apps/operaciones/formularios' title='Formularios' hasBullet={true}>
+            <SidebarMenuItem to='/apps/operaciones/formularios/list' title='Gestión de Formularios' hasBullet={true} />
+          
           </SidebarMenuItemWithSub>
         }
       </SidebarMenuItemWithSub>

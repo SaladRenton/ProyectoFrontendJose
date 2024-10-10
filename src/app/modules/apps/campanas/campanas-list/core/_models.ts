@@ -19,6 +19,7 @@ export interface CampanaModel {
   asunto_correo: string;
   waapi_api_token:string;
   waapi_instance_id:number;
+  form_id:string;
 
  
   // Agrega más campos según sea necesario
@@ -40,7 +41,10 @@ export const initialCampana: CampanaModel = {
   total_emails_enviados:0,
   fecha_limitada_agenda: false,
   limite_dias_cita:3,
-  asunto_correo:''
+  asunto_correo:'',
+  waapi_api_token:'',
+  waapi_instance_id:0
+
 
 
 

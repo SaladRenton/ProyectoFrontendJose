@@ -34,10 +34,21 @@ const UsuariosList: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
   const fetchUsuariosData = useCallback(() => {
     fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
+
+
+  useEffect(() => {
+
+    if (!isFirstLoad) {
+      fetchUsuariosData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, fetchUsuariosData]);
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<UserModelWithRol>, oldRow: GridRowModel<UserModelWithRol>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);

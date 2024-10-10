@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
-import { CampanaModel, initialCampana } from '../../core/_models'; 
+import { CampanaModel, initialCampana } from '../../core/_models';
 import { getColumns } from '../../components/table/columns/_columns';
 import CampanaModal from '../../components/table/modal/_modal';
 import FilterModal from '../table/modal/_filterModal';
@@ -22,6 +22,7 @@ import {
   DialogTitle,
   Button,
 } from '@mui/material';
+import FormFieldsModal from '../table/modal/_formFieldsModal';
 
 const CampanasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<CampanaModel>>([]);
@@ -42,11 +43,25 @@ const CampanasList: React.FC = () => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [confirmWhatsappDialogOpen, setConfirmWhatsappDialogOpen] = useState<boolean>(false); // Dialog para WhatsApp
   const [selectedCampanaId, setSelectedCampanaId] = useState<number | null>(null);
+  const [openFormFieldsModal, setOpenFormFieldsModal] = useState<boolean>(false);
+  const [selectedFormularioId, setSelectedFormularioId] = useState<number | null>(null);
+
+
 
   const fetchCampanasData = useCallback(() => {
     fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
+
+  // useEffect para controlar la primera carga
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchCampanasData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, filters, fetchCampanasData]);
 
 
   const handleProcessRowUpdateWrapper = async (
@@ -56,14 +71,28 @@ const CampanasList: React.FC = () => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
   };
 
+
+  // Función para abrir el modal de form_fields
+  const handleOpenFormFieldsModal = (formularioId: number) => {
+    setSelectedFormularioId(formularioId);
+    setOpenFormFieldsModal(true);
+  };
+
+  // Función para cerrar el modal de form_fields
+  const handleCloseFormFieldsModal = () => {
+    setSelectedFormularioId(null);
+    setOpenFormFieldsModal(false);
+  };
+
   const validateFields = (): boolean => {
     if (
       !currentCampana.nombre ||
       !currentCampana.descripcion ||
       !currentCampana.operacion_id ||
-      !currentCampana.zona_reparto_id
+      !currentCampana.zona_reparto_id ||
+      !currentCampana.form_id
     ) {
-      setValidationError('Los campos Nombre, Descripción, Operación y Zona de reparto son obligatorios.');
+      setValidationError('Los campos Nombre, Descripción, Operación, Zona de reparto y Formulario son obligatorios.');
       return false;
     }
     setValidationError(null);
@@ -100,7 +129,7 @@ const CampanasList: React.FC = () => {
       return updatedFilters;
     });
   };
-  
+
   const handleClearFilters = () => {
     setFilters((prevFilters) => {
       const clearedFilters = {};
@@ -108,12 +137,19 @@ const CampanasList: React.FC = () => {
       return clearedFilters;
     });
   };
-  
+
 
   const handleOperacionChange = (operacion_id: number) => {
     setCurrentCampana((prev) => ({
       ...prev,
       operacion_id: operacion_id,
+    }));
+  };
+
+  const handleFormChange = (form_id: string) => {
+    setCurrentCampana((prev) => ({
+      ...prev,
+      form_id: form_id,
     }));
   };
 
@@ -144,13 +180,15 @@ const CampanasList: React.FC = () => {
   };
 
   const enviarMasivo = async (campanaId: number) => {
-    await handleEnviarMasivo(campanaId, setError, setModalLoading);
-    fetchCampanasData();
+    const response = await handleEnviarMasivo(campanaId, setError, setModalLoading);
+    if (response == 1)//si esta todo bien refresco la grilla
+      fetchCampanasData();
   };
 
   const enviarWhatsappMasivo = async (campanaId: number) => {
-    await handleEnviarWhatsappMasivo(campanaId, setError, setModalLoading);
-    fetchCampanasData();
+    const response = await handleEnviarWhatsappMasivo(campanaId, setError, setModalLoading);
+    if (response == 1)//si esta todo bien refresco la grilla
+      fetchCampanasData();
   };
 
   // Abrir el diálogo de confirmación para correos
@@ -191,7 +229,7 @@ const CampanasList: React.FC = () => {
     setConfirmWhatsappDialogOpen(false);
   };
 
-  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog, handleOpenConfirmWhatsappDialog); // Incluimos ambos diálogos
+  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog, handleOpenConfirmWhatsappDialog,handleOpenFormFieldsModal); // Incluimos ambos diálogos
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -248,6 +286,8 @@ const CampanasList: React.FC = () => {
         onZonasRepartoChange={handleZonaRepartoChange}
         onsetHtmlContent={handleHtmlPlantillaChange}
         onsetHtmlContentWhatsapp={handleHtmlWhatsappPlantillaChange}
+        onFormChange={handleFormChange}
+
       />
 
       <FilterModal
@@ -278,6 +318,13 @@ const CampanasList: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      <FormFieldsModal
+          open={openFormFieldsModal}
+          onClose={handleCloseFormFieldsModal}
+          formularioId={selectedFormularioId}
+        />
 
       {/* Diálogo de confirmación para WhatsApp */}
       <Dialog

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, CircularProgress, FormControlLabel, Checkbox, Tabs, Tab, Box } from '@mui/material';
 import { CampanaModel } from '../../../core/_models';
 import OperacionCombo from '../../../../../../combos/components/OperacionCombo';
+import FormCombo from '../../../../../../combos/components/FormCombo';
 import OperacionZonaRepartoCombo from '../../../../../../combos/components/OperacionZonaRepartoCombo';
 import HtmlEditor from '../../../../../../texteditor/components/HtmlEditor';
 import WhatsAppTextEditor from '../../../../../../texteditor/components/WhatsAppTextEditor';
@@ -18,6 +19,7 @@ interface CampanaModalProps {
   onZonasRepartoChange: (value: string[]) => void;
   onsetHtmlContent: (value: string) => void;
   onsetHtmlContentWhatsapp: (value: string) => void;
+  onFormChange: (value: string) => void;
 }
 
 const CampanaModal: React.FC<CampanaModalProps> = ({
@@ -33,8 +35,10 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
   onZonasRepartoChange,
   onsetHtmlContent,
   onsetHtmlContentWhatsapp,
+  onFormChange
 }) => {
   const [operacionId, setOperacionId] = useState<string>('');
+  const [formId, setFormId] = useState<string>('');
   const [zonaRepartoId, setZonaRepartoId] = useState<string[]>([]);
   const [htmlplantilla, setHtmlContent] = useState<string>('');
   const [htmlplantillaWhatsapp, setHtmlContentWhatsapp] = useState<string>(''); // Estado para la plantilla de WhatsApp
@@ -43,6 +47,12 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
   const handleOperacionChange = (value: number) => {
     setOperacionId(value.toString());
     onOperacionChange(value);
+  };
+
+
+  const handleFormChange = (value: string) => {
+    setFormId(value);
+    onFormChange(value);
   };
 
   const handleZonasRepartoChange = (value: string[]) => {
@@ -70,6 +80,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
       <DialogContent>
         <Tabs value={selectedTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
           <Tab label="General" />
+          <Tab label="Filtros para generarla" />
           <Tab label="Correo Masivo" />
           <Tab label="Agenda" />
           <Tab label="Envío por Waapi" /> {/* Nuevo Tab */}
@@ -97,6 +108,8 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
               onChange={onChange}
               name="descripcion"
             />
+
+
             <FormControlLabel
               control={
                 <Checkbox
@@ -109,6 +122,25 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
               label="Activa"
             />
 
+            <OperacionCombo
+              value={operacionId as string}
+              onChange={(value) => handleOperacionChange(value as number)}
+            />
+
+            <FormCombo operacion_id={operacionId}
+              value={formId as string}
+              onChange={(value) => handleFormChange(value)}
+            />
+
+
+
+
+          </Box>
+        )}
+
+        {/* Tab Correo Masivo */}
+        {selectedTab === 1 && (
+          <Box sx={{ mt: 2 }}>
             <TextField
               label="Listado de Lotes"
               placeholder='Ej: 2,3,4'
@@ -119,10 +151,6 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
               margin="dense"
             />
 
-            <OperacionCombo
-              value={operacionId as string}
-              onChange={(value) => handleOperacionChange(value as number)}
-            />
 
             <OperacionZonaRepartoCombo
               operacionId={operacionId}
@@ -133,7 +161,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
         )}
 
         {/* Tab Correo Masivo */}
-        {selectedTab === 1 && (
+        {selectedTab === 2 && (
           <Box sx={{ mt: 2 }}>
             <TextField
               label="Asunto del correo"
@@ -148,7 +176,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
         )}
 
         {/* Tab Agenda */}
-        {selectedTab === 2 && (
+        {selectedTab === 3 && (
           <Box sx={{ mt: 2 }}>
             <FormControlLabel
               control={
@@ -175,7 +203,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
         )}
 
         {/* Tab Envío por Waapi */}
-        {selectedTab === 3 && (
+        {selectedTab === 4 && (
           <Box sx={{ mt: 2 }}>
             <TextField
               label="API Token"
@@ -188,7 +216,7 @@ const CampanaModal: React.FC<CampanaModalProps> = ({
             <TextField
               label="Instance ID"
               fullWidth
-          
+
               name="waapi_instance_id"
               value={currentCampana.waapi_instance_id || ''} // Valor predeterminado vacío si no existe
               onChange={onChange}

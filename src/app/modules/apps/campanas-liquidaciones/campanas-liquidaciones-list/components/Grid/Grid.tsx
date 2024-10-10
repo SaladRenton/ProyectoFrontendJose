@@ -29,12 +29,21 @@ const CampanasLiquidacionesList: React.FC = () => {
 
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
   const fetchContactAttemptData = useCallback(() => {
     fetchContactAttempt(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
 
+
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchContactAttemptData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, filters, fetchContactAttemptData]);
 
   const handleOpenFilterModal = () => {
     setFilterDialogOpen(true);

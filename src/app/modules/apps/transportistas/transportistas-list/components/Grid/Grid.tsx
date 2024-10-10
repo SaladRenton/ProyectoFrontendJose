@@ -35,12 +35,19 @@ const TransportistasList: React.FC = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
   const fetchTransportistasData = useCallback(() => {
     fetchTransportistas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchTransportistasData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, fetchTransportistasData]);
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<TransportistaModel>, oldRow: GridRowModel<TransportistaModel>) => {
     return handleProcessRowUpdate(newRow, oldRow, setError);

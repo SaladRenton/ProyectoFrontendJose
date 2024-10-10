@@ -109,12 +109,21 @@ const ViajesList: React.FC = () => {
 
   const [downloadCSVModalOpen, setDownloadCSVModalOpen] = useState<boolean>(false);
   const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false); // Estado para el switch
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
 
   const fetchViajesData = useCallback(() => {
     fetchViajes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
+
+  useEffect(() => {
+    if (!isFirstLoad) {
+      fetchViajesData();
+    } else {
+      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+    }
+  }, [page, pageSize, fetchViajesData]);
 
 
   const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<ViajeModel>, oldRow: GridRowModel<ViajeModel>) => {

@@ -10,7 +10,7 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 export const getCampanas = (page: number, pageSize: number, filters: Record<string, string>) => {
   return axios.get(`${API_URL}/campanas`, {
     params: {
-      include: 'operacion',
+      include: 'operacion,form',
       page: page + 1,
       sort: 'id',
       per_page: pageSize,
