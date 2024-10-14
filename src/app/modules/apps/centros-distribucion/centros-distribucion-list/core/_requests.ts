@@ -1,5 +1,5 @@
 import axios from "axios";
-import {  TransportistaModel } from "./_models";
+import {  CentroDistribucionModel } from "./_models";
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
@@ -7,11 +7,11 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 
 
 
-export const getTransportistas = (page: number, pageSize: number, filters: Record<string, string>) => {
-  return axios.get(`${API_URL}/transportistas`, {
+export const getCentrosDistribucion = (page: number, pageSize: number, filters: Record<string, string>) => {
+  return axios.get(`${API_URL}/centros-distribucion`, {
     params: {
       page:page +1,
-      sort: '-id',
+      sort: 'id',
       per_page: pageSize,
       ...filters
     }
@@ -25,9 +25,9 @@ export const getTransportistas = (page: number, pageSize: number, filters: Recor
 
 
 // Nuevo endpoint para actualizar un transportista
-export const updateTransportista = async (transportista: TransportistaModel) => {
+export const updateCentroDistribucion= async (centro: CentroDistribucionModel) => {
   try {
-    const response = await axios.put(`${API_URL}/transportistas/${transportista.id}`, transportista);
+    const response = await axios.put(`${API_URL}/centros-distribucion/${centro.id}`, centro);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -39,9 +39,9 @@ export const updateTransportista = async (transportista: TransportistaModel) => 
 
 
 // Nuevo endpoint para eliminar un transportista
-export const deleteTransportista = async (id: number) => {
+export const deleteCentroDistribucion = async (id: number) => {
   try {
-    const response = await axios.delete(`${API_URL}/transportistas/${id}`);
+    const response = await axios.delete(`${API_URL}/centros-distribucion/${id}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -52,10 +52,9 @@ export const deleteTransportista = async (id: number) => {
 };
 
 
-// Nuevo endpoint para agregar un transportista
-export const addTransportista = async (transportista: TransportistaModel) => {
+export const addCentroDistribucion = async (centro: CentroDistribucionModel) => {
   try {
-    const response = await axios.post(`${API_URL}/transportistas`, transportista);
+    const response = await axios.post(`${API_URL}/centros-distribucion`, centro);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

@@ -1,8 +1,8 @@
 
 import { FC } from 'react'
-import {KTIcon, toAbsoluteUrl} from '../../../_metronic/helpers'
-import {Link, useLocation} from 'react-router-dom'
-import {Dropdown1} from '../../../_metronic/partials'
+import { KTIcon, toAbsoluteUrl } from '../../../_metronic/helpers'
+import { Link, useLocation } from 'react-router-dom'
+import { Dropdown1 } from '../../../_metronic/partials'
 import { ToolbarWrapper } from '../../../_metronic/layout/components/toolbar'
 import { Content } from '../../../_metronic/layout/components/content'
 
@@ -12,9 +12,10 @@ interface OverviewProps {
   operacion: any;
   loading: boolean;
   error: string | null;
+  idoperacion: string | undefined;
 }
 
-const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error }) => {
+const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,idoperacion }) => {
   const location = useLocation()
   if (loading) {
     return <div>Loading...</div>;
@@ -148,7 +149,7 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error })
                       <div
                         className='bg-success rounded h-5px'
                         role='progressbar'
-                        style={{width: '50%'}}
+                        style={{ width: '50%' }}
                       ></div>
                     </div>
                   </div>
@@ -156,26 +157,18 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error })
               </div>
             </div>
 
+
+
+            {/* Tabs */}
             <div className='d-flex overflow-auto h-55px'>
               <ul className='nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap'>
                 <li className='nav-item'>
                   <Link
                     className={
                       `nav-link text-active-primary me-6 ` +
-                      (location.pathname === '/crafted/pages/profile/overview' && 'active')
+                      (location.pathname === `/pages/operacion/${idoperacion}/transportistas` && 'active')
                     }
-                    to='/crafted/pages/profile/overview'
-                  >
-                    Overview
-                  </Link>
-                </li>
-                <li className='nav-item'>
-                  <Link
-                    className={
-                      `nav-link text-active-primary me-6 ` +
-                      (location.pathname === '/crafted/pages/profile/projects' && 'active')
-                    }
-                    to='/crafted/pages/profile/projects'
+                    to={`/pages/operacion/${idoperacion}/transportistas`}
                   >
                     Transportistas
                   </Link>
@@ -184,9 +177,9 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error })
                   <Link
                     className={
                       `nav-link text-active-primary me-6 ` +
-                      (location.pathname === '/crafted/pages/profile/campaigns' && 'active')
+                      (location.pathname === `/pages/operacion/${idoperacion}/zonas-reparto` && 'active')
                     }
-                    to='/crafted/pages/profile/campaigns'
+                    to={`/pages/operacion/${idoperacion}/zonas-reparto`}
                   >
                     Zonas Reparto
                   </Link>
@@ -195,22 +188,11 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error })
                   <Link
                     className={
                       `nav-link text-active-primary me-6 ` +
-                      (location.pathname === '/crafted/pages/profile/documents' && 'active')
+                      (location.pathname === `/pages/operacion/${idoperacion}/etapas` && 'active')
                     }
-                    to='/crafted/pages/profile/documents'
+                    to={`/pages/operacion/${idoperacion}/etapas`}
                   >
-                    Documents
-                  </Link>
-                </li>
-                <li className='nav-item'>
-                  <Link
-                    className={
-                      `nav-link text-active-primary me-6 ` +
-                      (location.pathname === '/crafted/pages/profile/connections' && 'active')
-                    }
-                    to='/crafted/pages/profile/connections'
-                  >
-                    Paquetes
+                    Etapas
                   </Link>
                 </li>
               </ul>
@@ -222,4 +204,4 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error })
   )
 }
 
-export {OperacionHeader}
+export { OperacionHeader }

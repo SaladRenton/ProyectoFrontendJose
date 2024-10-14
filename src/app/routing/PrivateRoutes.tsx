@@ -27,8 +27,11 @@ const PrivateRoutes = () => {
   const PaquetesPage = lazy(() => import('../modules/apps/paquetes/PaquetesPage'))
   const UsuariosPage = lazy(() => import('../modules/apps/usuarios/UsuariosPage'))
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
+  const OperacionPersonaGrid = lazy(() => import('../modules/operacion/components/OperacionesPersonaGrid'))
   const CampanasPage = lazy(() => import('../modules/apps/campanas/CampanasPage'))
   const FormulariosPage = lazy(() => import('../modules/apps/formularios/FormulariosPage'))
+  const CentroDistribucionPage = lazy(() => import('../modules/apps/centros-distribucion/CentrosDistribucionPage'))
+  const EtapasPage = lazy(() => import('../modules/apps/etapas/EtapasPage'))
   const CampanasLiquidacionesPage = lazy(() => import('../modules/apps/campanas-liquidaciones/CampanasLiquidacionesPage'))
   const { currentUser, logout } = useAuth()
   return (
@@ -176,6 +179,27 @@ const PrivateRoutes = () => {
           }
         />
 
+
+        <Route
+          path='/apps/maestros/centros/*'
+          element={
+            <SuspensedView>
+              <CentroDistribucionPage />
+
+            </SuspensedView>
+          }
+        />
+
+        <Route
+          path='/apps/maestros/etapas/*'
+          element={
+            <SuspensedView>
+              <EtapasPage />
+
+            </SuspensedView>
+          }
+        />
+
         <Route
           path='apps/paquetes/*'
           element={
@@ -202,7 +226,12 @@ const PrivateRoutes = () => {
               <OperacionPageDetail />
             </SuspensedView>
           }
-        />
+        >
+          <Route path='transportistas' element={<OperacionPersonaGrid />} />
+          
+        </Route>
+
+
 
 
         <Route
@@ -213,6 +242,7 @@ const PrivateRoutes = () => {
             </SuspensedView>
           }
         />
+
 
 
 

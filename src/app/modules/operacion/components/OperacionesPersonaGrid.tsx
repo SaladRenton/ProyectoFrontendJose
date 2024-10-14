@@ -4,12 +4,18 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, B
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchOperacionPersona, deleteOperacionPersona } from '../../apps/operaciones/operaciones-list/core/_requests';
 import { esES  } from '@mui/x-data-grid/locales';
+import { useParams } from 'react-router-dom'
+
 
 interface OperacionPersonaGridProps {
-  operacionId: number;
+ 
 }
 
-const OperacionPersonaGrid: React.FC<OperacionPersonaGridProps> = ({ operacionId }) => {
+const OperacionPersonaGrid: React.FC<OperacionPersonaGridProps> = ({ }) => {
+
+  const { id } = useParams()
+  const operacionId = Number(id) // Convertir id a número
+  
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

@@ -51,7 +51,7 @@ export const getColumns = (
         const navigate = useNavigate();
 
         const handleEditClick = (id: number) => {
-          navigate(`/pages/operacion/overview/${id}`);
+          navigate(`/pages/operacion/${id}`);
         };
 
         return (

@@ -12,7 +12,7 @@ export const getCampanas = (page: number, pageSize: number, filters: Record<stri
     params: {
       include: 'operacion,form',
       page: page + 1,
-      sort: 'id',
+      sort: '-id',
       per_page: pageSize,
       ...filters
     }

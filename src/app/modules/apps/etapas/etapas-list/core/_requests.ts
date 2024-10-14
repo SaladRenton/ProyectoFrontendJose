@@ -1,5 +1,5 @@
 import axios from "axios";
-import {  TransportistaModel } from "./_models";
+import {  EtapasModel } from "./_models";
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
@@ -7,8 +7,8 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 
 
 
-export const getTransportistas = (page: number, pageSize: number, filters: Record<string, string>) => {
-  return axios.get(`${API_URL}/transportistas`, {
+export const getEtapas = (page: number, pageSize: number, filters: Record<string, string>) => {
+  return axios.get(`${API_URL}/etapas`, {
     params: {
       page:page +1,
       sort: '-id',
@@ -25,9 +25,9 @@ export const getTransportistas = (page: number, pageSize: number, filters: Recor
 
 
 // Nuevo endpoint para actualizar un transportista
-export const updateTransportista = async (transportista: TransportistaModel) => {
+export const updateEtapa= async (centro: EtapasModel) => {
   try {
-    const response = await axios.put(`${API_URL}/transportistas/${transportista.id}`, transportista);
+    const response = await axios.put(`${API_URL}/etapas/${centro.id}`, centro);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -39,9 +39,9 @@ export const updateTransportista = async (transportista: TransportistaModel) => 
 
 
 // Nuevo endpoint para eliminar un transportista
-export const deleteTransportista = async (id: number) => {
+export const deleteEtapa = async (id: number) => {
   try {
-    const response = await axios.delete(`${API_URL}/transportistas/${id}`);
+    const response = await axios.delete(`${API_URL}/etapas/${id}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -52,10 +52,9 @@ export const deleteTransportista = async (id: number) => {
 };
 
 
-// Nuevo endpoint para agregar un transportista
-export const addTransportista = async (transportista: TransportistaModel) => {
+export const addEtapa = async (centro: EtapasModel) => {
   try {
-    const response = await axios.post(`${API_URL}/transportistas`, transportista);
+    const response = await axios.post(`${API_URL}/etapas`, centro);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

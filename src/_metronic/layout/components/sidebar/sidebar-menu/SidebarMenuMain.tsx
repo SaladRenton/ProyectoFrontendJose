@@ -71,7 +71,7 @@ const SidebarMenuMain = () => {
         {hasPermission('formularios.index') &&
           <SidebarMenuItemWithSub to='/apps/operaciones/formularios' title='Formularios' hasBullet={true}>
             <SidebarMenuItem to='/apps/operaciones/formularios/list' title='Gestión de Formularios' hasBullet={true} />
-          
+
           </SidebarMenuItemWithSub>
         }
       </SidebarMenuItemWithSub>
@@ -125,6 +125,27 @@ const SidebarMenuMain = () => {
           <SidebarMenuItem to='/apps/usuarios/roles' title='Gestión de Roles' hasBullet={true} />
         </SidebarMenuItemWithSub>
       }
+
+      {hasPermission('usuarios.index') &&
+
+        <SidebarMenuItemWithSub
+          to='/apps/maestros'
+          title='Maestros'
+          icon='people' // Bootstrap icon
+        >
+          {hasPermission('centros-distribucion.index') &&
+            <SidebarMenuItem to='/apps/maestros/centros/list' title='Centros de Distribución' hasBullet={true} />
+          }
+          {hasPermission('etapas.index') &&
+            <SidebarMenuItem to='/apps/maestros/etapas/list' title='Etapas' hasBullet={true} />
+          }
+          <SidebarMenuItem to='/apps/operaciones/list' title='Operaciones' hasBullet={true} />
+
+        </SidebarMenuItemWithSub>
+      }
+
+
+
 
 
       {/* Monitorización */}
