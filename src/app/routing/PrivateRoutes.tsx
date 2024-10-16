@@ -29,6 +29,7 @@ const PrivateRoutes = () => {
   const OperacionPageDetail = lazy(() => import('../modules/operacion/OperacionPage'))
   const OperacionPersonaGrid = lazy(() => import('../modules/apps/operacion-persona/operacion-persona-list/components/Grid/Grid'))
   const OperacionZonaRepartoGrid = lazy(() => import('../modules/apps/operacion-zona-reparto/operacion-zona-reparto-list/components/Grid/Grid'))
+  const OperacionEtapaGrid = lazy(() => import('../modules/apps/operacion-etapa/operacion-etapa-list/components/Grid/Grid'))
 
 
   const CampanasPage = lazy(() => import('../modules/apps/campanas/CampanasPage'))
@@ -232,6 +233,7 @@ const PrivateRoutes = () => {
         >
           <Route path='transportistas' element={<OperacionPersonaGrid />} />
           <Route path='zonas-reparto' element={<OperacionZonaRepartoGrid />} />
+          <Route path='etapas' element={<OperacionEtapaGrid />} />
           
         </Route>
 
