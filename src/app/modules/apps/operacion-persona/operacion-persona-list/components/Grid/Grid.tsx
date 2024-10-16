@@ -1,57 +1,61 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DataGrid, GridRowsProp, GridRowModel } from '@mui/x-data-grid';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress, Button } from '@mui/material';
-import { UserModelWithRol, initialUser } from '../../../../../auth';
-import { getColumns } from '../table/columns/_columns';
-import UsuarioModal from '../table/modal/_modal';
+import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from '@mui/material';
+import { OperacionPersonaModel, initialOperacionPersona } from '../../core/_models'; // Importa la interfaz adaptada
+import { getColumns } from '../table/columns/_columns'; // Ajusta la ruta si es necesario
+import OperacionPersonaModal from '../table/modal/_modal';
 import FilterModal from '../table/modal/_filterModal';
 import Toolbar from '../toolbar/toolbars/toolbar';
+import { Button } from '@mui/material';
 import {
-  fetchUsuarios,
-  handleProcessRowUpdate,
+  fetchOperacionesPersona,
+  handleAddOperacionPersona,
   handleDeleteRow,
-  handleAddUsuario,
-  handleEditUsuario
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
+import { useParams } from 'react-router-dom'
 
-const UsuariosList: React.FC = () => {
-  const [rows, setRows] = useState<GridRowsProp<UserModelWithRol>>([]);
+
+const OperacionPersonasList: React.FC = () => {
+  const { id } = useParams<{ id: string }>() // Obtienes el id de la operación
+  const operacionId = id.toString();
+  const [rows, setRows] = useState<GridRowsProp<OperacionPersonaModel>>([]);
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [rowCount, setRowCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalLoading, setModalLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [validationError, setValidationError] = useState<string | null | number>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState<boolean>(false);
   const [modalErrors, setModalErrors] = useState<string[]>([]);
-  const [currentUsuario, setCurrentUsuario] = useState<UserModelWithRol>(initialUser);
+  const [currentOperacionPersona, setCurrentOperacionPersona] = useState<OperacionPersonaModel>(initialOperacionPersona);
+
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Record<string, string | boolean | number | string[]>>({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
 
-  const fetchUsuariosData = useCallback(() => {
-    fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
-  }, [page, pageSize, filters]);
+  const fetchOperacionesPersonaData = useCallback(() => {
 
+    const updatedFilters: Record<string, string> = { 
+      ...filters, 
+      operacion_id: id.toString() // Convertimos id a string
+    };
+    fetchOperacionesPersona(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
+  }, [page, pageSize, filters,id]);
 
   useEffect(() => {
-
     if (!isFirstLoad) {
-      fetchUsuariosData();
+      fetchOperacionesPersonaData();
     } else {
       setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
     }
-  }, [page, pageSize, fetchUsuariosData]);
+  }, [page, pageSize, fetchOperacionesPersonaData]);
 
-  const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<UserModelWithRol>, oldRow: GridRowModel<UserModelWithRol>) => {
-    return handleProcessRowUpdate(newRow, oldRow, setError);
-  };
+
 
   const handleDeleteRowWrapper = async (id: number) => {
     setDeleteItemId(id);
@@ -69,29 +73,18 @@ const UsuariosList: React.FC = () => {
   };
 
   const validateFields = (): boolean => {
+    if (!currentOperacionPersona.persona_id) {
+      setValidationError('La seleccion de un transportista es obligatoria.');
+      return false;
+    }
     setValidationError(null);
     return true;
   };
 
-  const handleAddUsuarioWrapper = async () => {
-    if (!validateFields()) return;
-    handleAddUsuario(currentUsuario, fetchUsuariosData, setOpen, setCurrentUsuario, initialUser, setError, setModalErrors, setModalLoading);
-  };
 
-  const handleEditUsuarioWrapper = async () => {
-    if (!validateFields()) return;
-    handleEditUsuario(currentUsuario, fetchUsuariosData, setOpen, setCurrentUsuario, initialUser, setError, setModalErrors, setModalLoading);
-  };
-
-  const handleOpenEditModal = (usuario: UserModelWithRol) => {
-    setCurrentUsuario(usuario);
-    setEditMode(true);
-    setOpen(true);
-  };
 
   const handleOpenAddModal = () => {
-    setCurrentUsuario(initialUser);
-    setEditMode(false);
+    setCurrentOperacionPersona(initialOperacionPersona);
     setOpen(true);
   };
 
@@ -99,65 +92,45 @@ const UsuariosList: React.FC = () => {
     setFilterDialogOpen(true);
   };
 
-  const handleApplyFilters = (newFilters: Record<string, string | boolean | number | string[]>) => {
-    // Primero actualizamos los filtros
+  const handleApplyFilters = (newFilters: Record<string, string>) => {
+    // Actualiza los filtros y después ejecuta fetchOperacionesPersonaData
     setFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters, ...newFilters }; // Fusionamos los nuevos filtros con los anteriores
-      // Luego llamamos a fetchUsuariosData con los filtros actualizados
-      fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
-      return updatedFilters; // Retornamos los filtros actualizados al estado
-    });
-  };
-  
-  const handleClearFilters = () => {
-    // Limpiamos los filtros
-    setFilters(() => {
-      const clearedFilters = {}; // Filtros vacíos
-      // Luego llamamos a fetchUsuariosData con los filtros vacíos
-      fetchUsuarios(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters);
-      return clearedFilters; // Retornamos los filtros vacíos al estado
+      const updatedFilters = { ...prevFilters, ...newFilters };
+      fetchOperacionesPersona(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
+      return updatedFilters;
     });
   };
 
-  const handleRoleChange = (roleId: number) => {
-    setCurrentUsuario((prev) => ({
-      ...prev,
-      roles: [{ id: roleId }],
-      role_id: roleId
-    }));
+  const handleAddOperacionPersonaWrapper = async () => {
+    if (!validateFields()) return;
+    handleAddOperacionPersona(currentOperacionPersona, fetchOperacionesPersonaData, setOpen, setCurrentOperacionPersona, initialOperacionPersona, setError, setModalErrors, setModalLoading);
+  };
+
+  const handleClearFilters = () => {
+    // Limpia los filtros y después ejecuta fetchOperacionesPersonaData
+    setFilters(() => {
+      fetchOperacionesPersona(page, pageSize, setRows, setRowCount, setError, setLoading, {});
+      return {};
+    });
   };
 
   const handleTransportistaChange = (transportistaId: number | string) => {
     const id = typeof transportistaId === 'string' ? parseInt(transportistaId, 10) : transportistaId;
 
     if (!isNaN(id) && id > 0) {
-      setCurrentUsuario((prev) => ({
+      setCurrentOperacionPersona((prev) => ({
         ...prev,
         persona_id: id,
-        persona: {
-
-          id: id,
-          razon_social: '',
-          email: '',
-          localidad: '',
-          ciudad: '',
-          calle: '',
-          numero_calle: '',
-          piso: '',
-          dpto: '',
-          tel: '',
-          cuit: ''
-
-
-        }
+        operacion_id:operacionId
       }));
     }
   };
 
-  const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
+
+  const columns = getColumns(handleDeleteRowWrapper);
 
   return (
-    <div style={{ height: 700, width: '100%' }}>
+    <div style={{ height: 400, width: '100%' }}>
       {error && (
         <div className="alert alert-danger d-flex align-items-center p-5 mb-10">
           <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>
@@ -169,7 +142,7 @@ const UsuariosList: React.FC = () => {
       )}
       <Toolbar
         onAdd={handleOpenAddModal}
-        onRefresh={fetchUsuariosData}
+        onRefresh={fetchOperacionesPersonaData}
         onOpenFilterModal={handleOpenFilterModal}
         onClearFilters={handleClearFilters}
       />
@@ -184,35 +157,33 @@ const UsuariosList: React.FC = () => {
         onPageChange={(newPage) => setPage(newPage)}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         loading={loading}
-        processRowUpdate={handleProcessRowUpdateWrapper}
-        experimentalFeatures={{ newEditingApi: true }}
+        experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         sx={{
           m: 2,
           boxShadow: 1,
           //border: 2,
           '& .MuiDataGrid-columnHeaderTitle': {
-           //backgroundColor: '#f5f5f5',
+            //backgroundColor: '#f5f5f5',
             fontSize: '1rem',
             // fontWeight: 'bold',
             color: 'black', // Color negro
             fontWeight: 600, // Hacer la letra más negra
-            textTransform:  'uppercase'
+            textTransform: 'uppercase'
 
-          }}}
+          }
+        }}
+
       />
-      <UsuarioModal
+      <OperacionPersonaModal
         open={open}
-        editMode={editMode}
-        currentUsuario={currentUsuario}
+        currentOperacionPersona ={currentOperacionPersona}
         modalLoading={modalLoading}
-       // validationError={validationError}
+        validationError={validationError}
         modalErrors={modalErrors}
         onClose={() => setOpen(false)}
-        onChange={(e) => setCurrentUsuario({ ...currentUsuario, [e.target.name]: e.target.value })}
-        onSubmit={editMode ? handleEditUsuarioWrapper : handleAddUsuarioWrapper}
-        onRoleChange={handleRoleChange}
         onTransportistaChange={handleTransportistaChange}
+        onSubmit={handleAddOperacionPersonaWrapper}
       />
       <Dialog
         open={deleteDialogOpen}
@@ -221,7 +192,7 @@ const UsuariosList: React.FC = () => {
         <DialogTitle>{"Confirmar Eliminación"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            ¿Estás seguro de que deseas eliminar este Usuario? Esta acción no se puede deshacer.
+            ¿Estás seguro de que deseas desasociar este Transportista? Esta acción no se puede deshacer.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -242,4 +213,4 @@ const UsuariosList: React.FC = () => {
   );
 };
 
-export default UsuariosList;
+export default OperacionPersonasList;

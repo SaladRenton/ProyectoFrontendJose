@@ -62,6 +62,9 @@ const OperacionPersonaGrid: React.FC<OperacionPersonaGridProps> = ({ }) => {
   };
 
   const columns: GridColDef[] = [
+
+    { field: 'persona_id', headerName: 'Transportista ID', width: 150, hide: false },
+
     {
       field: 'persona.razon_social',
       headerName: 'Transportista',
@@ -69,7 +72,6 @@ const OperacionPersonaGrid: React.FC<OperacionPersonaGridProps> = ({ }) => {
       editable: false,
       valueGetter: (params) => params.row.persona?.razon_social
     },
-    { field: 'persona_id', headerName: 'Persona ID', width: 150, hide: true },
     {
       field: 'actions',
       headerName: 'Acciones',

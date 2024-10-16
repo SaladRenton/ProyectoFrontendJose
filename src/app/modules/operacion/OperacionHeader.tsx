@@ -197,6 +197,8 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                 </li>
               </ul>
             </div>
+
+            
           </div>
         </div>
       </Content>
