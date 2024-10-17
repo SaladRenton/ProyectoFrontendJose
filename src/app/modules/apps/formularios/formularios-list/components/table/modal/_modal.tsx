@@ -270,7 +270,7 @@ const FormularioModal: React.FC<FormularioModalProps> = ({
           <div className="alert alert-danger d-flex align-items-center p-5 mt-3">
             <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>
             <div className="d-flex flex-column">
-              <h5 className="mb-1">Validation Error</h5>
+              <h5 className="mb-1">Hay errores de validación</h5>
               <span>{validationError}</span>
             </div>
           </div>

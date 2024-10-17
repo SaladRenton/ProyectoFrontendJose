@@ -37,7 +37,7 @@ export const deleteOperacionPersona = async (id: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -50,6 +50,6 @@ export const addOperacionPersona = async (operacionpersona: OperacionPersonaMode
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };

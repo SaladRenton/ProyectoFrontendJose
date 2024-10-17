@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DataGrid, GridRowsProp } from '@mui/x-data-grid';
+import { DataGrid, GridRowsProp,GridRowModel } from '@mui/x-data-grid';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, CircularProgress } from '@mui/material';
 import { OperacionEtapaModel, initialOperacionEtapa } from '../../core/_models'; // Importa la interfaz adaptada
 import { getColumns } from '../table/columns/_columns'; // Ajusta la ruta si es necesario
@@ -11,9 +11,11 @@ import {
   fetchOperacionesEtapa,
   handleAddOperacionEtapa,
   handleDeleteRow,
+  handleProcessRowUpdate
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import { useParams } from 'react-router-dom'
+import OperacionEtapaNotificacionModal from '../table/modal/_operacionEtapaNotificacionModal';
 
 
 const OperacionEtapasList: React.FC = () => {
@@ -37,6 +39,11 @@ const OperacionEtapasList: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
+
+  const [notificacionesModalOpen, setNotificacionesModalOpen] = useState<boolean>(false);
+  const [selectedNotificaciones, setSelectedNotificaciones] = useState<OperacionEtapaModel>(initialOperacionEtapa);
+  const [modalNotificacionesErrors, setModalNotificacionesErrors] = useState<string[]>([]);
+
 
   const fetchOperacionesEtapaData = useCallback(() => {
 
@@ -132,8 +139,23 @@ const OperacionEtapasList: React.FC = () => {
     setModalErrors([]);
   }
 
+  const handleOpenNotificacionesModal = (etapa: OperacionEtapaModel) => {
+    setSelectedNotificaciones(etapa);
+    setNotificacionesModalOpen(true);
+  };
 
-  const columns = getColumns(handleDeleteRowWrapper);
+  const onCloseModalNotificaciones = () => {
+
+    setNotificacionesModalOpen(false);
+    setModalNotificacionesErrors([]);
+  }
+
+  const handleProcessRowUpdateWrapper = async (newRow: GridRowModel<OperacionEtapaModel>, oldRow: GridRowModel<OperacionEtapaModel>) => {
+    return handleProcessRowUpdate(newRow, oldRow, setError, setModalErrors);
+  };
+
+
+  const columns = getColumns(handleDeleteRowWrapper, handleOpenNotificacionesModal);
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -161,6 +183,7 @@ const OperacionEtapasList: React.FC = () => {
         rowCount={rowCount}
         paginationMode="server"
         onPageChange={(newPage) => setPage(newPage)}
+        processRowUpdate={handleProcessRowUpdateWrapper}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         loading={loading}
         experimentalFeatures={{ newEditingApi: true }} // Habilitar la nueva API de edición
@@ -198,6 +221,16 @@ const OperacionEtapasList: React.FC = () => {
           });
         }}
       />
+
+      <OperacionEtapaNotificacionModal
+        open={notificacionesModalOpen}
+        onClose={onCloseModalNotificaciones}
+        operacionEtapa={selectedNotificaciones}
+
+      />
+
+
+
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}

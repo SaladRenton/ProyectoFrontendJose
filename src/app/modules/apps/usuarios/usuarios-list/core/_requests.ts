@@ -47,7 +47,7 @@ export const updateUsuario = async (usuario: UserModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -61,7 +61,7 @@ export const deleteUsuario = async (id: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -75,6 +75,6 @@ export const addUsuario = async (usuario: UserModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };

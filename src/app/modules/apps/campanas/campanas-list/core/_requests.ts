@@ -34,7 +34,7 @@ export const updateCampana = async (campana: CampanaModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -48,7 +48,7 @@ export const enviarMasivo = async (campanaId: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -62,7 +62,7 @@ export const enviarWhatsappMasivo = async (campanaId: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -82,7 +82,7 @@ export const addCampana = async (campana: CampanaModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 

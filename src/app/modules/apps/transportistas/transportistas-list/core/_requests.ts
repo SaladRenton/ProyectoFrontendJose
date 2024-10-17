@@ -33,7 +33,7 @@ export const updateTransportista = async (transportista: TransportistaModel) => 
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -47,7 +47,7 @@ export const deleteTransportista = async (id: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -61,6 +61,6 @@ export const addTransportista = async (transportista: TransportistaModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };

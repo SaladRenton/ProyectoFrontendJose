@@ -33,7 +33,7 @@ export const updateEtapa= async (centro: EtapasModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -47,7 +47,7 @@ export const deleteEtapa = async (id: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -60,6 +60,6 @@ export const addEtapa = async (centro: EtapasModel) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };

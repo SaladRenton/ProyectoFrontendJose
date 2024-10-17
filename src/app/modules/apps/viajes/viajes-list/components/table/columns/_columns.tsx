@@ -7,8 +7,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import Link from '@mui/material/Link';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { format ,parseISO} from 'date-fns';
 import AttachFileIcon from '@mui/icons-material/AttachFile'; // Importa el icono de documentos adjuntos
 import CreateIcon from '@mui/icons-material/Create';

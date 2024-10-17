@@ -11,7 +11,7 @@ export const getOperacionesEtapa = (page: number, pageSize: number, filters: Rec
   return axios.get(`${API_URL}/operaciones-etapa`, {
     params: {
       page:page +1,
-      sort: 'id',
+      sort: 'orden',
       include:'etapa',
       per_page: pageSize,
       ...filters
@@ -37,7 +37,7 @@ export const deleteOperacionEtapa = async (id: number) => {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
   }
 };
 
@@ -50,6 +50,21 @@ export const addOperacionEtapa = async (operacionetapa: OperacionEtapaModel) => 
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
     }
-    throw new Error('An unexpected error occurred');
+    throw new Error('Ocurrio un error inesperado');
+  }
+};
+
+
+
+
+export const updateOperacionEtapa = async (operacionetapa: OperacionEtapaModel) => {
+  try {
+    const response = await axios.put(`${API_URL}/operaciones-etapa/${operacionetapa.id}`, operacionetapa);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data;
+    }
+    throw new Error('Ocurrio un error inesperado');
   }
 };

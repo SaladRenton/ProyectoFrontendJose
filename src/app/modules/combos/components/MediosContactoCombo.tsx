@@ -9,6 +9,7 @@ interface MediosContactoComboProps {
   error?: boolean; // Nuevo prop para indicar si hay un error
   helperText?: string; // Nuevo prop para mostrar el mensaje de error
   label?: string;
+  disabled?:boolean;
 }
 
 const API_URL = import.meta.env.VITE_APP_API_URL;
@@ -22,7 +23,7 @@ const fetchMediosContacto = async () => {
   return response.data.data || [];
 };
 
-const MediosContactoCombo: React.FC<MediosContactoComboProps> = ({ value, onChange, error, helperText ,label}) => {
+const MediosContactoCombo: React.FC<MediosContactoComboProps> = ({ value, onChange, error, helperText ,label,disabled=false}) => {
   const [medios, setMediosContacto] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -64,6 +65,7 @@ const MediosContactoCombo: React.FC<MediosContactoComboProps> = ({ value, onChan
             value={value}
             onChange={handleSelectChange}
             label={label?label:'Medio'}
+            disabled={disabled}
           >
             {medios.map((medio) => (
               <MenuItem key={medio.id} value={medio.id}>

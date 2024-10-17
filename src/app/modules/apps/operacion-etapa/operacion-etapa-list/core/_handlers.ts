@@ -1,5 +1,5 @@
-import { GridRowsProp } from '@mui/x-data-grid';
-import { getOperacionesEtapa, deleteOperacionEtapa, addOperacionEtapa } from './_requests';
+import { GridRowsProp , GridRowModel} from '@mui/x-data-grid';
+import { getOperacionesEtapa, deleteOperacionEtapa, addOperacionEtapa,updateOperacionEtapa } from './_requests';
 import { OperacionEtapaModel } from './_models';
 
 export const fetchOperacionesEtapa = async (
@@ -76,4 +76,39 @@ export const handleAddOperacionEtapa = async (
     }
   }
   setModalLoading(false);
+};
+
+
+
+interface ErrorResponse {
+  errors: Record<string, string[]>;
+}
+
+export const handleProcessRowUpdate = async (
+  newRow: GridRowModel<OperacionEtapaModel>,
+  oldRow: GridRowModel<OperacionEtapaModel>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setModalErrors: React.Dispatch<React.SetStateAction<string[]>>
+): Promise<GridRowModel<OperacionEtapaModel>> => {
+  try {
+    await updateOperacionEtapa(newRow as OperacionEtapaModel);
+    setError(null); // Limpiar cualquier error previo si la actualización es exitosa
+    setModalErrors([]); // Limpiar cualquier error previo si la actualización es exitosa
+    return newRow;
+  } catch (error: any) {
+    console.error("Error updating viaje", error);
+    const message = error.message || 'Update failed';
+    setError(message);
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
+      setModalErrors([message, ...errors]);
+    } else {
+      setModalErrors([message]);
+    }
+    return oldRow; // Revertir a la fila anterior si hay un error
+  }
 };

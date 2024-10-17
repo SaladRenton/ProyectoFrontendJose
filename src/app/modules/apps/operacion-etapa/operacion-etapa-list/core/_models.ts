@@ -1,7 +1,7 @@
 
 
 export interface OperacionEtapaModel {
-  id?: number;
+  id: number;
   etapa_id: number | string;
   operacion_id: number | string;
   orden: number;
