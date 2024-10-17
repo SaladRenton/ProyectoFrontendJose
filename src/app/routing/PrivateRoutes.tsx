@@ -11,6 +11,7 @@ import { useAuth } from '../modules/auth'
 
 
 
+
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
@@ -36,6 +37,7 @@ const PrivateRoutes = () => {
   const FormulariosPage = lazy(() => import('../modules/apps/formularios/FormulariosPage'))
   const CentroDistribucionPage = lazy(() => import('../modules/apps/centros-distribucion/CentrosDistribucionPage'))
   const EtapasPage = lazy(() => import('../modules/apps/etapas/EtapasPage'))
+  const IrregularidadesPage = lazy(() => import('../modules/apps/irregularidades/IrregularidadesPage'))
   const CampanasLiquidacionesPage = lazy(() => import('../modules/apps/campanas-liquidaciones/CampanasLiquidacionesPage'))
   const { currentUser, logout } = useAuth()
   return (
@@ -205,6 +207,16 @@ const PrivateRoutes = () => {
         />
 
         <Route
+          path='/apps/maestros/irregularidades/*'
+          element={
+            <SuspensedView>
+              <IrregularidadesPage />
+
+            </SuspensedView>
+          }
+        />
+
+        <Route
           path='apps/paquetes/*'
           element={
             <SuspensedView>
@@ -234,7 +246,7 @@ const PrivateRoutes = () => {
           <Route path='transportistas' element={<OperacionPersonaGrid />} />
           <Route path='zonas-reparto' element={<OperacionZonaRepartoGrid />} />
           <Route path='etapas' element={<OperacionEtapaGrid />} />
-          
+
         </Route>
 
 

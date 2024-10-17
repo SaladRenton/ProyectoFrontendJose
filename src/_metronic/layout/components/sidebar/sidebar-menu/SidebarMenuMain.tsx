@@ -141,6 +141,10 @@ const SidebarMenuMain = () => {
           }
           <SidebarMenuItem to='/apps/operaciones/list' title='Operaciones' hasBullet={true} />
 
+          {hasPermission('irregularidades.index') &&
+            <SidebarMenuItem to='/apps/maestros/irregularidades/list' title='Irregularidades' hasBullet={true} />
+          }
+
         </SidebarMenuItemWithSub>
       }
 

@@ -5,6 +5,7 @@ import axios from 'axios';
 interface ZonaReparto {
   id: number;
   nombre: string;
+  state: string;
 }
 
 interface ZonaRepartoComboProps {
@@ -60,7 +61,7 @@ const ZonaRepartoCombo: React.FC<ZonaRepartoComboProps> = ({  onChange }) => {
 
   return (
     <Autocomplete
-      getOptionLabel={(option) => option.nombre}  // Lo que se muestra en la lista
+      getOptionLabel={(option) => option.nombre + " - " + option.state}  // Lo que se muestra en la lista
       options={options}
       loading={loading}
       onInputChange={(event, newInputValue) => {
