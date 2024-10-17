@@ -38,6 +38,8 @@ const PrivateRoutes = () => {
   const CentroDistribucionPage = lazy(() => import('../modules/apps/centros-distribucion/CentrosDistribucionPage'))
   const EtapasPage = lazy(() => import('../modules/apps/etapas/EtapasPage'))
   const IrregularidadesPage = lazy(() => import('../modules/apps/irregularidades/IrregularidadesPage'))
+  const CalificacionesPage = lazy(() => import('../modules/apps/calificaciones/CalificacionesPage'))
+
   const CampanasLiquidacionesPage = lazy(() => import('../modules/apps/campanas-liquidaciones/CampanasLiquidacionesPage'))
   const { currentUser, logout } = useAuth()
   return (
@@ -215,6 +217,18 @@ const PrivateRoutes = () => {
             </SuspensedView>
           }
         />
+
+        <Route
+          path='/apps/maestros/calificaciones/*'
+          element={
+            <SuspensedView>
+              <CalificacionesPage />
+
+            </SuspensedView>
+          }
+        />
+
+
 
         <Route
           path='apps/paquetes/*'

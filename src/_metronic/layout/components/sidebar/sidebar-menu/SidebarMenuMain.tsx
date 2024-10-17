@@ -145,6 +145,10 @@ const SidebarMenuMain = () => {
             <SidebarMenuItem to='/apps/maestros/irregularidades/list' title='Irregularidades' hasBullet={true} />
           }
 
+          {hasPermission('contact-attempts-types.index') &&
+            <SidebarMenuItem to='/apps/maestros/calificaciones/list' title='Calificaciones' hasBullet={true} />
+          }
+
         </SidebarMenuItemWithSub>
       }
 
