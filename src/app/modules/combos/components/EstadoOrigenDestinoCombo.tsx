@@ -23,7 +23,7 @@ const EstadoOrigenDestinoCombo: React.FC<EstadosComboProps> = ({ value, onChange
     const fetchEstados = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${API_URL}/estados-origen-destino-habilitados`, {
+        const response = await axios.get(`${API_URL}/estados-habilitados`, {
           params: {
             'filter[estado_id_origen]': estado_id_origen,
             'filter[operacion_id]': operacion_id,
