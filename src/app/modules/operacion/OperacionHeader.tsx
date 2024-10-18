@@ -15,7 +15,7 @@ interface OverviewProps {
   idoperacion: string | undefined;
 }
 
-const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,idoperacion }) => {
+const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error, idoperacion }) => {
   const location = useLocation()
   if (loading) {
     return <div>Loading...</div>;
@@ -32,12 +32,12 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
         <div className='card mb-5 mb-xl-10'>
           <div className='card-body pt-9 pb-0'>
             <div className='d-flex flex-wrap flex-sm-nowrap mb-3'>
-              <div className='me-7 mb-4'>
+         {/*      <div className='me-7 mb-4'>
                 <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
                   <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='Metornic' />
                   <div className='position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px'></div>
                 </div>
-              </div>
+              </div> */}
 
               <div className='flex-grow-1'>
                 <div className='d-flex justify-content-between align-items-start flex-wrap mb-2'>
@@ -51,7 +51,7 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                       </a>
                     </div>
 
-                    <div className='d-flex flex-wrap fw-bold fs-6 mb-4 pe-2'>
+                   {/*  <div className='d-flex flex-wrap fw-bold fs-6 mb-4 pe-2'>
                       <a
                         href='#'
                         className='d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2'
@@ -73,10 +73,10 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                         <KTIcon iconName='sms' className='fs-4 me-1' />
                         max@kt.com
                       </a>
-                    </div>
+                    </div> */}
                   </div>
 
-                  <div className='d-flex my-4'>
+                 {/*  <div className='d-flex my-4'>
                     <a href='#' className='btn btn-sm btn-light me-2' id='kt_user_follow_button'>
                       <KTIcon iconName='check' className='fs-3 d-none' />
 
@@ -105,10 +105,10 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                       </button>
                       <Dropdown1 />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
-                <div className='d-flex flex-wrap flex-stack'>
+              {/*   <div className='d-flex flex-wrap flex-stack'>
                   <div className='d-flex flex-column flex-grow-1 pe-8'>
                     <div className='d-flex flex-wrap'>
                       <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
@@ -153,7 +153,7 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                       ></div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -205,6 +205,19 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error,id
                     to={`/pages/operacion/${idoperacion}/estado-origen-destino`}
                   >
                     Estado origen-destino-calificacion
+                  </Link>
+                </li>
+
+
+                <li className='nav-item'>
+                  <Link
+                    className={
+                      `nav-link text-active-primary me-6 ` +
+                      (location.pathname === `/pages/operacion/${idoperacion}/irregularidades` && 'active')
+                    }
+                    to={`/pages/operacion/${idoperacion}/irregularidades`}
+                  >
+                    Irregularidades
                   </Link>
                 </li>
               </ul>

@@ -32,6 +32,7 @@ const PrivateRoutes = () => {
   const OperacionZonaRepartoGrid = lazy(() => import('../modules/apps/operacion-zona-reparto/operacion-zona-reparto-list/components/Grid/Grid'))
   const OperacionEtapaGrid = lazy(() => import('../modules/apps/operacion-etapa/operacion-etapa-list/components/Grid/Grid'))
   const OperacionEstadoOrigenDestinoGrid = lazy(() => import('../modules/apps/operacion-estado-origen-destino/operacion-estado-origen-destino-list/components/Grid/Grid'))
+  const OperacionIrregularidadesGrid = lazy(() => import('../modules/apps/operacion-irregularidades/operacion-irregularidad-list/components/Grid/Grid'))
 
 
   const CampanasPage = lazy(() => import('../modules/apps/campanas/CampanasPage'))
@@ -262,6 +263,7 @@ const PrivateRoutes = () => {
           <Route path='zonas-reparto' element={<OperacionZonaRepartoGrid />} />
           <Route path='etapas' element={<OperacionEtapaGrid />} />
           <Route path='estado-origen-destino' element={<OperacionEstadoOrigenDestinoGrid />} />
+          <Route path='irregularidades' element={<OperacionIrregularidadesGrid />} />
 
         </Route>
 
