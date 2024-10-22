@@ -11,7 +11,7 @@ import {
   handleAddCampana,
   handleDownloadCsv,
   handleEnviarMasivo,
-  handleEnviarWhatsappMasivo, // Handler para el envío de WhatsApp
+  handleEnviarWhatsappMasivo,
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
 import {
@@ -23,6 +23,7 @@ import {
   Button,
 } from '@mui/material';
 import FormFieldsModal from '../table/modal/_formFieldsModal';
+import ContactoModal from '../table/modal/_contactoModal';
 
 const CampanasList: React.FC = () => {
   const [rows, setRows] = useState<GridRowsProp<CampanaModel>>([]);
@@ -38,31 +39,30 @@ const CampanasList: React.FC = () => {
   const [currentCampana, setCurrentCampana] = useState<CampanaModel>(initialCampana);
   const [filterDialogOpen, setFilterDialogOpen] = useState<boolean>(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Estado para manejar el archivo cargado
 
   // Estado para el dialog de confirmación de envío masivo de correo
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
-  const [confirmWhatsappDialogOpen, setConfirmWhatsappDialogOpen] = useState<boolean>(false); // Dialog para WhatsApp
+  const [confirmWhatsappDialogOpen, setConfirmWhatsappDialogOpen] = useState<boolean>(false);
   const [selectedCampanaId, setSelectedCampanaId] = useState<number | null>(null);
   const [openFormFieldsModal, setOpenFormFieldsModal] = useState<boolean>(false);
+  const [openCampanasModal, setOpenCampanaModal] = useState<boolean>(false);
   const [selectedFormularioId, setSelectedFormularioId] = useState<number | null>(null);
-
-
+  const [SelectedContactoId, setSelectedContactoId] = useState<number | null>(null);
 
   const fetchCampanasData = useCallback(() => {
     fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
   }, [page, pageSize, filters]);
 
-  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
-  // useEffect para controlar la primera carga
   useEffect(() => {
     if (!isFirstLoad) {
       fetchCampanasData();
     } else {
-      setIsFirstLoad(false);  // Marca que ya hemos pasado el primer render
+      setIsFirstLoad(false);
     }
   }, [page, pageSize, filters, fetchCampanasData]);
-
 
   const handleProcessRowUpdateWrapper = async (
     newRow: GridRowModel<CampanaModel>,
@@ -71,28 +71,53 @@ const CampanasList: React.FC = () => {
     return handleProcessRowUpdate(newRow, oldRow, setError);
   };
 
-
   // Función para abrir el modal de form_fields
   const handleOpenFormFieldsModal = (formularioId: number) => {
     setSelectedFormularioId(formularioId);
     setOpenFormFieldsModal(true);
   };
 
-  // Función para cerrar el modal de form_fields
+  // Función para abrir el modal de form_fields
+  const handleOpenCampanaModal = (campanaId: number) => {
+   
+    setSelectedCampanaId(campanaId);
+    setOpenCampanaModal(true);
+  };
+
   const handleCloseFormFieldsModal = () => {
     setSelectedFormularioId(null);
     setOpenFormFieldsModal(false);
   };
 
+  const handleCloseCampanaModal = () => {
+    setSelectedCampanaId(null);
+    setOpenCampanaModal(false);
+  };
+
   const validateFields = (): boolean => {
+
+
+    if (
+      (!currentCampana.zona_reparto_id ||
+        !currentCampana.lote_viaje_id) && !selectedFile
+    ) {
+
+      setValidationError('Debe elegir si crea la campaña a traves de una zona y un lote o de un archivo y completar los datos necesarios');
+
+    }
+
+
+
+
+
+
     if (
       !currentCampana.nombre ||
       !currentCampana.descripcion ||
       !currentCampana.operacion_id ||
-      !currentCampana.zona_reparto_id ||
       !currentCampana.form_id
     ) {
-      setValidationError('Los campos Nombre, Descripción, Operación, Zona de reparto y Formulario son obligatorios.');
+      setValidationError('Los campos Nombre, Descripción, Operación  y Formulario son obligatorios.');
       return false;
     }
     setValidationError(null);
@@ -109,13 +134,21 @@ const CampanasList: React.FC = () => {
       initialCampana,
       setError,
       setModalErrors,
-      setModalLoading
+      setModalLoading,
+      selectedFile // Asegúrate de pasar el archivo seleccionado al hacer submit
     );
   };
 
   const handleOpenAddModal = () => {
     setCurrentCampana(initialCampana);
+    setModalLoading(false);
     setOpen(true);
+    setSelectedFile(null);
+    setModalErrors([]);
+    setValidationError(null);
+    setError("");
+
+
   };
 
   const handleOpenFilterModal = () => {
@@ -125,7 +158,7 @@ const CampanasList: React.FC = () => {
   const handleApplyFilters = (newFilters: Record<string, string>) => {
     setFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters, ...newFilters };
-      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters); // Llamada con los filtros actualizados
+      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, updatedFilters);
       return updatedFilters;
     });
   };
@@ -133,11 +166,10 @@ const CampanasList: React.FC = () => {
   const handleClearFilters = () => {
     setFilters((prevFilters) => {
       const clearedFilters = {};
-      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters); // Llamada con filtros vacíos
+      fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, clearedFilters);
       return clearedFilters;
     });
   };
-
 
   const handleOperacionChange = (operacion_id: number) => {
     setCurrentCampana((prev) => ({
@@ -167,7 +199,6 @@ const CampanasList: React.FC = () => {
     }));
   };
 
-
   const handleHtmlWhatsappPlantillaChange = (plantilla_whatsapp: string) => {
     setCurrentCampana((prev) => ({
       ...prev,
@@ -181,55 +212,54 @@ const CampanasList: React.FC = () => {
 
   const enviarMasivo = async (campanaId: number) => {
     const response = await handleEnviarMasivo(campanaId, setError, setModalLoading);
-    if (response == 1)//si esta todo bien refresco la grilla
-      fetchCampanasData();
+    if (response == 1) fetchCampanasData();
   };
 
   const enviarWhatsappMasivo = async (campanaId: number) => {
     const response = await handleEnviarWhatsappMasivo(campanaId, setError, setModalLoading);
-    if (response == 1)//si esta todo bien refresco la grilla
-      fetchCampanasData();
+    if (response == 1) fetchCampanasData();
   };
 
-  // Abrir el diálogo de confirmación para correos
   const handleOpenConfirmDialog = (campanaId: number) => {
     setSelectedCampanaId(campanaId);
     setConfirmDialogOpen(true);
   };
 
-  // Abrir el diálogo de confirmación para WhatsApp
   const handleOpenConfirmWhatsappDialog = (campanaId: number) => {
     setSelectedCampanaId(campanaId);
     setConfirmWhatsappDialogOpen(true);
   };
 
-  // Confirmar envío masivo de correos después del diálogo
   const handleConfirmEnviarMasivo = async () => {
     if (selectedCampanaId !== null) {
       await enviarMasivo(selectedCampanaId);
     }
-    setConfirmDialogOpen(false); // Cerrar el diálogo después del envío
+    setConfirmDialogOpen(false);
   };
 
-  // Confirmar envío masivo de WhatsApp después del diálogo
   const handleConfirmEnviarWhatsappMasivo = async () => {
     if (selectedCampanaId !== null) {
       await enviarWhatsappMasivo(selectedCampanaId);
     }
-    setConfirmWhatsappDialogOpen(false); // Cerrar el diálogo después del envío
+    setConfirmWhatsappDialogOpen(false);
   };
 
-  // Cancelar el diálogo de confirmación para correos
   const handleCloseConfirmDialog = () => {
     setConfirmDialogOpen(false);
   };
 
-  // Cancelar el diálogo de confirmación para WhatsApp
   const handleCloseConfirmWhatsappDialog = () => {
     setConfirmWhatsappDialogOpen(false);
   };
 
-  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog, handleOpenConfirmWhatsappDialog,handleOpenFormFieldsModal); // Incluimos ambos diálogos
+  const handleCloseModal = () => {
+
+
+
+    setOpen(false);
+
+  }
+  const columns = getColumns(handleExportarCsv, handleOpenConfirmDialog, handleOpenConfirmWhatsappDialog, handleOpenFormFieldsModal, handleOpenCampanaModal);
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -279,7 +309,7 @@ const CampanasList: React.FC = () => {
         modalLoading={modalLoading}
         validationError={validationError}
         modalErrors={modalErrors}
-        onClose={() => setOpen(false)}
+        onClose={handleCloseModal}
         onChange={(e) => setCurrentCampana({ ...currentCampana, [e.target.name]: e.target.value })}
         onSubmit={handleAddCampanaWrapper}
         onOperacionChange={handleOperacionChange}
@@ -287,7 +317,7 @@ const CampanasList: React.FC = () => {
         onsetHtmlContent={handleHtmlPlantillaChange}
         onsetHtmlContentWhatsapp={handleHtmlWhatsappPlantillaChange}
         onFormChange={handleFormChange}
-
+        onSetFile={setSelectedFile} // Pasamos la función para actualizar el archivo al modal
       />
 
       <FilterModal
@@ -296,7 +326,18 @@ const CampanasList: React.FC = () => {
         onApply={handleApplyFilters}
       />
 
-      {/* Diálogo de confirmación para correos */}
+      <FormFieldsModal
+        open={openFormFieldsModal}
+        onClose={handleCloseFormFieldsModal}
+        formularioId={selectedFormularioId}
+      />
+
+      <ContactoModal
+        open={openCampanasModal}
+        onClose={handleCloseCampanaModal}
+        campanaId={selectedCampanaId}
+      />
+
       <Dialog
         open={confirmDialogOpen}
         onClose={handleCloseConfirmDialog}
@@ -319,14 +360,6 @@ const CampanasList: React.FC = () => {
         </DialogActions>
       </Dialog>
 
-
-      <FormFieldsModal
-          open={openFormFieldsModal}
-          onClose={handleCloseFormFieldsModal}
-          formularioId={selectedFormularioId}
-        />
-
-      {/* Diálogo de confirmación para WhatsApp */}
       <Dialog
         open={confirmWhatsappDialogOpen}
         onClose={handleCloseConfirmWhatsappDialog}

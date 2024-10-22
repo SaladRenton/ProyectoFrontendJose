@@ -48,7 +48,6 @@ const HtmlEditor: React.FC<HtmlEditorProps> = ({ value, onChange}) => {
 
       {/* Combo para seleccionar variables */}
       <FormControl fullWidth margin="dense">
-        <InputLabel>Variables</InputLabel>
         <Select
           value={selectedVariable}
           onChange={handleVariableChange}

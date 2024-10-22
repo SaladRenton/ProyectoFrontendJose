@@ -8,8 +8,8 @@ export interface CampanaModel {
   total_campana_viajes: number;
   total_contact_attempts: number;
   activa: boolean;
-  operacion_id?: number;
-  zona_reparto_id?: string[];
+  operacion_id: number;
+  zona_reparto_id?: string[] | undefined;
   lote_viaje_id?: string;
   plantilla_email: string;
   envio_en_proceso: boolean;
@@ -20,6 +20,7 @@ export interface CampanaModel {
   waapi_api_token:string;
   waapi_instance_id:number;
   form_id:string;
+  plantilla_whatsapp: string;
 
  
   // Agrega más campos según sea necesario
@@ -43,7 +44,12 @@ export const initialCampana: CampanaModel = {
   limite_dias_cita:3,
   asunto_correo:'',
   waapi_api_token:'',
-  waapi_instance_id:0
+  waapi_instance_id:0,
+  form_id:'',
+  zona_reparto_id:[],
+  operacion_id:0,
+  plantilla_whatsapp:'',
+
 
 
 

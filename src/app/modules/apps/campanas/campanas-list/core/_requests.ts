@@ -76,8 +76,12 @@ export const enviarWhatsappMasivo = async (campanaId: number) => {
 // Nuevo endpoint para agregar un transportista
 export const addCampana = async (campana: CampanaModel) => {
   try {
-    const response = await axios.post(`${API_URL}/campanas`, campana);
-    return response.data;
+    const response = await axios.post(`${API_URL}/campanas`, campana,
+      {
+        responseType: 'blob', // Muy importante para recibir el archivo binario
+      }
+    );
+    return response
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data;
@@ -129,4 +133,29 @@ export const downloadCSV = async (campanaId: number) => {
 
 
 
+};
+
+
+
+
+
+
+
+export const downloadTemplateContactoCampana = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/download-template/campana-creacion-manual`, {
+      responseType: 'blob', // Muy importante para recibir el archivo binario
+    });
+
+    // Crear un enlace para descargar el archivo
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'template-campanas-asignacion-manual-contactos.xlsx'); // Nombre del archivo a descargar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    throw new Error('Error al descargar la plantilla.');
+  }
 };

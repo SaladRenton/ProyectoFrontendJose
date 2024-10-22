@@ -46,7 +46,6 @@ export const handleProcessRowUpdate = async (
   }
 };
 
-
 export const handleAddCampana = async (
   currentCampana: CampanaModel,
   fetchCampanasData: () => void,
@@ -55,15 +54,66 @@ export const handleAddCampana = async (
   initialCampana: CampanaModel,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   setModalErrors: React.Dispatch<React.SetStateAction<string[]>>,
-  setModalLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setModalLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  file: File | null // Añadido el parámetro de archivo
 ) => {
   setModalLoading(true);
   try {
-    const response = await addCampana(currentCampana);
-    fetchCampanasData(); // Recargar datos después de agregar
-    setOpen(false);
-    setCurrentCampana(initialCampana);
-    setError(null); // Limpiar cualquier error previo si la adición es exitosa
+    let dataToSend: any = currentCampana;
+
+    // Si hay un archivo cargado, usar FormData
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Agregar los datos del formulario a FormData
+      Object.keys(currentCampana).forEach((key) => {
+        const value = (currentCampana as any)[key];
+        if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      });
+
+      dataToSend = formData;
+    }
+
+    const response = await addCampana(dataToSend); // Envía los datos o el FormData
+    setModalLoading(false);
+
+     // Verificar el tipo de contenido
+     const contentType = response.headers['content-type'];
+
+     
+
+     if (contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+       // Si es un archivo Excel, lo descargamos
+       const blob = new Blob([response.data], { type: contentType });
+       const url = window.URL.createObjectURL(blob);
+       const link = document.createElement('a');
+       link.href = url;
+       link.setAttribute('download', 'asignacion_campana_contactos.xlsx'); // Nombre del archivo
+       document.body.appendChild(link);
+       link.click();
+       link.remove();
+       setModalErrors(['Error: La campaña se creó pero existen errores. Revise el archivo descargado para analizarlos. Puede cerrar la ventana si desea'])
+     
+     } else if (contentType === 'application/json') {
+
+      console.log(response);
+       // Si es JSON, lo parseamos y retornamos el mensaje
+       const text = await response.data; // Leer la respuesta como texto
+      // const jsonResponse = JSON.parse(text); // Parsear a JSON
+       fetchCampanasData(); // Recargar datos después de agregar
+       setOpen(false);
+       setCurrentCampana(initialCampana);
+       setError(null); // Limpiar cualquier error previo si la adición es exitosa
+       return text || 'Operación realizada exitosamente';
+     } else {
+       // Manejar otros tipos de respuestas si es necesario
+       throw new Error('Error: Tipo de respuesta desconocido');
+     }
+
+   
   } catch (error: any) {
     console.error("Error adding campana", error);
     const message = error.message || 'Add failed';
@@ -77,6 +127,7 @@ export const handleAddCampana = async (
   }
   setModalLoading(false);
 };
+
 
 export const handleEditCampana = async (
   currentCampana: CampanaModel,

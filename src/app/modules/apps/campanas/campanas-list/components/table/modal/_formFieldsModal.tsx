@@ -18,7 +18,7 @@ interface FormField {
 interface FormFieldsModalProps {
   open: boolean;
   onClose: () => void;
-  formularioId: number;
+  formularioId: number | null;
 }
 
 const FormFieldsModal: React.FC<FormFieldsModalProps> = ({ open, onClose, formularioId }) => {

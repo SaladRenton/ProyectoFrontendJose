@@ -90,7 +90,6 @@ const WhatsAppTextEditor: React.FC<WhatsAppTextEditorProps> = ({ value, onChange
 
       {/* Combo para seleccionar variables */}
       <FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
-        <InputLabel>Variables</InputLabel>
         <Select
           value={selectedVariable}
           onChange={handleVariableChange}

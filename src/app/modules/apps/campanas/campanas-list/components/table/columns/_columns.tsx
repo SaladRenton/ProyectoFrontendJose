@@ -5,7 +5,7 @@ import GetAppIcon from '@mui/icons-material/GetApp'; // Icono de descarga
 import { IconButton } from '@mui/material';
 import { GridRenderEditCellParams } from '@mui/x-data-grid';
 import { Checkbox } from '@mui/material';
-import { LinearProgress, Box, Typography, Button } from '@mui/material';
+import { LinearProgress, Box, Typography } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -17,6 +17,7 @@ export const getColumns = (
   handleEnviarMasivo: (id: number) => void,
   handleEnviarWapMasivo: (id: number) => void,
   handleOpenFormFieldsModal: (id: number) => void,
+  handleOpenContactoModal: (campanaId: number) => void,
 ): GridColDef[] => [
     { field: 'id', headerName: 'ID', width: 90, editable: false },
     { field: 'nombre', headerName: 'Nombre', width: 150, editable: true },
@@ -42,6 +43,20 @@ export const getColumns = (
 
         return (
           <IconButton onClick={() => handleOpenFormFieldsModal(params.row.form.id)}>
+            <DescriptionIcon />
+        </IconButton>
+        );
+
+      },
+    },
+    {
+      field: 'form_contacts',
+      headerName: 'Ver Contactos',
+      width: 150,
+      renderCell: (params) => {
+
+        return (
+          <IconButton onClick={() => handleOpenContactoModal(params.row.id)}>
             <DescriptionIcon />
         </IconButton>
         );
