@@ -220,6 +220,18 @@ const OperacionHeader: React.FC<OverviewProps> = ({ operacion, loading, error, i
                     Irregularidades
                   </Link>
                 </li>
+
+                <li className='nav-item'>
+                  <Link
+                    className={
+                      `nav-link text-active-primary me-6 ` +
+                      (location.pathname === `/pages/operacion/${idoperacion}/calificaciones` && 'active')
+                    }
+                    to={`/pages/operacion/${idoperacion}/calificaciones`}
+                  >
+                    Calificaciones
+                  </Link>
+                </li>
               </ul>
             </div>
 

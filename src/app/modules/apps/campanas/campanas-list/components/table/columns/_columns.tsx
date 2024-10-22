@@ -9,6 +9,8 @@ import { LinearProgress, Box, Typography } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import DescriptionIcon from '@mui/icons-material/Description';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+
 
 
 
@@ -57,7 +59,7 @@ export const getColumns = (
 
         return (
           <IconButton onClick={() => handleOpenContactoModal(params.row.id)}>
-            <DescriptionIcon />
+            <ContactPhoneIcon />
         </IconButton>
         );
 

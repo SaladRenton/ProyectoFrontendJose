@@ -865,6 +865,7 @@ const ViajesList: React.FC = () => {
           open={direccionModalOpen}
           onClose={handleCloseDireccionModal}
           viaje={selectedViaje}
+          onDireccionUpdated={fetchViajesData}
         />
       )}
 
