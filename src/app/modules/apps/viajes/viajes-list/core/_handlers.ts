@@ -1,7 +1,6 @@
 import { GridRowModel, GridRowsProp } from '@mui/x-data-grid';
 import { ViajeModel, includesConfig } from './_models';
-import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest,asignacionMasterViaje,cambioMasivoEstadosConsultaRequest } from './_requests';
-import { AxiosResponse } from 'axios';
+import { getViajes, updateViaje, deleteViaje, addViaje, revertirLote as revertirLoteRequest, uploadFile, asignarZonasRequest, asignarTransportistasRequest, downloadViajesXlsx, cambioMasivoEstadosRequest, asignacionMasterViaje, cambioMasivoEstadosConsultaRequest } from './_requests';
 
 export const fetchViajes = async (
   page: number,
@@ -23,7 +22,7 @@ export const fetchViajes = async (
       }
       return acc;
     }, {} as Record<string, string>);
-    
+
 
     const response = await getViajes(page, pageSize, filterParams, includesConfig.viajes);
     setRows(response.data.data);
@@ -334,11 +333,11 @@ export const cambioEstadoMasivo = async (
     // Realizamos la consulta para obtener la cantidad de viajes
     const responseConsulta = await cambioMasivoEstadosConsultaRequest(filters, estado_id_destino);
     const cantidad = responseConsulta.data.cantidad;
-
+    setLoading(true);
     if (cantidad === 0) {
       // Si no hay cambios por hacer, mostramos un mensaje especial
       const confirmation = await showConfirmationDialog('La consulta que va a ejecutar no va a producir ningún cambio.');
-
+      
       if (!confirmation) {
         // Si el usuario cancela, salimos sin hacer nada
         setLoading(false);
@@ -352,6 +351,9 @@ export const cambioEstadoMasivo = async (
         // Si el usuario cancela, salimos sin hacer nada
         setLoading(false);
         return;
+      }else{
+
+        setLoading(true);
       }
 
       // Solo se ejecuta si el usuario confirma

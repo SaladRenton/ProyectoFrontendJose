@@ -14,9 +14,12 @@ import {
   handleProcessRowUpdate,
   handleDeleteRow,
   handleAddPaquete,
-  handleEditPaquete
+  handleEditPaquete,
+  exportarPaquetes
+  
 } from '../../core/_handlers';
 import { esES } from '@mui/x-data-grid/locales';
+import ExportarPaquetesModal from '../table/modal/_exportarPaquetesModal';
 
 const PaquetesList: React.FC = () => {
 
@@ -43,6 +46,11 @@ const PaquetesList: React.FC = () => {
   const [revertirLoteModalOpen, setRevertirLoteModalOpen] = useState<boolean>(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);  // Variable de control para el primer montaje
+
+
+  const [exportarPaquetesModalOpen, setExportarPaquetesModalOpen] = useState<boolean>(false);
+  const [exportarPaquetesErrors, setExportarPaquetesErrors] = useState<string[]>([]);
+  const [exportarPaquetesLoading, setExportarPaquetesLoading] = useState<boolean>(false);
 
   const fetchPaquetesData = useCallback(() => {
     fetchPaquetes(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -78,6 +86,15 @@ const PaquetesList: React.FC = () => {
       setDeleteItemId(null);
     }
   };
+
+
+
+
+  const handleCloseExportarPaquetes = () => {
+    setExportarPaquetesModalOpen(false);
+    setExportarPaquetesErrors([]); // Clear previous errors
+  };
+
 
   const validateFields = (): boolean => {
     // if (!currentPaquete.razon_social || !currentPaquete.email || !currentPaquete.cuit) {
@@ -154,7 +171,21 @@ const PaquetesList: React.FC = () => {
     setUploadModalOpen(false);
   };
 
+  const handleExportarPaquetesModal = () => {
+    setExportarPaquetesModalOpen(true);
+  };
+
   const columns = getColumns(handleOpenEditModal, handleDeleteRowWrapper);
+
+
+
+
+  const handleExportarPaquetes = async (filters: Record<string, string | boolean | number | string[]>) => {
+    await exportarPaquetes(filters, setError, setExportarPaquetesErrors, setExportarPaquetesLoading);
+    if (error && error.length > 0) {
+      setExportarPaquetesModalOpen(false); // Close modal only if there are no errors
+    }
+  };
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -174,6 +205,8 @@ const PaquetesList: React.FC = () => {
         onClearFilters={handleClearFilters}
         onOpenRevertirLoteModal={handleOpenRevertirLoteModal}
         onOpenUploadModal={handleOpenUploadModal}
+        onOpenExportarPaquetes={handleExportarPaquetesModal}
+
       />
       <DataGrid
         rows={rows}
@@ -247,6 +280,14 @@ const PaquetesList: React.FC = () => {
       />
 
       <UploadPaqueteModal open={uploadModalOpen} onClose={handleCloseUploadModal} />
+
+      <ExportarPaquetesModal
+        open={exportarPaquetesModalOpen}
+        onClose={handleCloseExportarPaquetes}
+        onSubmit={handleExportarPaquetes}
+        loading={exportarPaquetesLoading}
+        errors={exportarPaquetesErrors}
+      />
     </div>
   );
 };

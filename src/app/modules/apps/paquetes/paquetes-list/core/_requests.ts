@@ -7,6 +7,44 @@ const API_URL = import.meta.env.VITE_APP_API_URL;
 
 
 
+export const downloadPaquetesXlsx = async (filters: Record<string, string | boolean | number | string[]>) => {
+
+
+
+  try {
+
+    const filterParams = Object.keys(filters).reduce((acc, key) => {
+      // Solo agregamos filtros que no sean null o undefined
+      if (filters[key] !== null && filters[key] !== undefined) {
+        acc[`filter[${key}]`] = filters[key].toString();
+      }
+      return acc;
+    }, {} as Record<string, string>);
+
+    const response = await axios.get(`${API_URL}/exportar-paquetes`, {
+      params: {
+        ...filterParams,
+
+      }
+    });
+    return response.data;
+    
+  } catch (error) {
+
+
+    if (isAxiosError(error) || isAxiosErrorWithMessage(error) && error.response && error.response.data) {
+      if (isAxiosErrorWithMessage(error)) {
+
+        const errorMessage = error.response?.data.message;
+        throw new Error(errorMessage);
+      }
+
+    } else {
+
+      throw new Error('Error descargando el XLSX');
+    }
+  }
+};
 
 export const getPaquetes = (page: number, pageSize: number, filters: Record<string, string>) => {
   return axios.get(`${API_URL}/paquetes`, {

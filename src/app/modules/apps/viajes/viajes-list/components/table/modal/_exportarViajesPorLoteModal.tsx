@@ -6,7 +6,7 @@ import FilterModal from './_filterModal';
 interface ExportarViajesPorLoteModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (filters: Record<string, string | boolean | number | string[]>) => void;
+  onSubmit: (filters: Record<string, string | number | boolean | string[] | null>) => void;
   loading: boolean;
   errors: string[];
 }

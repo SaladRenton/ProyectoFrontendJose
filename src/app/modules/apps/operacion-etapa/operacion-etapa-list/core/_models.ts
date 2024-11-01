@@ -6,6 +6,7 @@ export interface OperacionEtapaModel {
   operacion_id: number | string;
   orden: number;
   notificar: boolean;
+  mostrar_tracking_web: boolean;
   // Agrega más campos según sea necesario
 }
 
@@ -17,7 +18,8 @@ export const initialOperacionEtapa: OperacionEtapaModel = {
   etapa_id: 0,
   operacion_id: 0,
   orden:1,
-  notificar:true
+  notificar:true,
+  mostrar_tracking_web:true
 
 
 }

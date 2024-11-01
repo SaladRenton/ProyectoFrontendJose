@@ -45,7 +45,7 @@ const CambioEstadoMasivoModal: React.FC<CambioEstadoMasivoModalProps> = ({ open,
       setFinalMessage({ message: response.message, cantidad: response.cantidad }); // Establece el objeto con message y cantidad
       handleNext(); // Avanza al paso final para mostrar el mensaje
     } catch (error) {
-      console.error('Error al cambiar el estado masivamente:', error);
+    
       setFinalMessage({ message: 'Ocurrió un error al intentar cambiar los estados.', cantidad: 0 });
       handleNext(); // Avanza al paso final incluso si hay un error
     }

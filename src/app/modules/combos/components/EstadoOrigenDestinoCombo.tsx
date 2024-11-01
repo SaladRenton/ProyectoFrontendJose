@@ -20,6 +20,7 @@ const EstadoOrigenDestinoCombo: React.FC<EstadosComboProps> = ({ value, onChange
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(value);
     const fetchEstados = async () => {
       setLoading(true);
       try {
@@ -59,8 +60,8 @@ const EstadoOrigenDestinoCombo: React.FC<EstadosComboProps> = ({ value, onChange
             onChange={handleSelectChange}
             label={label ? label : 'Estado'}
           >
-            {estados.map((estado) => (
-              <MenuItem key={estado.estado_destino.id} value={estado.estado_destino.id}>
+            {estados.map((estado,index) => (
+              <MenuItem key={`${estado.estado_destino.id}-${index}`} value={estado.id}>
                 {estado.estado_destino.d_estado}-{estado.contact_attempt_type.descripcion}
               </MenuItem>
             ))}

@@ -31,6 +31,14 @@ export const getColumns = (
 
     },
     {
+      field: 'mostrar_tracking_web',
+      headerName: 'Visible en Tracking web?',
+      width: 200,
+      hide: false,
+      editable: false,
+      renderCell: (params) => (params.row.mostrar_tracking_web ? <CheckCircleIcon style={{ color: 'green' }} /> : <CancelIcon style={{ color: 'gray' }} />),
+    },
+    {
       field: 'notificar',
       headerName: 'Etapa notifica?',
       width: 200,

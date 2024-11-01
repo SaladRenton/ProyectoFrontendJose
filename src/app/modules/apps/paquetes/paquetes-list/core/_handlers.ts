@@ -1,5 +1,5 @@
 import { GridRowModel ,GridRowsProp} from '@mui/x-data-grid';
-import { getPaquetes, updatePaquete, deletePaquete, addPaquete } from './_requests';
+import { getPaquetes, updatePaquete, deletePaquete, addPaquete,downloadPaquetesXlsx } from './_requests';
 import { PaqueteModel } from './_models';
 
 export const fetchPaquetes = async (
@@ -123,3 +123,46 @@ export const handleEditPaquete = async (
   }
   setModalLoading(false);
 };
+
+
+export const exportarPaquetes= async (
+  filters: Record<string, string | boolean | number | string[]>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setExportarPaquetesErrors: React.Dispatch<React.SetStateAction<string[]>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+
+) => {
+  setLoading(true);
+  //console.log("Descargando true");
+  try {
+    const response = await downloadPaquetesXlsx(filters);
+    setError(null); // Limpiar cualquier error previo si la asignación es exitosa
+    setExportarPaquetesErrors([]); // Limpiar cualquier error previo si la asignación es exitosa
+    setLoading(false);
+    console.log("Descargando False");
+
+
+
+  } catch (error: any) {
+
+
+    const message = error.message || 'Exportando el XLSX';
+    setError(message);
+    if (error.response && error.response.data && error.response.data.errors) {
+      const errors = Object.entries(error.response.data.errors as ErrorResponse["errors"]).map(
+        ([field, descriptions]) => {
+          return `${field}: ${(descriptions as string[]).join(' ')}`;
+        }
+      );
+      setExportarPaquetesErrors([message, ...errors]);
+    } else {
+      setExportarPaquetesErrors([message]);
+    }
+  }
+  setLoading(false);
+};
+
+
+interface ErrorResponse {
+  errors: Record<string, string[]>;
+}

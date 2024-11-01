@@ -59,6 +59,18 @@ const OperacionesEtapaModal: React.FC<OperacionesEtapaModalProps> = ({
           label="Requiere notificaciones?"
         />
 
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={currentOperacionesEtapa.mostrar_tracking_web}
+              onChange={onChange}
+              name="mostrar_tracking_web"
+              color="primary"
+            />
+          }
+          label="Mostrar en Tracking web?"
+        />
+
         {validationError && (
           <div className="alert alert-danger d-flex align-items-center p-5 mt-3">
             <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>

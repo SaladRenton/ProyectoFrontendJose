@@ -8,6 +8,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import UndoIcon from '@mui/icons-material/Undo';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import TableChartIcon from '@mui/icons-material/TableChart';
 
 
 interface ToolbarProps {
@@ -17,9 +18,11 @@ interface ToolbarProps {
   onClearFilters: () => void;
   onOpenRevertirLoteModal: () => void;
   onOpenUploadModal: () => void;
+  onOpenExportarPaquetes: () => void;
+
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters, onOpenRevertirLoteModal, onOpenUploadModal }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters, onOpenRevertirLoteModal, onOpenUploadModal,onOpenExportarPaquetes }) => {
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
    
@@ -58,6 +61,15 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, 
       <Tooltip title="Subir Archivo XLSX">
         <IconButton color="primary" onClick={onOpenUploadModal}>
           <UploadFileIcon />
+        </IconButton>
+      </Tooltip>
+
+
+      <Tooltip title="Descargar XLSX">
+        <IconButton color="primary" onClick={onOpenExportarPaquetes}>
+
+          <TableChartIcon />
+
         </IconButton>
       </Tooltip>
      
