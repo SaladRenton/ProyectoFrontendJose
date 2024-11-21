@@ -91,6 +91,10 @@ export const DefaultConfig: ILayout = {
       primaryButtonLabel: 'Create',
       primaryButtonModal: 'create-app',
     },
+    customButton: {
+      display: true,
+      label: 'Mi Botón Personalizado'
+    },
     pageTitle: {
       componentName: 'page-title',
       display: true,

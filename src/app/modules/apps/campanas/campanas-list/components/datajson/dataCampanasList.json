@@ -1,0 +1,277 @@
+[
+  {
+    "id": 1,
+    "nombre": "Elemento 1",
+    "color": "Rojo",
+    "peso": 10,
+    "persona": {
+      "id": 101,
+      "nombre": "Pepe",
+      "apellido": "Pérez"
+    }
+  },
+  {
+    "id": 2,
+    "nombre": "Elemento 2",
+    "color": "Verde",
+    "peso": 20,
+    "persona": {
+      "id": 102,
+      "nombre": "Juan",
+      "apellido": "Gómez"
+    }
+  },
+  {
+    "id": 3,
+    "nombre": "Elemento 3",
+    "color": "Azul",
+    "peso": 15,
+    "persona": {
+      "id": 103,
+      "nombre": "María",
+      "apellido": "Rodríguez"
+    }
+  },
+  {
+    "id": 4,
+    "nombre": "Elemento 4",
+    "color": "Amarillo",
+    "peso": 25,
+    "persona": {
+      "id": 104,
+      "nombre": "Carlos",
+      "apellido": "Sánchez"
+    }
+  },
+  {
+    "id": 5,
+    "nombre": "Elemento 5",
+    "color": "Naranja",
+    "peso": 30,
+    "persona": {
+      "id": 105,
+      "nombre": "Laura",
+      "apellido": "Martínez"
+    }
+  },
+  {
+    "id": 6,
+    "nombre": "Elemento 6",
+    "color": "Púrpura",
+    "peso": 12,
+    "persona": {
+      "id": 106,
+      "nombre": "Diego",
+      "apellido": "López"
+    }
+  },
+  {
+    "id": 7,
+    "nombre": "Elemento 7",
+    "color": "Rosa",
+    "peso": 18,
+    "persona": {
+      "id": 107,
+      "nombre": "Ana",
+      "apellido": "Fernández"
+    }
+  },
+  {
+    "id": 8,
+    "nombre": "Elemento 8",
+    "color": "Marrón",
+    "peso": 22,
+    "persona": {
+      "id": 108,
+      "nombre": "Roberto",
+      "apellido": "Díaz"
+    }
+  },
+  {
+    "id": 9,
+    "nombre": "Elemento 9",
+    "color": "Gris",
+    "peso": 16,
+    "persona": {
+      "id": 109,
+      "nombre": "Sofía",
+      "apellido": "Torres"
+    }
+  },
+  {
+    "id": 10,
+    "nombre": "Elemento 10",
+    "color": "Turquesa",
+    "peso": 28,
+    "persona": {
+      "id": 110,
+      "nombre": "Miguel",
+      "apellido": "Ruiz"
+    }
+  },
+  {
+    "id": 11,
+    "nombre": "Elemento 11",
+    "color": "Lavanda",
+    "peso": 14,
+    "persona": {
+      "id": 111,
+      "nombre": "Elena",
+      "apellido": "Navarro"
+    }
+  },
+  {
+    "id": 12,
+    "nombre": "Elemento 12",
+    "color": "Beige",
+    "peso": 19,
+    "persona": {
+      "id": 112,
+      "nombre": "Gabriel",
+      "apellido": "Herrera"
+    }
+  },
+  {
+    "id": 13,
+    "nombre": "Elemento 13",
+    "color": "Coral",
+    "peso": 26,
+    "persona": {
+      "id": 113,
+      "nombre": "Lucía",
+      "apellido": "Castro"
+    }
+  },
+  {
+    "id": 14,
+    "nombre": "Elemento 14",
+    "color": "Oliva",
+    "peso": 17,
+    "persona": {
+      "id": 114,
+      "nombre": "Fernando",
+      "apellido": "Morales"
+    }
+  },
+  {
+    "id": 15,
+    "nombre": "Elemento 15",
+    "color": "Índigo",
+    "peso": 23,
+    "persona": {
+      "id": 115,
+      "nombre": "Valentina",
+      "apellido": "Silva"
+    }
+  },
+  {
+    "id": 16,
+    "nombre": "Elemento 16",
+    "color": "Magenta",
+    "peso": 21,
+    "persona": {
+      "id": 116,
+      "nombre": "Andrés",
+      "apellido": "Ramírez"
+    }
+  },
+  {
+    "id": 17,
+    "nombre": "Elemento 17",
+    "color": "Aguamarina",
+    "peso": 27,
+    "persona": {
+      "id": 117,
+      "nombre": "Camila",
+      "apellido": "Ortiz"
+    }
+  },
+  {
+    "id": 18,
+    "nombre": "Elemento 18",
+    "color": "Salmón",
+    "peso": 13,
+    "persona": {
+      "id": 118,
+      "nombre": "Javier",
+      "apellido": "Núñez"
+    }
+  },
+  {
+    "id": 19,
+    "nombre": "Elemento 19",
+    "color": "Cian",
+    "peso": 24,
+    "persona": {
+      "id": 119,
+      "nombre": "Martina",
+      "apellido": "Giménez"
+    }
+  },
+  {
+    "id": 20,
+    "nombre": "Elemento 20",
+    "color": "Oro",
+    "peso": 29,
+    "persona": {
+      "id": 120,
+      "nombre": "Ricardo",
+      "apellido": "Molina"
+    }
+  },
+  {
+    "id": 21,
+    "nombre": "Elemento 21",
+    "color": "Plata",
+    "peso": 11,
+    "persona": {
+      "id": 121,
+      "nombre": "Patricia",
+      "apellido": "Rojas"
+    }
+  },
+  {
+    "id": 22,
+    "nombre": "Elemento 22",
+    "color": "Bronce",
+    "peso": 31,
+    "persona": {
+      "id": 122,
+      "nombre": "Eduardo",
+      "apellido": "Vega"
+    }
+  },
+  {
+    "id": 23,
+    "nombre": "Elemento 23",
+    "color": "Verde Militar",
+    "peso": 16,
+    "persona": {
+      "id": 123,
+      "nombre": "Beatriz",
+      "apellido": "Moreno"
+    }
+  },
+  {
+    "id": 24,
+    "nombre": "Elemento 24",
+    "color": "Ciruela",
+    "peso": 22,
+    "persona": {
+      "id": 124,
+      "nombre": "Daniel",
+      "apellido": "Reyes"
+    }
+  },
+  {
+    "id": 25,
+    "nombre": "Elemento 25",
+    "color": "Terracota",
+    "peso": 18,
+    "persona": {
+      "id": 125,
+      "nombre": "Clara",
+      "apellido": "Mendoza"
+    }
+  }
+]

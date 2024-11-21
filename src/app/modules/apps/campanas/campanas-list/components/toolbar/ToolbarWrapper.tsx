@@ -2,8 +2,9 @@ import clsx from 'clsx'
 import { ToolbarType ,useLayout} from '../../../../../../../_metronic/layout/core'
 import {Toolbar} from './Toolbar'
 import {PageTitleWrapper} from './page-title'
+import { ReactNode } from 'react'
 
-const ToolbarWrapper = () => {
+const ToolbarWrapper = ({ children }: { children: ReactNode }) => {
   const {config, classes} = useLayout()
   if (!config.app?.toolbar?.display) {
     return null
@@ -34,6 +35,7 @@ const ToolbarWrapper = () => {
       >
         {isPageTitleVisible && <PageTitleWrapper />}
         <Toolbar />
+        {children} {/* Renderiza los hijos aquí */}
       </div>
     </div>
   )

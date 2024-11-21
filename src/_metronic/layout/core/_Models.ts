@@ -129,6 +129,11 @@ export interface IToolbar extends ILayoutComponent {
     attributes?: {[attrName: string]: string}
   }
 
+  customButton?: {
+    display?: boolean
+    label?: string
+  }
+
   // Custom settings
   filterButton?: boolean
   daterangepickerButton?: boolean
@@ -216,6 +221,10 @@ export interface IApp {
   content?: IContent
   footer?: IFooter
   pageLoader?: IPageLoader
+  customButton?: {  // Agrega esta línea
+    display?: boolean
+    label?: string
+  }
 }
 
 export interface ILayout {

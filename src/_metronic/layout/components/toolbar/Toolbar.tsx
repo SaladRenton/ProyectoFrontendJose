@@ -11,14 +11,36 @@ import {
 
 const Toolbar = () => {
   const {config} = useLayout()
+
+  const handleCustomButtonClick = () => {
+    alert('Hola')
+  }
+
+
+  
   useEffect(() => {
     updateDOM(config)
     document.body.setAttribute('data-kt-app-toolbar-enabled', 'true')
   }, [config])
 
+
+  const customButtonConfig = config.app?.customButton
+
   switch (config.app?.toolbar?.layout) {
     case 'classic':
-      return <ToolbarClassic />
+        return (
+          <>
+            <ToolbarClassic />
+            {customButtonConfig?.display && (
+              <button 
+                onClick={handleCustomButtonClick} 
+                className="btn btn-primary ms-2"
+              >
+                {customButtonConfig?.label || 'Mi Botón'}
+              </button>
+            )}
+          </>
+        )
     case 'accounting':
       return <ToolbarAccounting />
     case 'extended':

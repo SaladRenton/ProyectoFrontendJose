@@ -1,10 +1,11 @@
-import React from 'react';
-import { Button, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Tooltip, IconButton } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import BrushIcon from '@mui/icons-material/Brush';
-import { IconButton } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CustomModal from '../../../../../campanas/campanas-list/components/table/modal/_customModal';
+import DataGridComponent from '../../datajson/DataGridComponent';
 
 interface ToolbarProps {
   onAdd: () => void;
@@ -14,6 +15,16 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, onClearFilters }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCustomButtonClick = () => {
+    setIsModalOpen(true); // Abre el modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Cierra el modal
+  };
+
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '10px' }}>
       <Tooltip title="Agregar nuevo">
@@ -31,12 +42,22 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAdd, onRefresh, onOpenFilterModal, 
           <FilterListIcon />
         </IconButton>
       </Tooltip>
-
       <Tooltip title="Limpiar Filtros">
         <IconButton color="primary" onClick={onClearFilters}>
           <BrushIcon />
         </IconButton>
       </Tooltip>
+      <Tooltip title="Mostrar DataGrid">
+        <Button variant="contained" color="primary" onClick={handleCustomButtonClick}>
+          Mostrar DataGrid
+        </Button>
+      </Tooltip>
+
+      {/* Modal */}
+      <CustomModal open={isModalOpen} onClose={handleCloseModal}>
+        <DataGridComponent /> {/* Renderiza el DataGridComponent dentro del modal */}
+      </CustomModal>
+      
     </div>
   );
 };

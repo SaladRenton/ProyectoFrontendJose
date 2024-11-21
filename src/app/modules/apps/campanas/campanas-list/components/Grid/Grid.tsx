@@ -49,6 +49,7 @@ const CampanasList: React.FC = () => {
   const [openCampanasModal, setOpenCampanaModal] = useState<boolean>(false);
   const [selectedFormularioId, setSelectedFormularioId] = useState<number | null>(null);
   const [SelectedContactoId, setSelectedContactoId] = useState<number | null>(null);
+  
 
   const fetchCampanasData = useCallback(() => {
     fetchCampanas(page, pageSize, setRows, setRowCount, setError, setLoading, filters);
@@ -63,6 +64,8 @@ const CampanasList: React.FC = () => {
       setIsFirstLoad(false);
     }
   }, [page, pageSize, filters, fetchCampanasData]);
+
+  console.log('Estado de rows:', rows);
 
   const handleProcessRowUpdateWrapper = async (
     newRow: GridRowModel<CampanaModel>,
@@ -263,21 +266,21 @@ const CampanasList: React.FC = () => {
 
   return (
     <div style={{ height: 700, width: '100%' }}>
-      {error && (
-        <div className="alert alert-danger d-flex align-items-center p-5 mb-10">
-          <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>
-          <div className="d-flex flex-column">
-            <h5 className="mb-1">Error</h5>
-            <span>{error}</span>
-          </div>
+    {error && (
+      <div className="alert alert-danger d-flex align-items-center p-5 mb-10">
+        <span className="svg-icon svg-icon-2hx svg-icon-danger me-3">...</span>
+        <div className="d-flex flex-column">
+          <h5 className="mb-1">Error</h5>
+          <span>{error}</span>
         </div>
-      )}
-      <Toolbar
-        onAdd={handleOpenAddModal}
-        onRefresh={fetchCampanasData}
-        onOpenFilterModal={handleOpenFilterModal}
-        onClearFilters={handleClearFilters}
-      />
+      </div>
+    )}
+    <Toolbar
+      onAdd={handleOpenAddModal}
+      onRefresh={fetchCampanasData}
+      onOpenFilterModal={handleOpenFilterModal}
+      onClearFilters={handleClearFilters}
+    />
       <DataGrid
         rows={rows}
         columns={columns}

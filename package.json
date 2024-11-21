@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@formatjs/intl-pluralrules": "5.2.4",
     "@formatjs/intl-relativetimeformat": "11.2.4",
     "@fortawesome/fontawesome-free": "6.1.1",
@@ -23,8 +23,8 @@
     "@googlemaps/js-api-loader": "^1.16.6",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
-    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "@mui/x-data-grid": "^5.17.26",
+    "@mui/styled-engine-sc": "^6.1.6",
+    "@mui/x-data-grid": "^7.22.2",
     "@popperjs/core": "^2.11.6",
     "@types/google.maps": "^3.55.9",
     "animate.css": "4.1.1",
@@ -35,8 +35,8 @@
     "chart.js": "4.3.0",
     "clsx": "2.1.0",
     "date-fns": "^3.6.0",
-    "dotenv": "^16.4.5",
     "formik": "2.2.9",
+    "geohub": "file:",
     "leaflet": "^1.9.4",
     "line-awesome": "1.3.0",
     "nouislider": "15.5.1",
@@ -61,7 +61,7 @@
     "react-table": "^7.7.0",
     "react-topbar-progress-indicator": "4.1.1",
     "socicon": "3.0.5",
-    "styled-components": "^6.1.11",
+    "styled-components": "^6.1.13",
     "yup": "^1.0.0"
   },
   "devDependencies": {
@@ -82,6 +82,7 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "css-loader": "6.7.1",
     "del": "7.0.0",
+    "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

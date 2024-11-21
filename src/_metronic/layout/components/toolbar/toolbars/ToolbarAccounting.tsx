@@ -1,10 +1,19 @@
 
-import {FC, useEffect, useState} from 'react'
-import {KTIcon} from '../../../../helpers'
+import { FC, useEffect, useState } from 'react'
+import { KTIcon } from '../../../../helpers'
+import { useLayout } from '../../../core'
 
 const ToolbarAccounting: FC = () => {
   const [progress, setProgress] = useState<string>('1')
   const [filter, setFilter] = useState<string>('1')
+
+  const { config } = useLayout()
+  const customButtonConfig = config.app?.customButton
+
+
+  const handleCustomButtonClick = () => {
+    alert('Botón de Campañas clickeado')
+  }
 
   useEffect(() => {
     document.body.setAttribute('data-kt-app-toolbar-fixed', 'true')
@@ -57,8 +66,30 @@ const ToolbarAccounting: FC = () => {
               <a href='#' className='btn btn-sm btn-icon btn-active-color-success'>
                 <KTIcon iconName='dots-square' className='fs-2x' />
               </a>
+
+
             </div>
+
             {/* end::Button */}
+
+            <div>
+
+            {customButtonConfig?.display && (
+          <button
+            onClick={handleCustomButtonClick} // ¡Acá está el cambio!
+            className="btn btn-primary ms-2"
+          >
+            {customButtonConfig?.label || 'Mi Botón'}
+          </button>
+        )}
+
+
+
+            </div>
+
+
+
+
           </div>
           {/* end::Actions */}
         </div>
@@ -78,7 +109,7 @@ const ToolbarAccounting: FC = () => {
             <div
               className='progress-bar rounded bg-success fs-7 fw-bold'
               role='progressbar'
-              style={{width: '72%'}}
+              style={{ width: '72%' }}
               aria-valuenow={72}
               aria-valuemin={0}
               aria-valuemax={100}
@@ -131,9 +162,11 @@ const ToolbarAccounting: FC = () => {
           {/* end::Content */}
         </div>
         {/* end::Input group- */}
+
+
       </div>
     </>
   )
 }
 
-export {ToolbarAccounting}
+export { ToolbarAccounting }
