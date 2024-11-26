@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {
   DataGrid,
-  GridColDef,  
+  GridColDef,
   GridRowsProp,
   GridRowModes,
   GridRowModesModel,
   GridActionsCellItem,
   GridRowId,
   GridRowEditStopReasons,
-  
+  GridRenderEditCellParams,
+  useGridApiContext
 } from '@mui/x-data-grid';
 import { esES } from '@mui/x-data-grid/locales';
 import dataJsn from '../datajson/dataCampanasList.json'
+import { PROVINCIAS } from '../datajson/provincias';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Select, MenuItem } from '@mui/material';
 
 // Definir interfaces para manejar la estructura anidada
 interface Persona {
@@ -28,6 +31,7 @@ interface CampanaRow {
   nombre: string;
   color: string;
   peso: number;
+  provincia?: { id: number; nombre: string }
   persona: Persona; // Objeto anidado
 }
 
@@ -37,21 +41,48 @@ const DataGridComponent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
+  // Componente de edición personalizado para provincias
+  function ProvinciasEditCell(props: GridRenderEditCellParams) {
+    const { id, value, field } = props;
+    const apiRef = useGridApiContext();
 
-    // Función para manejar el inicio de edición
-    const handleEditClick = (id: GridRowId) => () => {
-      setRowModesModel({ 
-        ...rowModesModel, 
-        [id]: { mode: GridRowModes.Edit } 
+    const handleChange = (event: any) => {
+      const newValue = event.target.value;
+      apiRef.current.setEditCellValue({
+        id,
+        field,
+        value: { id: newValue, nombre: PROVINCIAS.find(p => p.id === newValue)?.nombre }
       });
     };
 
+    return (
+      <Select
+        value={value?.id || ''}
+        onChange={handleChange}
+        fullWidth
+      >
+        {PROVINCIAS.map((provincia) => (
+          <MenuItem key={provincia.id} value={provincia.id}>
+            {provincia.nombre}
+          </MenuItem>
+        ))}
+      </Select>
+    );
+  }
 
-      // Función para manejar guardado
+  // Función para manejar el inicio de edición
+  const handleEditClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.Edit }
+    });
+  };
+
+  // Función para manejar guardado
   const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ 
-      ...rowModesModel, 
-      [id]: { mode: GridRowModes.View } 
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View }
     });
   };
 
@@ -70,48 +101,54 @@ const DataGridComponent: React.FC = () => {
     }
   };
 
+  // Manejar el proceso de actualización de la fila
+  const handleProcessRowUpdate = (
+    newRow: CampanaRow,
+    oldRow: CampanaRow
+  ): CampanaRow => {
+    const updatedRows = rows.map((row) =>
+      row.id === newRow.id ? newRow : row
+    );
 
-  
- 
-  
+    setRows(updatedRows);
+    return newRow;
+  };
 
-  // Definición de las columnas con soporte para objeto anidado
-    // Modificar columnas para incluir acciones
-    const columns: GridColDef[] = [
-      {
-        field: 'actions',
-        type: 'actions',
-        headerName: 'Acciones',
-        width: 100,
-        cellClassName: 'actions',
-        getActions: ({ id }) => {
-          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-  
-          if (isInEditMode) {
-            return [
-              <GridActionsCellItem
-                icon={<SaveIcon />}
-                label="Guardar"
-                onClick={handleSaveClick(id)}
-              />,
-              <GridActionsCellItem
-                icon={<CancelIcon />}
-                label="Cancelar"
-                onClick={handleCancelClick(id)}
-              />,
-            ];
-          }
-  
+  // Definición de las columnas
+  const columns: GridColDef[] = [
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Acciones',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
           return [
             <GridActionsCellItem
-              icon={<EditIcon />}
-              label="Editar"
-              onClick={handleEditClick(id)}
+              icon={<SaveIcon />}
+              label="Guardar"
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancelar"
+              onClick={handleCancelClick(id)}
             />,
           ];
-        },
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Editar"
+            onClick={handleEditClick(id)}
+          />,
+        ];
       },
-      
+    },
     {
       field: 'id',
       headerName: 'ID',
@@ -154,24 +191,30 @@ const DataGridComponent: React.FC = () => {
       renderCell: (params) => {
         return params.row.persona?.apellido || 'Sin apellido';
       },
+    },
+    {
+      field: 'provincia',
+      headerName: 'Provincia',
+      width: 200,
+      editable: true,
+      renderCell: (params) => {
+        // Si params.value existe y tiene una propiedad nombre, muéstrala
+        // De lo contrario, muestra 'No seleccionada'
+        return params.value?.nombre || 'No seleccionada';
+      },
+      renderEditCell: (params) => <ProvinciasEditCell {...params} />,
     }
   ];
 
   // Función para cargar datos del JSON
   const fetchData = async () => {
     try {
-      console.log('Datos JSON originales:', dataJsn);
-  
-      const dataCampanasList: CampanaRow[] = dataJsn.map(item => {
-        console.log('Procesando item:', item);
-        return {
-          ...item,
-          persona: item.persona || { id: 0, nombre: 'Sin nombre', apellido: 'Sin apellido' }
-        };
-      });
-  
-      console.log('Datos cargados:', dataCampanasList);
-  
+      const dataCampanasList: CampanaRow[] = dataJsn.map(item => ({
+        ...item,
+        persona: item.persona || { id: 0, nombre: 'Sin nombre', apellido: 'Sin apellido' },
+        provincia: item.provincia || undefined
+      }));
+
       setRows(dataCampanasList);
       setLoading(false);
     } catch (err) {
@@ -179,30 +222,6 @@ const DataGridComponent: React.FC = () => {
       setError('Error al cargar los datos');
       setLoading(false);
     }
-  };
-
-  // Manejar el proceso de actualización de la fila
-  const handleProcessRowUpdate = async (
-    newRow: CampanaRow,
-    oldRow: CampanaRow
-  ): Promise<CampanaRow> => {
-    try {
-      // Aquí podrías hacer una llamada a tu API para guardar los cambios
-      const updatedRows = rows.map((row) =>
-        row.id === newRow.id ? newRow : row
-      );
-
-      setRows(updatedRows);
-      return newRow;
-    } catch (error) {
-      console.error('Error actualizando fila:', error);
-      return oldRow;
-    }
-  };
-
-  // Manejar errores en la actualización de filas
-  const handleProcessRowUpdateError = (error: Error) => {
-    setError(error.message);
   };
 
   useEffect(() => {
@@ -236,7 +255,7 @@ const DataGridComponent: React.FC = () => {
         rowModesModel={rowModesModel}
         onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
         processRowUpdate={handleProcessRowUpdate}
-        onProcessRowUpdateError={handleProcessRowUpdateError}
+        onProcessRowUpdateError={(error) => setError(error.message)}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         sx={{
           boxShadow: 1,
